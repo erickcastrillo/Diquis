@@ -1,6 +1,6 @@
-# Contributing to La Cantera Football Academy Management System
+# Contributing to Diquis Football Academy Management System
 
-Thank you for considering contributing to La Cantera! This document provides guidelines and instructions
+Thank you for considering contributing to Diquis! This document provides guidelines and instructions
 for contributing to the project.
 
 ## Table of Contents
@@ -224,4 +224,4 @@ Contributors are recognized in:
 - Release notes for significant contributions
 - PROJECT_OVERVIEW.md acknowledgments
 
-Thank you for contributing to La Cantera! 🚀⚽
+Thank you for contributing to Diquis! 🚀⚽

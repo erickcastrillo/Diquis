@@ -1,6 +1,6 @@
 # Documentation Migration Summary
 
-This document tracks the migration of La Cantera documentation from Ruby on Rails to ASP.NET Core and Django REST Framework.
+This document tracks the migration of Diquis documentation from Ruby on Rails to ASP.NET Core and Django REST Framework.
 
 ## Migration Status
 

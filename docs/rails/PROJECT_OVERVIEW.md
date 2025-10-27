@@ -1,6 +1,6 @@
-# La Cantera - Rails API Project Overview
+# Diquis - Rails API Project Overview
 
-**Project Name:** La Cantera Football Management System  
+**Project Name:** Diquis Football Management System  
 **Framework:** Ruby on Rails 8.0.3+ (API-only)  
 **Architecture:** Vertical Slice Architecture  
 **Database:** PostgreSQL with UUID primary keys  
@@ -8,7 +8,7 @@
 
 ## Project Description
 
-La Cantera is a comprehensive football (soccer) academy management system designed to manage players, teams, training sessions, and administrative tasks across multiple academies. The system implements multi-tenant architecture where each academy operates as an isolated tenant with its own data and resources.
+Diquis is a comprehensive football (soccer) academy management system designed to manage players, teams, training sessions, and administrative tasks across multiple academies. The system implements multi-tenant architecture where each academy operates as an isolated tenant with its own data and resources.
 
 ## Technology Stack
 
@@ -217,7 +217,7 @@ overmind connect web    # View Rails logs
 ## Project Structure
 
 ```text
-la_cantera/
+diquis/
 ├── app/
 │   ├── controllers/
 │   │   ├── api/v1/base_controller.rb
@@ -245,7 +245,7 @@ la_cantera/
 
 ## Reference Django Project
 
-This Rails implementation is based on an existing Django "La Cantera" project that serves as the architectural reference. The Rails version maintains the same business logic, domain models, and API contracts while leveraging Rails conventions and best practices.
+This Rails implementation is based on an existing Django "Diquis" project that serves as the architectural reference. The Rails version maintains the same business logic, domain models, and API contracts while leveraging Rails conventions and best practices.
 
 ## Getting Started
 
@@ -262,4 +262,4 @@ MIT License
 
 ## Contact
 
-Development Team: dev@la-cantera.com
+Development Team: dev@diquis.com

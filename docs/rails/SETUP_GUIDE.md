@@ -1,4 +1,4 @@
-# La Cantera - Setup Guide
+# Diquis - Setup Guide
 
 ## Prerequisites
 
@@ -80,10 +80,10 @@ sudo systemctl enable redis-server
 
 ```bash
 # Create new Rails API application
-rails new la_cantera --api --database=postgresql --skip-test
+rails new diquis --api --database=postgresql --skip-test
 
 # Navigate to project directory
-cd la_cantera
+cd diquis
 ```text
 
 ### 2. Configure Gemfile
@@ -201,17 +201,17 @@ default: &default
 
 development:
   <<: *default
-  database: la_cantera_development
+  database: diquis_development
 
 test:
   <<: *default
-  database: la_cantera_test
+  database: diquis_test
 
 production:
   <<: *default
-  database: la_cantera_production
-  username: la_cantera
-  password: <%= ENV['LA_CANTERA_DATABASE_PASSWORD'] %>
+  database: diquis_production
+  username: diquis
+  password: <%= ENV['DIQUIS_DATABASE_PASSWORD'] %>
 ```text
 
 ### 2. Create Databases
@@ -236,7 +236,7 @@ require "rails/all"
 
 Bundler.require(*Rails.groups)
 
-module LaCantera
+module Diquis
   class Application < Rails::Application
     config.load_defaults 8.0
     config.api_only = true
@@ -396,7 +396,7 @@ mkdir -p swagger/v1
 
 ### 2. Process Management with Overmind
 
-La Cantera uses **Overmind** for development process management, providing better process isolation and tmux-based interface compared to Foreman.
+Diquis uses **Overmind** for development process management, providing better process isolation and tmux-based interface compared to Foreman.
 
 **Why Overmind?**
 
@@ -411,7 +411,7 @@ La Cantera uses **Overmind** for development process management, providing bette
 **Procfile.dev** - Defines development processes:
 
 ```plaintext
-# Procfile for La Cantera Football Academy
+# Procfile for Diquis Football Academy
 # Use with Overmind: overmind start
 
 web: bundle exec rails server -p 3000
@@ -422,7 +422,7 @@ css: bundle exec tailwindcss -i ./app/assets/stylesheets/application.tailwind.cs
 **config/sidekiq.yml** - Sidekiq queue configuration:
 
 ```yaml
-# Sidekiq configuration for La Cantera Football Academy
+# Sidekiq configuration for Diquis Football Academy
 
 # Basic configuration
 :concurrency: 5
@@ -456,7 +456,7 @@ test:
 **.overmind.env** - Overmind-specific configuration:
 
 ```bash
-# Overmind configuration for La Cantera Football Academy
+# Overmind configuration for Diquis Football Academy
 # Start all processes: overmind start
 # Start specific process: overmind start web
 
@@ -530,7 +530,7 @@ The Overmind interface provides:
 
 ```bash
 # Database
-DATABASE_URL=postgresql://localhost:5432/la_cantera_development
+DATABASE_URL=postgresql://localhost:5432/diquis_development
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_HOST=localhost
@@ -558,7 +558,7 @@ ACTIVE_STORAGE_SERVICE=local
 # AWS_ACCESS_KEY_ID=your_key
 # AWS_SECRET_ACCESS_KEY=your_secret
 # AWS_REGION=us-east-1
-# AWS_BUCKET=la-cantera-production
+# AWS_BUCKET=diquis-production
 ```text
 
 ### 2. Add .env to .gitignore
@@ -621,7 +621,7 @@ end
 
 ### 1. Configure RSpec
 
-La Cantera uses RSpec for testing with additional gems for enhanced testing capabilities:
+Diquis uses RSpec for testing with additional gems for enhanced testing capabilities:
 
 **Testing Stack:**
 
@@ -682,7 +682,7 @@ bundle exec rspec --parallel
 ### 3. Code Quality with RuboCop
 
 **RuboCop Configuration:**
-La Cantera extends Rails Omakase styling with project-specific rules in `.rubocop.yml`:
+Diquis extends Rails Omakase styling with project-specific rules in `.rubocop.yml`:
 
 - **Base:** Inherits from `rubocop-rails-omakase`
 - **Extensions:** Includes `rubocop-rspec` and `rubocop-factory_bot`
@@ -780,7 +780,7 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'La Cantera API V1',
+        title: 'Diquis API V1',
         version: 'v1',
         description: 'Football Academy Management API with multi-tenant support'
       },
@@ -791,7 +791,7 @@ RSpec.configure do |config|
           description: 'Development server'
         },
         {
-          url: 'https://api.la-cantera.com',
+          url: 'https://api.diquis.com',
           description: 'Production server'
         }
       ],

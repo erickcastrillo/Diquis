@@ -1,4 +1,4 @@
-# La Cantera - Infrastructure Documentation Summary
+# Diquis - Infrastructure Documentation Summary
 
 This document provides a quick reference to all infrastructure documentation and highlights what has been documented.
 

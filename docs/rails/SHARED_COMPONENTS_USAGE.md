@@ -1,6 +1,6 @@
 # Shared Components Usage Guide
 
-This document provides detailed usage patterns and examples for the shared components in the La Cantera application.
+This document provides detailed usage patterns and examples for the shared components in the Diquis application.
 
 ## BaseService Pattern
 

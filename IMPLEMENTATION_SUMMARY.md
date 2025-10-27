@@ -2,7 +2,7 @@
 
 ## Overview
 
-This PR implements a complete Devise + JWT authentication system for the LaCantera Football API,
+This PR implements a complete Devise + JWT authentication system for the Diquis Football API,
 as specified in [Task] Implement Devise + JWT authentication (#issue_number).
 
 ## What's Included

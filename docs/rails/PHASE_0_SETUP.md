@@ -159,7 +159,7 @@ overmind version # 2.4.0+
 cd ~/RubymineProjects  # or your preferred location
 
 # Create new Rails API application
-rails new la_cantera \
+rails new diquis \
   --api \
   --database=postgresql \
   --skip-test \
@@ -168,7 +168,7 @@ rails new la_cantera \
   --skip-action-text \
   --skip-active-storage
 
-cd la_cantera
+cd diquis
 ```text
 
 **Verification:**
@@ -461,15 +461,15 @@ default: &default
 
 development:
   <<: *default
-  database: la_cantera_development
+  database: diquis_development
 
 test:
   <<: *default
-  database: la_cantera_test
+  database: diquis_test
 
 production:
   <<: *default
-  database: la_cantera_production
+  database: diquis_production
   username: <%= ENV['DATABASE_USERNAME'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
 ```text
@@ -483,8 +483,8 @@ rails db:create
 **Expected output:**
 
 ```text
-Created database 'la_cantera_development'
-Created database 'la_cantera_test'
+Created database 'diquis_development'
+Created database 'diquis_test'
 ```text
 
 ---
@@ -499,7 +499,7 @@ require "rails/all"
 
 Bundler.require(*Rails.groups)
 
-module LaCantera
+module Diquis
   class Application < Rails::Application
     config.load_defaults 8.0
     config.api_only = true
@@ -548,7 +548,7 @@ Create `.env` file in project root:
 
 ```bash
 # Database
-DATABASE_URL=postgresql://localhost:5432/la_cantera_development
+DATABASE_URL=postgresql://localhost:5432/diquis_development
 POSTGRES_USER=
 POSTGRES_PASSWORD=
 POSTGRES_HOST=localhost
@@ -582,7 +582,7 @@ rails secret
 Create `.env.test`:
 
 ```bash
-DATABASE_URL=postgresql://localhost:5432/la_cantera_test
+DATABASE_URL=postgresql://localhost:5432/diquis_test
 REDIS_URL=redis://localhost:6379/1
 RAILS_ENV=test
 ```text
@@ -640,7 +640,7 @@ Create `.overmind.env`:
 
 ```bash
 REDIS_URL=redis://localhost:6379/0
-DATABASE_URL=postgresql://localhost:5432/la_cantera_development
+DATABASE_URL=postgresql://localhost:5432/diquis_development
 RAILS_LOG_LEVEL=debug
 SIDEKIQ_WEB=true
 CORS_ORIGINS=http://localhost:3000,http://localhost:3001
@@ -777,7 +777,7 @@ bundle list | grep devise
 
 # 4. Check database
 rails db:migrate:status
-# Should show "database: la_cantera_development" with no migrations yet
+# Should show "database: diquis_development" with no migrations yet
 
 # 5. Run tests
 bundle exec rspec

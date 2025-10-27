@@ -1,12 +1,12 @@
-# La Cantera Documentation Migration - Completion Summary
+# Diquis Documentation Migration - Completion Summary
 
 ## ✅ Completed Migration
 
-I have successfully migrated the La Cantera Football Management System documentation from Ruby on Rails to both **ASP.NET Core** and **Django REST Framework**.
+I have successfully migrated the Diquis Football Management System documentation from Ruby on Rails to both **ASP.NET Core** and **Django REST Framework**.
 
 ## 📁 Created Documentation Structure
 
-```
+```txt
 docs/
 ├── README.md                    # Main documentation index
 ├── MIGRATION_SUMMARY.md         # Framework equivalents and migration guide

@@ -1,6 +1,6 @@
 # API Authentication Documentation (ASP.NET Core)
 
-This document describes the authentication system for the LaCantera Football API built with ASP.NET Core.
+This document describes the authentication system for the Diquis Football API built with ASP.NET Core.
 
 ## Overview
 
@@ -181,8 +181,8 @@ Configuration in `appsettings.json`:
 {
   "JwtSettings": {
     "SecretKey": "your-secret-key-min-32-characters-long",
-    "Issuer": "LaCanteraAPI",
-    "Audience": "LaCanteraClient",
+    "Issuer": "DiquisAPI",
+    "Audience": "DiquisClient",
     "ExpiryMinutes": 1440
   }
 }
@@ -461,8 +461,8 @@ dotnet user-secrets set "JwtSettings:SecretKey" "your-secret-key-min-32-characte
 
 ```bash
 export JWT_SECRET_KEY="your-secret-key-min-32-characters-long"
-export JWT_ISSUER="LaCanteraAPI"
-export JWT_AUDIENCE="LaCanteraClient"
+export JWT_ISSUER="DiquisAPI"
+export JWT_AUDIENCE="DiquisClient"
 export JWT_EXPIRY_MINUTES="1440"
 ```
 

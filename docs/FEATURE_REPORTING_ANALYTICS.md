@@ -1,4 +1,4 @@
-# La Cantera - Reporting & Analytics Feature
+# Diquis - Reporting & Analytics Feature
 
 ## Overview
 

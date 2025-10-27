@@ -396,7 +396,7 @@ default: &default
 
 development:
   <<: *default
-  database: la_cantera_development
+  database: diquis_development
 
 # config/initializers/devise.rb
 Devise.setup do |config|
@@ -413,12 +413,12 @@ end
 // appsettings.json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=LaCantera;User Id=sa;Password=YourPassword;"
+    "DefaultConnection": "Server=localhost;Database=Diquis;User Id=sa;Password=YourPassword;"
   },
   "JwtSettings": {
     "SecretKey": "your-secret-key-min-32-characters",
-    "Issuer": "LaCanteraAPI",
-    "Audience": "LaCanteraClient",
+    "Issuer": "DiquisAPI",
+    "Audience": "DiquisClient",
     "ExpiryMinutes": 1440
   }
 }
@@ -442,7 +442,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'la_cantera',
+        'NAME': 'diquis',
         'USER': 'postgres',
         'PASSWORD': env('DATABASE_PASSWORD'),
         'HOST': 'localhost',

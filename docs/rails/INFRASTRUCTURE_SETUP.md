@@ -1,6 +1,6 @@
-# La Cantera - Infrastructure Setup Guide
+# Diquis - Infrastructure Setup Guide
 
-This document provides a comprehensive guide to the infrastructure components of La Cantera Football Academy Management System.
+This document provides a comprehensive guide to the infrastructure components of Diquis Football Academy Management System.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ This document provides a comprehensive guide to the infrastructure components of
 
 ### Overview
 
-La Cantera uses **Devise** with **JWT** tokens for stateless API authentication.
+Diquis uses **Devise** with **JWT** tokens for stateless API authentication.
 
 ### Configuration
 
@@ -41,7 +41,7 @@ rails generate devise User
 ```ruby
 # config/initializers/devise.rb
 Devise.setup do |config|
-  config.mailer_sender = 'noreply@lacantera.com'
+  config.mailer_sender = 'noreply@diquis.com'
   
   config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.devise_jwt_secret_key || ENV['DEVISE_JWT_SECRET_KEY']
@@ -158,7 +158,7 @@ curl -X DELETE http://localhost:3000/auth/sign_out \
 
 ### Overview
 
-La Cantera uses **Pundit** for policy-based authorization with role-based access control (RBAC).
+Diquis uses **Pundit** for policy-based authorization with role-based access control (RBAC).
 
 ### Configuration
 
@@ -315,7 +315,7 @@ end
 
 ### Overview
 
-La Cantera uses **Sidekiq** for background job processing with **Redis** as the backend.
+Diquis uses **Sidekiq** for background job processing with **Redis** as the backend.
 
 ### Configuration
 
@@ -478,7 +478,7 @@ end
 
 ### Overview
 
-La Cantera uses **ActsAsTenant** for multi-tenancy with Academy as the tenant model.
+Diquis uses **ActsAsTenant** for multi-tenancy with Academy as the tenant model.
 
 ### Configuration
 
@@ -568,7 +568,7 @@ end
 
 ### Overview
 
-La Cantera uses GitHub Actions for continuous integration.
+Diquis uses GitHub Actions for continuous integration.
 
 ### Workflow File
 
@@ -657,7 +657,7 @@ bundle exec rspec
 
 ### Overview
 
-La Cantera uses **Kamal** for Docker-based deployments.
+Diquis uses **Kamal** for Docker-based deployments.
 
 ### Prerequisites
 
@@ -676,16 +676,16 @@ gem install kamal
 
 ```yaml
 # config/deploy.yml
-service: la-cantera
+service: diquis
 
-image: your-dockerhub-username/la-cantera
+image: your-dockerhub-username/diquis
 
 servers:
   web:
     hosts:
       - your-server-ip
     labels:
-      traefik.http.routers.la-cantera.rule: Host(`yourdomain.com`)
+      traefik.http.routers.diquis.rule: Host(`yourdomain.com`)
 
 registry:
   username: your-dockerhub-username
@@ -910,10 +910,10 @@ end
 - [Sidekiq Documentation](https://github.com/sidekiq/sidekiq)
 - [ActsAsTenant Documentation](https://github.com/ErwinM/acts_as_tenant)
 - [Kamal Documentation](https://kamal-deploy.org/)
-- [La Cantera Architecture Documentation](./ARCHITECTURE.md)
+- [Diquis Architecture Documentation](./ARCHITECTURE.md)
 - [Phase 1 Infrastructure Guide](./PHASE_1_INFRASTRUCTURE.md)
 
 ---
 
 **Last Updated:** October 2024  
-**Maintainer:** La Cantera Development Team
+**Maintainer:** Diquis Development Team

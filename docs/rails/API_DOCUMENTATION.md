@@ -1,4 +1,4 @@
-# La Cantera - API Documentation
+# Diquis - API Documentation
 
 ## Table of Contents
 
@@ -22,7 +22,7 @@
 
 ```txt
 Development: http://localhost:3000/api/v1
-Production:  https://api.la-cantera.com/api/v1
+Production:  https://api.diquis.com/api/v1
 ```text
 
 ### Content Type
@@ -1042,7 +1042,7 @@ Authorization: Bearer {parent_token}
           "rest_seconds": 30,
           "difficulty": "medium",
           "equipment": ["ball", "cones"],
-          "video_url": "https://videos.la-cantera.com/cone-dribbling.mp4",
+          "video_url": "https://videos.diquis.com/cone-dribbling.mp4",
           "instructions": [
             "Place 5 cones 2 yards apart",
             "Dribble through using only right foot",
@@ -1068,7 +1068,7 @@ Authorization: Bearer {parent_token}
           "rest_seconds": 45,
           "difficulty": "medium",
           "equipment": ["ball", "wall"],
-          "video_url": "https://videos.la-cantera.com/wall-passing.mp4",
+          "video_url": "https://videos.diquis.com/wall-passing.mp4",
           "instructions": [
             "Stand 3 yards from wall",
             "Pass ball to wall with inside foot",
@@ -1094,7 +1094,7 @@ Authorization: Bearer {parent_token}
           "rest_seconds": 60,
           "difficulty": "medium",
           "equipment": ["ball", "cones", "goal_or_target"],
-          "video_url": "https://videos.la-cantera.com/target-shooting.mp4",
+          "video_url": "https://videos.diquis.com/target-shooting.mp4",
           "instructions": [
             "Set up targets in corners of goal (or marked area)",
             "Take 5 shots at each target",

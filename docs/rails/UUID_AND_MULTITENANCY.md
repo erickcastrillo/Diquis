@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the UUID primary key and multi-tenancy (ActsAsTenant) implementation in La Cantera Football.
+This document describes the UUID primary key and multi-tenancy (ActsAsTenant) implementation in Diquis Football.
 
 ## UUID Primary Keys
 

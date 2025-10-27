@@ -1,6 +1,6 @@
 # Authentication Flow Diagram
 
-This document illustrates the authentication flow for the LaCantera Football API.
+This document illustrates the authentication flow for the Diquis Football API.
 
 ## 🔄 Complete Authentication Flow
 

@@ -1,10 +1,10 @@
 # Authorization with ASP.NET Core Policies
 
-This document describes how authorization is implemented in La Cantera using ASP.NET Core Authorization Policies.
+This document describes how authorization is implemented in Diquis using ASP.NET Core Authorization Policies.
 
 ## Overview
 
-La Cantera uses **ASP.NET Core Authorization** with custom policy-based authorization. This provides a flexible and powerful way to implement authorization logic based on claims, roles, and custom requirements.
+Diquis uses **ASP.NET Core Authorization** with custom policy-based authorization. This provides a flexible and powerful way to implement authorization logic based on claims, roles, and custom requirements.
 
 ## Architecture
 

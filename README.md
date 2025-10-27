@@ -1,9 +1,9 @@
-# La Cantera - Football Academy Management System
+# Diquis - Football Academy Management System
 
 > A comprehensive Rails 8.0+ API for managing football academies, players, teams, and training sessions
 > with multi-tenant architecture.
 
-[![CI Status](https://github.com/erickcastrillo/LaCanteraFootball/workflows/CI/badge.svg)](https://github.com/erickcastrillo/LaCanteraFootball/actions/workflows/ci.yml)
+[![CI Status](https://github.com/erickcastrillo/Diquis/workflows/CI/badge.svg)](https://github.com/erickcastrillo/Diquis/actions/workflows/ci.yml)
 [![Ruby Version](https://img.shields.io/badge/ruby-3.4.5-red.svg)](https://www.ruby-lang.org/)
 [![Rails Version](https://img.shields.io/badge/rails-8.0.3-red.svg)](https://rubyonrails.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)
@@ -21,7 +21,7 @@
 
 ## 🎯 Overview
 
-La Cantera is a modern football academy management system built with Rails 8.0+ API-only architecture.
+Diquis is a modern football academy management system built with Rails 8.0+ API-only architecture.
 It implements **Vertical Slice Architecture** with complete multi-tenant isolation, allowing multiple
 academies to operate independently within a single application.
 
@@ -84,7 +84,7 @@ The system manages:
 
 ## 🏗️ Architecture
 
-La Cantera implements **Vertical Slice Architecture** where features are organized by business capability:
+Diquis implements **Vertical Slice Architecture** where features are organized by business capability:
 
 ```text
 app/slices/
@@ -126,8 +126,8 @@ Each slice contains:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/la_cantera.git
-cd la_cantera
+git clone https://github.com/yourusername/diquis.git
+cd diquis
 
 # 2. Install dependencies
 bundle install
@@ -251,7 +251,7 @@ Comprehensive documentation is available in the `/docs` directory:
 ## 📁 Project Structure
 
 ```text
-la_cantera/
+diquis/
 ├── app/
 │   ├── controllers/
 │   │   ├── api/v1/base_controller.rb
@@ -334,7 +334,7 @@ bundle exec parallel_rspec spec/
 
 ## 🚢 Deployment
 
-La Cantera uses **Kamal 2** for zero-downtime deployments:
+Diquis uses **Kamal 2** for zero-downtime deployments:
 
 ```bash
 # Setup deployment
@@ -403,21 +403,21 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Team
 
-- **Development Team:** dev@la-cantera.com
+- **Development Team:** dev@diquis.com
 - **Project Lead:** [Your Name]
-- **Architecture:** Based on Django La Cantera reference implementation
+- **Architecture:** Based on Django Diquis reference implementation
 
 ## 🙏 Acknowledgments
 
-- Based on the architectural patterns from the Django La Cantera project
+- Based on the architectural patterns from the Django Diquis project
 - Built with Ruby on Rails 8.0+ modern features
 - Inspired by Domain-Driven Design and Vertical Slice Architecture principles
 
 ## 📞 Support
 
 - **Documentation:** [docs/](./docs/)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/la_cantera/issues)
-- **Email:** dev@la-cantera.com
+- **Issues:** [GitHub Issues](https://github.com/yourusername/diquis/issues)
+- **Email:** dev@diquis.com
 
 ---
 

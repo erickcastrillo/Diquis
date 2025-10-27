@@ -1,6 +1,6 @@
-# La Cantera - Django Project Overview
+# Diquis - Django Project Overview
 
-**Project Name:** La Cantera Football Management System  
+**Project Name:** Diquis Football Management System  
 **Framework:** Django 5.0+ with Django REST Framework  
 **Architecture:** Django Apps with Service Layer Pattern  
 **Database:** PostgreSQL with UUID primary keys  
@@ -8,7 +8,7 @@
 
 ## Project Description
 
-La Cantera is a comprehensive football (soccer) academy management system designed to manage players, teams, training sessions, and administrative tasks across multiple academies. The system implements multi-tenant architecture where each academy operates as an isolated tenant with its own data and resources.
+Diquis is a comprehensive football (soccer) academy management system designed to manage players, teams, training sessions, and administrative tasks across multiple academies. The system implements multi-tenant architecture where each academy operates as an isolated tenant with its own data and resources.
 
 ## Technology Stack
 
@@ -228,13 +228,13 @@ All business logic and complex database interactions are handled through service
 python manage.py runserver
 
 # Start Celery worker
-celery -A la_cantera worker -l info
+celery -A diquis worker -l info
 
 # Start Celery beat (scheduler)
-celery -A la_cantera beat -l info
+celery -A diquis beat -l info
 
 # Start Flower (Celery monitoring)
-celery -A la_cantera flower
+celery -A diquis flower
 ```
 
 ### Environment Structure
@@ -246,9 +246,9 @@ celery -A la_cantera flower
 ## Project Structure
 
 ```
-la_cantera/
+diquis/
 ├── manage.py
-├── la_cantera/                    # Project settings
+├── diquis/                    # Project settings
 │   ├── __init__.py
 │   ├── settings/
 │   │   ├── base.py
@@ -285,7 +285,7 @@ la_cantera/
 
 ## Reference Implementation
 
-This Django implementation is based on the Ruby on Rails "La Cantera" project that serves as the architectural reference. The Django version maintains the same business logic, domain models, and API contracts while leveraging Django and DRF conventions and best practices.
+This Django implementation is based on the Ruby on Rails "Diquis" project that serves as the architectural reference. The Django version maintains the same business logic, domain models, and API contracts while leveraging Django and DRF conventions and best practices.
 
 ## Getting Started
 
@@ -337,4 +337,4 @@ MIT License
 
 ## Contact
 
-Development Team: dev@la-cantera.com
+Development Team: dev@diquis.com

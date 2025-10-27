@@ -1,10 +1,10 @@
-# La Cantera - Framework Documentation Index
+# Diquis - Framework Documentation Index
 
-This directory contains documentation for implementing La Cantera Football Management System across different frameworks.
+This directory contains documentation for implementing Diquis Football Management System across different frameworks.
 
 ## Documentation Structure
 
-```
+```txt
 docs/
 ├── README.md (this file)
 ├── MIGRATION_SUMMARY.md         # Migration guide and framework equivalents
@@ -159,7 +159,7 @@ All implementations use academy-based multi-tenancy where:
 
 All implementations follow RESTful principles:
 
-```
+```txt
 GET    /api/v1/{academy_id}/players           # List players
 POST   /api/v1/{academy_id}/players           # Create player
 GET    /api/v1/{academy_id}/players/{id}      # Get player
@@ -347,5 +347,5 @@ MIT License - See LICENSE file for details
 
 For questions or support:
 
-- Email: dev@la-cantera.com
-- GitHub Issues: [Project Issues](https://github.com/erickcastrillo/LaCanteraFootball/issues)
+- Email: dev@diquis.com
+- GitHub Issues: [Project Issues](https://github.com/erickcastrillo/Diquis/issues)

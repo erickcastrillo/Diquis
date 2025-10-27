@@ -1,6 +1,6 @@
 # API Authentication Documentation
 
-This document describes the authentication system for the LaCantera Football API.
+This document describes the authentication system for the Diquis Football API.
 
 ## Overview
 

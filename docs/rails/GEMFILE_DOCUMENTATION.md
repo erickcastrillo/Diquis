@@ -1,8 +1,8 @@
-# La Cantera - Gemfile Documentation
+# Diquis - Gemfile Documentation
 
 ## Overview
 
-This document provides comprehensive information about all gems included in the La Cantera Football Academy management system, their versions, rationale for selection, and usage within the application.
+This document provides comprehensive information about all gems included in the Diquis Football Academy management system, their versions, rationale for selection, and usage within the application.
 
 **Total Gems:** 59 direct dependencies, 206 total installed gems  
 **Ruby Version:** 3.4.5  
@@ -732,4 +732,4 @@ bundle exec ruby-prof script/performance_test.rb
 
 ---
 
-This gem selection provides a comprehensive foundation for the La Cantera Football Academy management system, covering all aspects from development through production deployment.
+This gem selection provides a comprehensive foundation for the Diquis Football Academy management system, covering all aspects from development through production deployment.

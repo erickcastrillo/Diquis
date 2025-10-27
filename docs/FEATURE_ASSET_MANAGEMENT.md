@@ -1,4 +1,4 @@
-# La Cantera - Asset Management Feature
+# Diquis - Asset Management Feature
 
 ## Overview
 

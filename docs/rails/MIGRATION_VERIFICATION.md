@@ -13,8 +13,8 @@ Before running migrations, ensure:
    ```
 
 2. **Database credentials are configured** in `config/database.yml`:
-   - Development: `la_cantera_development`
-   - Test: `la_cantera_test`
+   - Development: `diquis_development`
+   - Test: `diquis_test`
    - Username: `postgres`
    - Password: `mysecretpassword`
 
@@ -35,8 +35,8 @@ rails db:create
 Expected output:
 
 ```text
-Created database 'la_cantera_development'
-Created database 'la_cantera_test'
+Created database 'diquis_development'
+Created database 'diquis_test'
 ```text
 
 ### 2. Run Migrations

@@ -1,15 +1,15 @@
-# La Cantera - Directory Structure Overview
+# Diquis - Directory Structure Overview
 
 ## Purpose
 
-This document provides a comprehensive overview of the La Cantera project directory structure and the purpose of each component.
+This document provides a comprehensive overview of the Diquis project directory structure and the purpose of each component.
 
 ## Project Structure
 
 ### Root Level
 
 ```text
-la_cantera/
+diquis/
 ├── .github/                     # GitHub configuration
 ├── app/                         # Application code
 ├── bin/                         # Executable scripts

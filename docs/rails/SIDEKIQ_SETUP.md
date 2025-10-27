@@ -1,6 +1,6 @@
 # Sidekiq and Redis Setup
 
-This document describes the Sidekiq and Redis configuration for background job processing in La Cantera Football Academy.
+This document describes the Sidekiq and Redis configuration for background job processing in Diquis Football Academy.
 
 ## Overview
 

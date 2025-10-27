@@ -1,6 +1,6 @@
 # API Authentication Documentation (Django REST Framework)
 
-This document describes the authentication system for the LaCantera Football API built with Django REST Framework.
+This document describes the authentication system for the Diquis Football API built with Django REST Framework.
 
 ## Overview
 
@@ -553,7 +553,7 @@ DEBUG=False
 ALLOWED_HOSTS=localhost,127.0.0.1,yourdomain.com
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/la_cantera
+DATABASE_URL=postgresql://user:password@localhost:5432/diquis
 
 # JWT Settings (optional overrides)
 JWT_ACCESS_TOKEN_LIFETIME=15  # minutes

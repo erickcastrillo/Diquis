@@ -1,4 +1,4 @@
-# La Cantera - Development Guide
+# Diquis - Development Guide
 
 ## Table of Contents
 

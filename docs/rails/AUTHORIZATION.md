@@ -1,10 +1,10 @@
 # Authorization with Pundit
 
-This document describes how authorization is implemented in La Cantera using the Pundit gem.
+This document describes how authorization is implemented in Diquis using the Pundit gem.
 
 ## Overview
 
-La Cantera uses [Pundit](https://github.com/varvet/pundit) for authorization. Pundit provides a set of helpers that guide you in leveraging regular Ruby classes and object-oriented design patterns to build a simple, robust authorization system.
+Diquis uses [Pundit](https://github.com/varvet/pundit) for authorization. Pundit provides a set of helpers that guide you in leveraging regular Ruby classes and object-oriented design patterns to build a simple, robust authorization system.
 
 ## Architecture
 

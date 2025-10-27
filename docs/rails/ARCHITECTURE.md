@@ -1,4 +1,4 @@
-# La Cantera - Architecture Documentation
+# Diquis - Architecture Documentation
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@
 
 ### Overview
 
-La Cantera implements Vertical Slice Architecture where features are organized by business capability rather than technical layer. Each slice contains all the components needed for a specific feature.
+Diquis implements Vertical Slice Architecture where features are organized by business capability rather than technical layer. Each slice contains all the components needed for a specific feature.
 
 ### Slice Structure
 
@@ -842,7 +842,7 @@ end
 
 ### Authentication (Devise + JWT)
 
-La Cantera uses Devise with JWT for stateless authentication.
+Diquis uses Devise with JWT for stateless authentication.
 
 #### JWT Token Flow
 
@@ -866,7 +866,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMjM...
 ```ruby
 # config/initializers/devise.rb
 Devise.setup do |config|
-  config.mailer_sender = 'noreply@lacantera.com'
+  config.mailer_sender = 'noreply@diquis.com'
   
   # JWT configuration
   config.jwt do |jwt|
@@ -1019,7 +1019,7 @@ curl -X DELETE http://localhost:3000/auth/sign_out \
 
 ### Authorization (Pundit)
 
-La Cantera uses Pundit for policy-based authorization with tenant-aware permissions.
+Diquis uses Pundit for policy-based authorization with tenant-aware permissions.
 
 #### Base Policy
 
@@ -1244,7 +1244,7 @@ end
 ```ruby
 config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://localhost:3000', 'https://la-cantera.com'
+    origins 'http://localhost:3000', 'https://diquis.com'
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
@@ -1271,7 +1271,7 @@ end
 
 ### Sidekiq Configuration
 
-La Cantera uses Sidekiq for background job processing with Redis as the backend.
+Diquis uses Sidekiq for background job processing with Redis as the backend.
 
 #### Queue Priority System
 
@@ -1400,7 +1400,7 @@ end
 
 ### GitHub Actions Workflow
 
-La Cantera uses GitHub Actions for continuous integration and deployment.
+Diquis uses GitHub Actions for continuous integration and deployment.
 
 #### Workflow Configuration
 
@@ -1514,24 +1514,24 @@ bundle exec rspec
 
 ### Kamal Deployment
 
-La Cantera uses Kamal for zero-downtime Docker deployments.
+Diquis uses Kamal for zero-downtime Docker deployments.
 
 #### Configuration
 
 ```yaml
 # config/deploy.yml
-service: la-cantera
+service: diquis
 
-image: erickcastrillo/la-cantera
+image: erickcastrillo/diquis
 
 servers:
   web:
     hosts:
       - 192.168.1.100
     labels:
-      traefik.http.routers.la-cantera.rule: Host(`lacantera.example.com`)
-      traefik.http.routers.la-cantera-secure.entrypoints: websecure
-      traefik.http.routers.la-cantera-secure.tls.certresolver: letsencrypt
+      traefik.http.routers.diquis.rule: Host(`diquis.example.com`)
+      traefik.http.routers.diquis-secure.entrypoints: websecure
+      traefik.http.routers.diquis-secure.tls.certresolver: letsencrypt
 
 registry:
   username: erickcastrillo
@@ -1555,8 +1555,8 @@ accessories:
       secret:
         - POSTGRES_PASSWORD
       clear:
-        POSTGRES_USER: la_cantera
-        POSTGRES_DB: la_cantera_production
+        POSTGRES_USER: diquis
+        POSTGRES_DB: diquis_production
     
   redis:
     image: redis:7
@@ -1624,7 +1624,7 @@ RAILS_MASTER_KEY=<your_master_key>
 DEVISE_JWT_SECRET_KEY=<jwt_secret>
 
 # Database
-DATABASE_URL=postgresql://user:password@host:5432/la_cantera_production
+DATABASE_URL=postgresql://user:password@host:5432/diquis_production
 
 # Redis (for Sidekiq and caching)
 REDIS_URL=redis://host:6379/0

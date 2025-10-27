@@ -1,8 +1,8 @@
-# La Cantera - Phased Implementation Plan
+# Diquis - Phased Implementation Plan
 
 ## Overview
 
-This document outlines a systematic, phase-by-phase approach to implementing the La Cantera Rails API. Each phase builds upon the previous one, with clear deliverables and verification steps.
+This document outlines a systematic, phase-by-phase approach to implementing the Diquis Rails API. Each phase builds upon the previous one, with clear deliverables and verification steps.
 
 ---
 
@@ -94,9 +94,9 @@ sudo apt install postgresql-15 redis-server imagemagick tmux
 
 ```bash
 # Create new Rails API app
-rails new la_cantera --api --database=postgresql --skip-test -T
+rails new diquis --api --database=postgresql --skip-test -T
 
-cd la_cantera
+cd diquis
 ```text
 
 #### 0.3: Configure Gemfile
@@ -1042,13 +1042,13 @@ jobs:
 kamal deploy -d staging
 
 # Run smoke tests
-curl https://staging.la-cantera.com/health
+curl https://staging.diquis.com/health
 
 # Deploy to production
 kamal deploy -d production
 
 # Verify production
-curl https://api.la-cantera.com/health
+curl https://api.diquis.com/health
 ```text
 
 ---

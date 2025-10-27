@@ -1,10 +1,10 @@
 # Authorization with Django Permissions
 
-This document describes how authorization is implemented in La Cantera using Django's permission system and custom permission classes.
+This document describes how authorization is implemented in Diquis using Django's permission system and custom permission classes.
 
 ## Overview
 
-La Cantera uses **Django REST Framework Permissions** combined with **Django's built-in permission system** and **custom permission classes** for authorization. This provides a flexible and powerful way to implement role-based access control (RBAC).
+Diquis uses **Django REST Framework Permissions** combined with **Django's built-in permission system** and **custom permission classes** for authorization. This provides a flexible and powerful way to implement role-based access control (RBAC).
 
 ## Architecture
 

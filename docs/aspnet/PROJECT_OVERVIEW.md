@@ -1,6 +1,6 @@
-# La Cantera - ASP.NET Core Project Overview
+# Diquis - ASP.NET Core Project Overview
 
-**Project Name:** La Cantera Football Management System  
+**Project Name:** Diquis Football Management System  
 **Framework:** ASP.NET Core 8.0+  
 **Architecture:** Clean Architecture with Vertical Slices  
 **Database:** PostgreSQL or SQL Server with GUID primary keys  
@@ -8,7 +8,7 @@
 
 ## Project Description
 
-La Cantera is a comprehensive football (soccer) academy management system designed to manage players, teams, training sessions, and administrative tasks across multiple academies. The system implements multi-tenant architecture where each academy operates as an isolated tenant with its own data and resources.
+Diquis is a comprehensive football (soccer) academy management system designed to manage players, teams, training sessions, and administrative tasks across multiple academies. The system implements multi-tenant architecture where each academy operates as an isolated tenant with its own data and resources.
 
 ## Technology Stack
 
@@ -102,7 +102,7 @@ Business logic is handled through service classes:
 
 ## Background Jobs: Hangfire vs Quartz.NET
 
-La Cantera can use either **Hangfire** or **Quartz.NET** for background job processing. Here's a comparison to help you choose:
+Diquis can use either **Hangfire** or **Quartz.NET** for background job processing. Here's a comparison to help you choose:
 
 ### Hangfire
 
@@ -145,7 +145,7 @@ La Cantera can use either **Hangfire** or **Quartz.NET** for background job proc
 
 **Best For:** Enterprise applications needing complex scheduling, clustering, or avoiding licensing costs
 
-### Recommendation for La Cantera
+### Recommendation for Diquis
 
 **For Development/Small Deployments:** Use **Hangfire**
 
@@ -349,7 +349,7 @@ dotnet build
 dotnet ef database update
 
 # Run application
-dotnet run --project src/LaCantera.Api
+dotnet run --project src/Diquis.Api
 
 # Run Hangfire server (separate process or same app)
 # Hangfire runs in-process with the API by default
@@ -367,14 +367,14 @@ dotnet test
 ## Project Structure
 
 ```text
-LaCantera/
+Diquis/
 ├── src/
-│   ├── LaCantera.Domain/              # Domain entities and interfaces
+│   ├── Diquis.Domain/              # Domain entities and interfaces
 │   │   ├── Entities/
 │   │   ├── ValueObjects/
 │   │   ├── Interfaces/
 │   │   └── Common/
-│   ├── LaCantera.Application/         # Business logic and services
+│   ├── Diquis.Application/         # Business logic and services
 │   │   ├── Services/
 │   │   │   ├── AcademyManagement/
 │   │   │   ├── PlayerManagement/
@@ -384,7 +384,7 @@ LaCantera/
 │   │   ├── DTOs/
 │   │   ├── Validators/
 │   │   └── Interfaces/
-│   ├── LaCantera.Infrastructure/      # Infrastructure layer
+│   ├── Diquis.Infrastructure/      # Infrastructure layer
 │   │   ├── Data/
 │   │   │   ├── Configurations/
 │   │   │   ├── Migrations/
@@ -393,7 +393,7 @@ LaCantera/
 │   │   ├── Services/
 │   │   ├── Storage/
 │   │   └── BackgroundJobs/
-│   └── LaCantera.Api/                 # FastEndpoints API
+│   └── Diquis.Api/                 # FastEndpoints API
 │       ├── Features/
 │       │   ├── AcademyManagement/
 │       │   │   ├── Create/
@@ -411,16 +411,16 @@ LaCantera/
 │       ├── Extensions/
 │       └── Program.cs
 ├── tests/
-│   ├── LaCantera.Domain.Tests/
-│   ├── LaCantera.Application.Tests/
-│   ├── LaCantera.Infrastructure.Tests/
-│   └── LaCantera.Api.Tests/
+│   ├── Diquis.Domain.Tests/
+│   ├── Diquis.Application.Tests/
+│   ├── Diquis.Infrastructure.Tests/
+│   └── Diquis.Api.Tests/
 └── docs/                              # Documentation
 ```
 
 ## Reference Implementation
 
-This ASP.NET Core implementation is based on the Ruby on Rails "La Cantera" project that serves as the architectural reference. The ASP.NET version maintains the same business logic, domain models, and API contracts while leveraging .NET conventions and best practices.
+This ASP.NET Core implementation is based on the Ruby on Rails "Diquis" project that serves as the architectural reference. The ASP.NET version maintains the same business logic, domain models, and API contracts while leveraging .NET conventions and best practices.
 
 ## Getting Started
 
@@ -608,4 +608,4 @@ MIT License
 
 ## Contact
 
-Development Team: dev@la-cantera.com
+Development Team: dev@diquis.com
