@@ -1,0 +1,7 @@
+node_modules/
+vendor/
+tmp/
+log/
+*.log
+CHANGELOG.md
+shared/README.md

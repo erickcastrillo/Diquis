@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "DavidAnson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced",
+    "bierner.markdown-mermaid",
+    "shopify.ruby-lsp",
+    "koichisasada.vscode-rdbg",
+    "bradlc.vscode-tailwindcss"
+  ]
+}

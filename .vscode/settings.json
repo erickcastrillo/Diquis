@@ -1,0 +1,19 @@
+{
+  "markdownlint.config": {
+    "extends": ".markdownlint.json"
+  },
+  "markdownlint.run": "onType",
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120,
+    "editor.rulers": [120]
+  },
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.markdownlint": "explicit"
+  }
+}
