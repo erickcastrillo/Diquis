@@ -1,3 +1,21 @@
+/**
+ * <%= model_name.camelize %> Index Component
+ * 
+ * Displays a paginated list of <%= model_name.humanize.pluralize.downcase %> in a responsive grid layout.
+ * Includes empty state handling, status indicators, and action buttons.
+ * 
+ * Features:
+ * - Responsive grid layout (1 col mobile, 2 tablet, 3 desktop)
+ * - Empty state with call-to-action
+ * - Quick view and edit actions
+<% if attributes.any? { |attr| attr[:name] == 'is_active' } -%>
+ * - Active/inactive status badges
+<% end -%>
+<% if attributes.any? { |attr| attr[:name] == 'description' } -%>
+ * - Truncated description preview
+<% end -%>
+ */
+
 import { Head, Link } from '@inertiajs/react'
 import { <%= model_name.camelize %>Type } from './types'
 
@@ -28,6 +46,7 @@ export default function Index({ <%= model_name.underscore.pluralize %>, academy 
             </Link>
           </div>
 
+          {/* Empty State - shown when no <%= model_name.humanize.pluralize.downcase %> exist */}
           {<%= model_name.underscore.pluralize %>.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-500 mb-4">No <%= model_name.underscore.pluralize %> found.</p>
@@ -39,9 +58,12 @@ export default function Index({ <%= model_name.underscore.pluralize %>, academy 
               </Link>
             </div>
           ) : (
+            /* Grid Layout - responsive cards showing <%= model_name.humanize.pluralize.downcase %> */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {<%= model_name.underscore.pluralize %>.map((<%= model_name.underscore %>) => (
+                {/* <%= model_name.humanize %> Card */}
                 <div key={<%= model_name.underscore %>.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  {/* Card Header with title and status */}
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-lg font-semibold text-gray-900">
                       {<%= model_name.underscore %>.name}
@@ -58,6 +80,7 @@ export default function Index({ <%= model_name.underscore.pluralize %>, academy 
                   </div>
                   
 <% if attributes.any? { |attr| attr[:name] == 'description' } -%>
+                  {/* Description Preview - truncated with ellipsis */}
                   {<%= model_name.underscore %>.description && (
                     <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                       {<%= model_name.underscore %>.description}
@@ -65,6 +88,7 @@ export default function Index({ <%= model_name.underscore.pluralize %>, academy 
                   )}
 <% end -%>
                   
+                  {/* Action Buttons */}
                   <div className="flex space-x-2">
                     <Link
                       href={`/<%= model_name.underscore.pluralize %>/${<%= model_name.underscore %>.id}`}

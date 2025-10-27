@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# <%= full_model_name %>Policy
+# 
+# Authorization rules for <%= model_name.humanize.pluralize.downcase %> using Pundit.
+# Defines who can perform which actions on <%= model_name.humanize.pluralize.downcase %>.
+<% unless skip_academy? -%>
+# 
+# Includes academy-based access control for multi-tenancy.
+# Users can only access <%= model_name.humanize.pluralize.downcase %> within their authorized academies.
+<% else -%>
+# 
+# This policy operates without academy scoping as it's a foundation model.
+<% end -%>
+# 
 <% if module_name -%>
 module <%= module_name %>
   class <%= model_name.camelize %>Policy < ApplicationPolicy
@@ -7,42 +20,52 @@ module <%= module_name %>
 module <%= slice_name.camelize %>
   class <%= model_name.camelize %>Policy < ApplicationPolicy
 <% end -%>
-    # Define what attributes can be shown in the index
+    # Control access to the index/list view
+    # @return [Boolean] true if user can view the list
     def index?
       user.present? && user.can_access_academy?(record.academy)
     end
 
-    # Define what attributes can be shown for a single record
+    # Control access to individual record viewing
+    # @return [Boolean] true if user can view this specific record
     def show?
       user.present? && user.can_access_academy?(record.academy)
     end
 
-    # Define who can create new records
+    # Control who can create new records
+    # @return [Boolean] true if user can create new <%= model_name.humanize.pluralize.downcase %>
     def create?
       user.present? && user.can_manage_academy?(record.academy)
     end
 
-    # Define who can update records
+    # Control who can update existing records
+    # @return [Boolean] true if user can update this record
     def update?
       user.present? && user.can_manage_academy?(record.academy)
     end
 
-    # Define who can delete records
+    # Control who can delete records
+    # @return [Boolean] true if user can delete this record
     def destroy?
       user.present? && user.can_manage_academy?(record.academy)
     end
 
-    # Define what attributes can be updated
+    # Define which attributes can be mass-assigned
+    # @return [Array<Symbol>] list of permitted attribute names
     def permitted_attributes
-      [<% attributes.each_with_index do |attr, index| %>:<%= attr[:name] %><%= index < attributes.length - 1 ? ', ' : '' %><% end %>]
+      [ <% attributes.each_with_index do |attr, index| %>:<%= attr[:name] %><%= index < attributes.length - 1 ? ', ' : '' %><% end %> ]
     end
 
-    # Scope for index queries - only show records user can access
+    # Scope class for filtering records based on user permissions
     class Scope < ApplicationPolicy::Scope
+      # Filter records based on user's academy access
+      # @return [ActiveRecord::Relation] scoped query for user's accessible records
       def resolve
         if user.system_admin?
+          # System admins can see all records
           scope.all
         else
+          # Regular users only see records from their accessible academies
           scope.joins(:academy).where(academies: { id: user.accessible_academy_ids })
         end
       end

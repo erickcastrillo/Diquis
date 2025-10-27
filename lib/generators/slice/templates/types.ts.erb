@@ -1,15 +1,25 @@
+/**
+ * TypeScript type definitions for <%= model_name.camelize %>
+ * 
+ * These types ensure type safety across the frontend application
+ * and match the data structure returned from the backend API.
+ */
+
+// Main <%= model_name.camelize %> type representing the full data structure
 export interface <%= model_name.camelize %>Type {
-  id: string
-  slug: string
+  id: string          // Public identifier (slug)
+  slug: string        // URL-friendly identifier
 <% attributes.each do |attr| -%>
-  <%= attr[:name] %>: <% if attr[:type] == 'boolean' %>boolean<% elsif attr[:type] == 'integer' %>number<% else %>string<% end %>
+  <%= attr[:name] %>: <% if attr[:type] == 'boolean' %>boolean<% elsif attr[:type] == 'integer' %>number<% else %>string<% end %><%= ' ' * (15 - attr[:name].length) %> // <%= attr[:name].humanize %>
 <% end -%>
-  created_at: string
-  updated_at: string
+  created_at: string  // ISO timestamp
+  updated_at: string  // ISO timestamp
 }
 
+// Form data type for create/update operations
+// Contains only the editable attributes
 export interface <%= model_name.camelize %>FormData {
 <% attributes.each do |attr| -%>
-  <%= attr[:name] %>: <% if attr[:type] == 'boolean' %>boolean<% elsif attr[:type] == 'integer' %>number<% else %>string<% end %>
+  <%= attr[:name] %>: <% if attr[:type] == 'boolean' %>boolean<% elsif attr[:type] == 'integer' %>number<% else %>string<% end %><%= ' ' * (15 - attr[:name].length) %> // <%= attr[:name].humanize %>
 <% end -%>
 }

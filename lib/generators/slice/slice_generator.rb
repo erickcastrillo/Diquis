@@ -4,8 +4,11 @@ class SliceGenerator < Rails::Generators::Base
   argument :name, type: :string, required: true
   argument :attribute_pairs, type: :array, default: [], desc: "Model attributes (format: name:type)"
 
+  class_option :skip_academy, type: :boolean, default: false, desc: "Skip Academy references (useful for creating Academy itself)"
+
   def generate_slice_structure
     create_directories
+    generate_migration
     generate_model
     generate_service
     generate_controller
@@ -30,6 +33,26 @@ class SliceGenerator < Rails::Generators::Base
     empty_directory "app/frontend/pages/#{frontend_path}"
   end
 
+  def generate_migration
+    # Generate migration using Rails' built-in migration generator
+    migration_attributes = attributes.map { |attr| "#{attr[:name]}:#{attr[:type]}" }.join(" ")
+
+    # Create table name based on module structure
+    table_name = if module_name
+      "#{module_name.underscore.gsub('/', '_')}_#{model_name.underscore.pluralize}"
+    else
+      model_name.underscore.pluralize
+    end
+
+    migration_name = "Create#{table_name.camelize}"
+
+    # Add standard fields
+    standard_fields = "slug:string:uniq:index"
+    standard_fields = "academy:references #{standard_fields}" unless skip_academy?
+
+    generate "migration", "#{migration_name} #{migration_attributes} #{standard_fields}"
+  end
+
   def generate_model
     template "model.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/models/#{model_file_path}.rb"
   end
@@ -39,7 +62,24 @@ class SliceGenerator < Rails::Generators::Base
   end
 
   def generate_controller
-    template "controller.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/controllers/#{controller_file_path}.rb"
+    # Create controller in slice structure for organization
+    slice_controller_path = "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/controllers/#{controller_file_path}.rb"
+    template "controller.rb.erb", slice_controller_path
+
+    # Also create controller in standard Rails location for routing
+    if module_name
+      empty_directory "app/controllers/#{module_name.underscore}"
+      rails_controller_path = "app/controllers/#{module_name.underscore}/#{controller_file_path}.rb"
+    else
+      rails_controller_path = "app/controllers/#{controller_file_path}.rb"
+    end
+
+    # Only copy if not in pretend mode
+    unless options[:pretend]
+      create_file rails_controller_path, File.read(slice_controller_path)
+    else
+      create_file rails_controller_path, "# Controller will be copied from slice"
+    end
   end
 
   def generate_serializer
@@ -58,7 +98,29 @@ class SliceGenerator < Rails::Generators::Base
   end
 
   def generate_routes
-    route "resources :#{model_name.underscore.pluralize}"
+    if module_name
+      # Use lowercase namespace for routes (Rails convention)
+      namespace_name = module_name.split("::").first.underscore
+      namespace_route = "namespace :#{namespace_name} do"
+      routes_content = File.read("config/routes.rb")
+
+      if routes_content.include?(namespace_route)
+        # Add resource to existing namespace
+        inject_into_file "config/routes.rb", after: namespace_route do
+          "\n    resources :#{model_name.underscore.pluralize}"
+        end
+      else
+        # Create new namespace
+        route_content = <<~ROUTE
+          namespace :#{namespace_name} do
+            resources :#{model_name.underscore.pluralize}
+          end
+        ROUTE
+        route route_content
+      end
+    else
+      route "resources :#{model_name.underscore.pluralize}"
+    end
   end
 
   def attributes
@@ -136,5 +198,9 @@ class SliceGenerator < Rails::Generators::Base
     else
       model_name.camelize.pluralize
     end
+  end
+
+  def skip_academy?
+    options[:skip_academy]
   end
 end

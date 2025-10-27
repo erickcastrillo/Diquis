@@ -1,3 +1,16 @@
+/**
+ * <%= model_name.camelize %> Show Component
+ * 
+ * Displays detailed view of a single <%= model_name.humanize.downcase %>.
+ * Shows all attributes in a clean, organized format with action buttons.
+ * 
+ * Features:
+ * - Responsive layout with proper spacing
+ * - Status indicators and formatted dates
+ * - Edit and navigation actions
+ * - Proper handling of empty/optional fields
+ */
+
 import { Head, Link } from '@inertiajs/react'
 import { <%= model_name.camelize %>Type } from './types'
 
@@ -48,6 +61,7 @@ export default function Show({ <%= model_name.underscore %>, academy }: Props) {
             </div>
           </div>
 
+          {/* Details Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-medium text-gray-900 mb-4">Details</h3>
