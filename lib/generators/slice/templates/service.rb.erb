@@ -1,0 +1,83 @@
+# frozen_string_literal: true
+
+<% if module_name -%>
+module <%= module_name %>
+  class <%= model_name.camelize %>Service < BaseService
+<% else -%>
+module <%= slice_name.camelize %>
+  class <%= model_name.camelize %>Service < BaseService
+<% end -%>
+    attr_reader :academy, :params, :<%= model_name.underscore %>
+
+    def initialize(academy:, params: {})
+      @academy = academy
+      @params = params
+    end
+
+    def create
+      ActsAsTenant.with_tenant(academy) do
+        @<%= model_name.underscore %> = <%= full_model_name %>.new(permitted_params)
+        
+        if @<%= model_name.underscore %>.save
+          success_result(data: @<%= model_name.underscore %>)
+        else
+          error_result(errors: @<%= model_name.underscore %>.errors.full_messages)
+        end
+      end
+    end
+
+    def update(<%= model_name.underscore %>_id)
+      ActsAsTenant.with_tenant(academy) do
+        @<%= model_name.underscore %> = <%= full_model_name %>.find(<%= model_name.underscore %>_id)
+        
+        if @<%= model_name.underscore %>.update(permitted_params)
+          success_result(data: @<%= model_name.underscore %>)
+        else
+          error_result(errors: @<%= model_name.underscore %>.errors.full_messages)
+        end
+      end
+    rescue ActiveRecord::RecordNotFound
+      error_result(errors: ["<%= model_name.humanize %> not found"])
+    end
+
+    def find(<%= model_name.underscore %>_id)
+      ActsAsTenant.with_tenant(academy) do
+        @<%= model_name.underscore %> = <%= full_model_name %>.find(<%= model_name.underscore %>_id)
+        success_result(data: @<%= model_name.underscore %>)
+      end
+    rescue ActiveRecord::RecordNotFound
+      error_result(errors: ["<%= model_name.humanize %> not found"])
+    end
+
+    def list(page: 1, per_page: 20)
+      ActsAsTenant.with_tenant(academy) do
+        @<%= model_name.underscore.pluralize %> = <%= full_model_name %>.page(page).per(per_page)
+        success_result(data: @<%= model_name.underscore.pluralize %>)
+      end
+    end
+
+    def destroy(<%= model_name.underscore %>_id)
+      ActsAsTenant.with_tenant(academy) do
+        @<%= model_name.underscore %> = <%= full_model_name %>.find(<%= model_name.underscore %>_id)
+        
+        if @<%= model_name.underscore %>.destroy
+          success_result(data: @<%= model_name.underscore %>)
+        else
+          error_result(errors: @<%= model_name.underscore %>.errors.full_messages)
+        end
+      end
+    rescue ActiveRecord::RecordNotFound
+      error_result(errors: ["<%= model_name.humanize %> not found"])
+    end
+
+    private
+
+    def permitted_params
+      params.require(:<%= model_name.underscore %>).permit(
+<% attributes.each_with_index do |attr, index| -%>
+        :<%= attr[:name] %><%= index < attributes.length - 1 ? ',' : '' %>
+<% end -%>
+      )
+    end
+  end
+end

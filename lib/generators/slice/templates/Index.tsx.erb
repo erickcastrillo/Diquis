@@ -1,0 +1,90 @@
+import { Head, Link } from '@inertiajs/react'
+import { <%= model_name.camelize %>Type } from './types'
+
+interface Props {
+  <%= model_name.underscore.pluralize %>: <%= model_name.camelize %>Type[]
+  academy: {
+    slug: string
+    name: string
+  }
+}
+
+export default function Index({ <%= model_name.underscore.pluralize %>, academy }: Props) {
+  return (
+    <>
+      <Head title="<%= model_name.camelize.pluralize %>" />
+      
+      <div className="bg-white shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-900">
+              <%= model_name.humanize.pluralize %>
+            </h1>
+            <Link
+              href={`/<%= model_name.underscore.pluralize %>/new`}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+            >
+              New <%= model_name.humanize %>
+            </Link>
+          </div>
+
+          {<%= model_name.underscore.pluralize %>.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500 mb-4">No <%= model_name.underscore.pluralize %> found.</p>
+              <Link
+                href={`/<%= model_name.underscore.pluralize %>/new`}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+              >
+                Create your first <%= model_name.humanize.downcase %>
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {<%= model_name.underscore.pluralize %>.map((<%= model_name.underscore %>) => (
+                <div key={<%= model_name.underscore %>.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {<%= model_name.underscore %>.name}
+                    </h3>
+<% if attributes.any? { |attr| attr[:name] == 'is_active' } -%>
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${ 
+                      <%= model_name.underscore %>.is_active 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {<%= model_name.underscore %>.is_active ? 'Active' : 'Inactive'}
+                    </span>
+<% end -%>
+                  </div>
+                  
+<% if attributes.any? { |attr| attr[:name] == 'description' } -%>
+                  {<%= model_name.underscore %>.description && (
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                      {<%= model_name.underscore %>.description}
+                    </p>
+                  )}
+<% end -%>
+                  
+                  <div className="flex space-x-2">
+                    <Link
+                      href={`/<%= model_name.underscore.pluralize %>/${<%= model_name.underscore %>.id}`}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      href={`/<%= model_name.underscore.pluralize %>/${<%= model_name.underscore %>.id}/edit`}
+                      className="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                    >
+                      Edit
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  )
+}

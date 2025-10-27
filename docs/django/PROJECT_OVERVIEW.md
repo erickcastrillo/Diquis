@@ -245,7 +245,7 @@ celery -A diquis flower
 
 ## Project Structure
 
-```
+```txt
 diquis/
 ├── manage.py
 ├── diquis/                    # Project settings

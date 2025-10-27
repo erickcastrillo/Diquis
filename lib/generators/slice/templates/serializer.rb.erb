@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+<% if module_name -%>
+module <%= module_name %>
+  class <%= model_name.camelize %>Serializer < ApplicationSerializer
+<% else -%>
+module <%= slice_name.camelize %>
+  class <%= model_name.camelize %>Serializer < ApplicationSerializer
+<% end -%>
+    attributes :id, :slug<% attributes.each do |attr| %>, :<%= attr[:name] %><% end %>, :created_at, :updated_at
+
+    # Include related data when needed
+    # belongs_to :academy, serializer: AcademySerializer
+
+    def id
+      object.slug
+    end
+
+    # Custom attribute methods
+<% attributes.each do |attr| -%>
+<% if attr[:type] == 'boolean' -%>
+    def <%= attr[:name] %>
+      object.<%= attr[:name] %> == true
+    end
+<% elsif attr[:name] == 'name' -%>
+    def display_name
+      object.display_name
+    end
+<% end -%>
+<% end -%>
+  end
+end

@@ -1,0 +1,103 @@
+# frozen_string_literal: true
+
+<% if module_name -%>
+module <%= module_name %>
+  class <%= model_name.camelize.pluralize %>Controller < ApplicationController
+<% else -%>
+module <%= slice_name.camelize %>
+  class <%= model_name.camelize.pluralize %>Controller < ApplicationController
+<% end -%>
+    include InertiaRails::Renderer
+    
+    before_action :set_<%= model_name.underscore %>, only: [:show, :edit, :update, :destroy]
+    before_action :set_academy
+
+    def index
+      service = <%= full_model_name %>Service.new(academy: @academy)
+      result = service.list(page: params[:page] || 1)
+
+      if result.success?
+        render inertia: '<%= model_name.camelize %>/Index', props: {
+          <%= model_name.underscore.pluralize %>: <%= full_model_name %>Serializer.new(result.data).as_json,
+          academy: { slug: @academy.slug, name: @academy.name }
+        }
+      else
+        redirect_to root_path, alert: result.errors.join(', ')
+      end
+    end
+
+    def show
+      render inertia: '<%= model_name.camelize %>/Show', props: {
+        <%= model_name.underscore %>: <%= full_model_name %>Serializer.new(@<%= model_name.underscore %>).as_json,
+        academy: { slug: @academy.slug, name: @academy.name }
+      }
+    end
+
+    def new
+      @<%= model_name.underscore %> = <%= full_model_name %>.new
+
+      render inertia: '<%= model_name.camelize %>/New', props: {
+        <%= model_name.underscore %>: <%= full_model_name %>Serializer.new(@<%= model_name.underscore %>).as_json,
+        academy: { slug: @academy.slug, name: @academy.name }
+      }
+    end
+
+    def create
+      service = <%= full_model_name %>Service.new(academy: @academy, params: params)
+      result = service.create
+
+      if result.success?
+        redirect_to <%= model_name.underscore %>_path(result.data), notice: '<%= model_name.humanize %> was successfully created.'
+      else
+        redirect_to new_<%= model_name.underscore %>_path, inertia: { errors: result.errors }
+      end
+    end
+
+    def edit
+      render inertia: '<%= model_name.camelize %>/Edit', props: {
+        <%= model_name.underscore %>: <%= full_model_name %>Serializer.new(@<%= model_name.underscore %>).as_json,
+        academy: { slug: @academy.slug, name: @academy.name }
+      }
+    end
+
+    def update
+      service = <%= full_model_name %>Service.new(academy: @academy, params: params)
+      result = service.update(@<%= model_name.underscore %>.id)
+
+      if result.success?
+        redirect_to @<%= model_name.underscore %>, notice: '<%= model_name.humanize %> was successfully updated.'
+      else
+        redirect_to edit_<%= model_name.underscore %>_path(@<%= model_name.underscore %>), inertia: { errors: result.errors }
+      end
+    end
+
+    def destroy
+      service = <%= full_model_name %>Service.new(academy: @academy)
+      result = service.destroy(@<%= model_name.underscore %>.id)
+
+      if result.success?
+        redirect_to <%= model_name.underscore.pluralize %>_path, notice: '<%= model_name.humanize %> was successfully deleted.'
+      else
+        redirect_to @<%= model_name.underscore %>, alert: result.errors.join(', ')
+      end
+    end
+
+    private
+
+    def set_<%= model_name.underscore %>
+      service = <%= full_model_name %>Service.new(academy: @academy)
+      result = service.find(params[:id])
+      
+      if result.success?
+        @<%= model_name.underscore %> = result.data
+      else
+        redirect_to <%= model_name.underscore.pluralize %>_path, alert: result.errors.join(', ')
+      end
+    end
+
+    def set_academy
+      @academy = current_user.academies.find_by!(slug: params[:academy_slug]) if params[:academy_slug]
+      @academy = current_user.default_academy if @academy.nil?
+    end
+  end
+end

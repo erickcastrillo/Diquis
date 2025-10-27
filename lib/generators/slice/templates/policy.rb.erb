@@ -1,0 +1,51 @@
+# frozen_string_literal: true
+
+<% if module_name -%>
+module <%= module_name %>
+  class <%= model_name.camelize %>Policy < ApplicationPolicy
+<% else -%>
+module <%= slice_name.camelize %>
+  class <%= model_name.camelize %>Policy < ApplicationPolicy
+<% end -%>
+    # Define what attributes can be shown in the index
+    def index?
+      user.present? && user.can_access_academy?(record.academy)
+    end
+
+    # Define what attributes can be shown for a single record
+    def show?
+      user.present? && user.can_access_academy?(record.academy)
+    end
+
+    # Define who can create new records
+    def create?
+      user.present? && user.can_manage_academy?(record.academy)
+    end
+
+    # Define who can update records
+    def update?
+      user.present? && user.can_manage_academy?(record.academy)
+    end
+
+    # Define who can delete records
+    def destroy?
+      user.present? && user.can_manage_academy?(record.academy)
+    end
+
+    # Define what attributes can be updated
+    def permitted_attributes
+      [<% attributes.each_with_index do |attr, index| %>:<%= attr[:name] %><%= index < attributes.length - 1 ? ', ' : '' %><% end %>]
+    end
+
+    # Scope for index queries - only show records user can access
+    class Scope < ApplicationPolicy::Scope
+      def resolve
+        if user.system_admin?
+          scope.all
+        else
+          scope.joins(:academy).where(academies: { id: user.accessible_academy_ids })
+        end
+      end
+    end
+  end
+end

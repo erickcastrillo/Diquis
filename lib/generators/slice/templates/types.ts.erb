@@ -1,0 +1,15 @@
+export interface <%= model_name.camelize %>Type {
+  id: string
+  slug: string
+<% attributes.each do |attr| -%>
+  <%= attr[:name] %>: <% if attr[:type] == 'boolean' %>boolean<% elsif attr[:type] == 'integer' %>number<% else %>string<% end %>
+<% end -%>
+  created_at: string
+  updated_at: string
+}
+
+export interface <%= model_name.camelize %>FormData {
+<% attributes.each do |attr| -%>
+  <%= attr[:name] %>: <% if attr[:type] == 'boolean' %>boolean<% elsif attr[:type] == 'integer' %>number<% else %>string<% end %>
+<% end -%>
+}
