@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Footer: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
             <span className="d-none d-sm-inline-block"></span>
             <span className="d-none d-sm-inline-block mx-1">|</span>
             <br className="d-sm-none" />
-            2024 &copy;{' '}
+            2024 &copy;{" "}
             <a className="mx-1" href="https://themewagon.com">
               Themewagon
             </a>

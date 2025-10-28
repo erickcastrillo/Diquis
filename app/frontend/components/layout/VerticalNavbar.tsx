@@ -1,11 +1,15 @@
-import React from 'react';
-import { usePhoenix } from '../../hooks/usePhoenix';
+import React from "react";
+import { usePhoenix } from "../../hooks/usePhoenix";
 
 const VerticalNavbar: React.FC = () => {
   const { config } = usePhoenix();
 
   return (
-    <nav className={`navbar navbar-vertical navbar-expand-lg ${config.phoenixIsNavbarVerticalCollapsed ? 'navbar-collapsed' : ''}`}>
+    <nav
+      className={`navbar navbar-vertical navbar-expand-lg ${
+        config.phoenixIsNavbarVerticalCollapsed ? "navbar-collapsed" : ""
+      }`}
+    >
       <div className="collapse navbar-collapse" id="navbarVerticalCollapse">
         <div className="navbar-vertical-content">
           <ul className="navbar-nav flex-column" id="navbarVerticalNav">
@@ -14,7 +18,9 @@ const VerticalNavbar: React.FC = () => {
               <div className="nav-item-wrapper">
                 <a className="navbar-brand" href="/">
                   <div className="d-flex align-items-center py-3">
-                    <span className="font-sans-serif fs-4 fw-bolder text-primary">Phoenix</span>
+                    <span className="font-sans-serif fs-4 fw-bolder text-primary">
+                      Phoenix
+                    </span>
                   </div>
                 </a>
               </div>
@@ -23,7 +29,14 @@ const VerticalNavbar: React.FC = () => {
             {/* Dashboard */}
             <li className="nav-item">
               <div className="nav-item-wrapper">
-                <a className="nav-link dropdown-indicator label-1" href="#nv-home" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-home">
+                <a
+                  className="nav-link dropdown-indicator label-1"
+                  href="#nv-home"
+                  role="button"
+                  data-bs-toggle="collapse"
+                  aria-expanded="true"
+                  aria-controls="nv-home"
+                >
                   <div className="d-flex align-items-center">
                     <div className="dropdown-indicator-icon-wrapper">
                       <span className="fas fa-caret-right dropdown-indicator-icon"></span>
@@ -35,8 +48,14 @@ const VerticalNavbar: React.FC = () => {
                   </div>
                 </a>
                 <div className="parent-wrapper label-1">
-                  <ul className="nav collapse parent show" data-bs-parent="#navbarVerticalCollapse" id="nv-home">
-                    <li className="collapsed-nav-item-title d-none">Dashboard</li>
+                  <ul
+                    className="nav collapse parent show"
+                    data-bs-parent="#navbarVerticalCollapse"
+                    id="nv-home"
+                  >
+                    <li className="collapsed-nav-item-title d-none">
+                      Dashboard
+                    </li>
                     <li className="nav-item">
                       <a className="nav-link active" href="/">
                         <div className="d-flex align-items-center">

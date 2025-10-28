@@ -1,19 +1,19 @@
-import { createInertiaApp } from '@inertiajs/react'
-import { createElement, ReactNode } from 'react'
-import { createRoot } from 'react-dom/client'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import { createInertiaApp } from "@inertiajs/react";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { createElement, ReactNode } from "react";
+import { createRoot } from "react-dom/client";
 
 // Import Phoenix theme styles
-import '../stylesheets/application.scss'
+import "../stylesheets/application.scss";
 
 // Import Phoenix theme provider
-import { PhoenixProvider } from '../hooks/usePhoenix'
+import { PhoenixProvider } from "../hooks/usePhoenix";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
-  default: any
-  layout?: (page: ReactNode) => ReactNode
-}
+  default: any;
+  layout?: (page: ReactNode) => ReactNode;
+};
 
 createInertiaApp({
   // Set default page title
@@ -27,30 +27,30 @@ createInertiaApp({
   // progress: false,
 
   resolve: (name) => {
-    const pages = import.meta.glob<ResolvedComponent>('../pages/**/*.tsx', {
+    const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", {
       eager: true,
-    })
-    const page = pages[`../pages/${name}.tsx`]
+    });
+    const page = pages[`../pages/${name}.tsx`];
     if (!page) {
-      console.error(`Missing Inertia page component: '${name}.tsx'`)
+      console.error(`Missing Inertia page component: '${name}.tsx'`);
     }
 
     // Default layout removed - each page component handles its own layout
 
-    return page
+    return page;
   },
 
   setup({ el, App, props }) {
     if (el) {
       createRoot(el).render(
         createElement(PhoenixProvider, { children: createElement(App, props) })
-      )
+      );
     } else {
       console.error(
-        'Missing root element.\n\n' +
-          'If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n' +
-          'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.',
-      )
+        "Missing root element.\n\n" +
+          "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
+          'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.'
+      );
     }
   },
-})
+});

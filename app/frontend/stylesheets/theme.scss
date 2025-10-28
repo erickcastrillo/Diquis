@@ -2,34 +2,34 @@
 /*                                 Theme                                      */
 /* -------------------------------------------------------------------------- */
 
-@import 'bootstrap/scss/_functions';
-@import 'theme/functions';
+@import "bootstrap/scss/_functions";
+@import "theme/functions";
 
 @import "user-variables";
-@import 'theme/colors';
+@import "theme/colors";
 @import "theme/variables";
 @import "theme/variables-dark";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
 
-@import 'theme/maps';
-@import 'bootstrap/scss/maps';
+@import "theme/maps";
+@import "bootstrap/scss/maps";
 
-@import 'bootstrap/scss/mixins';
-@import 'theme/mixins';
+@import "bootstrap/scss/mixins";
+@import "theme/mixins";
 
-@import 'theme/_utilities';
+@import "theme/_utilities";
 @import "bootstrap/scss/utilities";
 
 @import "bootstrap/scss/root";
-@import 'theme/root';
+@import "theme/root";
 
 /*-----------------------------------------------
 |   Bootstrap Styles
 -----------------------------------------------*/
-@import 'bootstrap';
+@import "bootstrap";
 
 /*-----------------------------------------------
 |   Theme Styles
 -----------------------------------------------*/
-@import 'theme/theme';
+@import "theme/theme";

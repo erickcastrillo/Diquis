@@ -1,5 +1,16 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { PhoenixConfig, initialConfig, getStoredConfig, setStoredConfig } from '../utils/config';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
+import {
+  PhoenixConfig,
+  getStoredConfig,
+  initialConfig,
+  setStoredConfig,
+} from "../utils/config";
 
 interface PhoenixContextType {
   config: PhoenixConfig;
@@ -9,18 +20,21 @@ interface PhoenixContextType {
 
 const PhoenixContext = createContext<PhoenixContextType | undefined>(undefined);
 
-type ConfigAction = 
-  | { type: 'UPDATE_CONFIG'; payload: Partial<PhoenixConfig> }
-  | { type: 'RESET_CONFIG' }
-  | { type: 'LOAD_CONFIG'; payload: PhoenixConfig };
+type ConfigAction =
+  | { type: "UPDATE_CONFIG"; payload: Partial<PhoenixConfig> }
+  | { type: "RESET_CONFIG" }
+  | { type: "LOAD_CONFIG"; payload: PhoenixConfig };
 
-const configReducer = (state: PhoenixConfig, action: ConfigAction): PhoenixConfig => {
+const configReducer = (
+  state: PhoenixConfig,
+  action: ConfigAction
+): PhoenixConfig => {
   switch (action.type) {
-    case 'UPDATE_CONFIG':
+    case "UPDATE_CONFIG":
       return { ...state, ...action.payload };
-    case 'RESET_CONFIG':
+    case "RESET_CONFIG":
       return { ...initialConfig };
-    case 'LOAD_CONFIG':
+    case "LOAD_CONFIG":
       return action.payload;
     default:
       return state;
@@ -31,71 +45,74 @@ interface PhoenixProviderProps {
   children: ReactNode;
 }
 
-export const PhoenixProvider: React.FC<PhoenixProviderProps> = ({ children }) => {
+export const PhoenixProvider: React.FC<PhoenixProviderProps> = ({
+  children,
+}) => {
   const [config, dispatch] = useReducer(configReducer, initialConfig);
 
   useEffect(() => {
     // Load stored config on mount
     const storedConfig = getStoredConfig();
     const mergedConfig = { ...initialConfig, ...storedConfig };
-    dispatch({ type: 'LOAD_CONFIG', payload: mergedConfig });
+    dispatch({ type: "LOAD_CONFIG", payload: mergedConfig });
   }, []);
 
   useEffect(() => {
     // Apply theme classes to HTML element
     const html = document.documentElement;
-    
+
     // Theme
-    html.setAttribute('data-bs-theme', config.phoenixTheme);
-    
+    html.setAttribute("data-bs-theme", config.phoenixTheme);
+
     // Navigation type
-    html.setAttribute('data-navigation-type', config.phoenixNavbarPosition);
-    
+    html.setAttribute("data-navigation-type", config.phoenixNavbarPosition);
+
     // RTL
     if (config.phoenixIsRTL) {
-      html.setAttribute('dir', 'rtl');
+      html.setAttribute("dir", "rtl");
     } else {
-      html.removeAttribute('dir');
+      html.removeAttribute("dir");
     }
-    
+
     // Navbar styles
-    html.setAttribute('data-navbar-horizontal-shape', config.phoenixNavbarTopShape);
-    
+    html.setAttribute(
+      "data-navbar-horizontal-shape",
+      config.phoenixNavbarTopShape
+    );
+
     // Collapsed navbar
     if (config.phoenixIsNavbarVerticalCollapsed) {
-      html.setAttribute('data-navbar-vertical-collapsed', 'true');
+      html.setAttribute("data-navbar-vertical-collapsed", "true");
     } else {
-      html.removeAttribute('data-navbar-vertical-collapsed');
+      html.removeAttribute("data-navbar-vertical-collapsed");
     }
   }, [config]);
 
   const updateConfig = (updates: Partial<PhoenixConfig>) => {
-    dispatch({ type: 'UPDATE_CONFIG', payload: updates });
+    dispatch({ type: "UPDATE_CONFIG", payload: updates });
     setStoredConfig(updates);
   };
 
   const resetConfig = () => {
-    dispatch({ type: 'RESET_CONFIG' });
+    dispatch({ type: "RESET_CONFIG" });
     setStoredConfig(initialConfig);
   };
 
   const value: PhoenixContextType = {
     config,
     updateConfig,
-    resetConfig
+    resetConfig,
   };
 
   return (
-    <PhoenixContext.Provider value={value}>
-      {children}
-    </PhoenixContext.Provider>
+    <PhoenixContext.Provider value={value}>{children}</PhoenixContext.Provider>
   );
 };
 
 export const usePhoenix = (): PhoenixContextType => {
   const context = useContext(PhoenixContext);
   if (context === undefined) {
-    throw new Error('usePhoenix must be used within a PhoenixProvider');
+    throw new Error("usePhoenix must be used within a PhoenixProvider");
   }
   return context;
 };
