@@ -1,0 +1,17 @@
+#!/bin/bash
+# Docker development stop script
+
+set -e
+
+echo "🛑 Stopping Diquis Football Academy Docker services..."
+
+# Stop all services
+docker compose down
+
+echo "✅ All services stopped!"
+echo ""
+echo "💡 To remove all data volumes, run:"
+echo "   docker compose down -v"
+echo ""
+echo "🧹 To clean up everything (containers, images, volumes):"
+echo "   docker compose down -v --rmi all"

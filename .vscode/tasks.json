@@ -512,6 +512,156 @@
       "options": {
         "cwd": "${workspaceFolder}"
       }
+    },
+    {
+      "label": "🐳 Docker: Start All Services",
+      "type": "shell",
+      "command": "bin/docker/start",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: Stop All Services",
+      "type": "shell",
+      "command": "bin/docker/stop",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: View Logs",
+      "type": "shell",
+      "command": "bin/docker/logs",
+      "args": ["${input:dockerService}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: Open Shell",
+      "type": "shell",
+      "command": "bin/docker/shell",
+      "args": ["${input:dockerService}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": true,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: Database Console",
+      "type": "shell",
+      "command": "bin/docker/db",
+      "args": ["console"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": true,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: Database Migrate",
+      "type": "shell",
+      "command": "bin/docker/db",
+      "args": ["migrate"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: Restart Services",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "restart", "${input:dockerService}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🐳 Docker: Build Images",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "build", "--no-cache"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "docker"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     }
   ],
   "inputs": [
@@ -540,7 +690,7 @@
           "value": "background"
         },
         {
-          "label": "Cron Job Only", 
+          "label": "Cron Job Only",
           "value": "cron"
         },
         {
@@ -593,6 +743,37 @@
       "id": "jobDescription",
       "description": "Enter job description for cron schedule",
       "type": "promptString"
+    },
+    {
+      "id": "dockerService",
+      "description": "Select Docker service",
+      "type": "pickString",
+      "options": [
+        {
+          "label": "All Services",
+          "value": ""
+        },
+        {
+          "label": "Web (Rails)",
+          "value": "web"
+        },
+        {
+          "label": "Sidekiq",
+          "value": "sidekiq"
+        },
+        {
+          "label": "PostgreSQL",
+          "value": "postgres"
+        },
+        {
+          "label": "Redis",
+          "value": "redis"
+        },
+        {
+          "label": "Vite",
+          "value": "vite"
+        }
+      ]
     }
   ]
 }

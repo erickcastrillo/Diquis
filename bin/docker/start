@@ -1,0 +1,51 @@
+#!/bin/bash
+# Docker development startup script
+
+set -e
+
+echo "🚀 Starting Diquis Football Academy in Docker..."
+
+# Check if .env.docker.local exists, if not copy from template
+if [ ! -f .env.docker.local ]; then
+    echo "📋 Creating .env.docker.local from template..."
+    cp .env.docker .env.docker.local
+    echo "⚠️  Please review and customize .env.docker.local before running again"
+    exit 1
+fi
+
+# Check if Docker is running
+if ! docker info >/dev/null 2>&1; then
+    echo "❌ Docker is not running. Please start Docker first."
+    exit 1
+fi
+
+echo "🏗️  Building Docker images..."
+docker compose build
+
+echo "🎯 Starting all services..."
+docker compose --env-file .env.docker.local up -d
+
+echo "⏳ Waiting for services to be ready..."
+sleep 10
+
+echo "🔍 Checking service status..."
+docker compose ps
+
+echo ""
+echo "✅ Diquis Football Academy is running!"
+echo ""
+echo "📊 Available Services:"
+echo "  🌐 Rails App:     http://localhost:3000"
+echo "  ⚡ Vite Dev:      http://localhost:5173"
+echo "  🔧 Sidekiq Web:   http://localhost:4567"
+echo "  🗄️  PostgreSQL:   localhost:5432"
+echo "  🔴 Redis:         localhost:6379"
+echo ""
+echo "📋 Useful Commands:"
+echo "  📊 View logs:     docker compose logs -f"
+echo "  🔄 Restart:       docker compose restart"
+echo "  🛑 Stop:          docker compose down"
+echo "  🧹 Clean:         docker compose down -v"
+echo "  🖥️  Shell:         docker compose exec web bash"
+echo ""
+echo "🎉 Happy coding!"

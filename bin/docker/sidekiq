@@ -1,0 +1,45 @@
+#!/bin/bash
+# Docker Sidekiq operations script
+
+set -e
+
+COMMAND=${1:-""}
+
+case $COMMAND in
+    "restart")
+        echo "🔄 Restarting Sidekiq..."
+        docker compose restart sidekiq
+        ;;
+    "logs")
+        echo "📊 Showing Sidekiq logs..."
+        docker compose logs -f sidekiq
+        ;;
+    "stats")
+        echo "📈 Sidekiq Stats..."
+        docker compose exec sidekiq bundle exec sidekiq-cli stats
+        ;;
+    "cron:load")
+        echo "📅 Loading cron jobs..."
+        docker compose exec sidekiq bundle exec rake sidekiq:cron:load
+        ;;
+    "cron:list")
+        echo "📋 Listing cron jobs..."
+        docker compose exec sidekiq bundle exec rake sidekiq:cron:list
+        ;;
+    "clear")
+        echo "🧹 Clearing all queues..."
+        docker compose exec sidekiq bundle exec rake sidekiq:clear
+        ;;
+    *)
+        echo "🔧 Sidekiq Operations"
+        echo "Usage: $0 [COMMAND]"
+        echo ""
+        echo "Commands:"
+        echo "  restart    - Restart Sidekiq service"
+        echo "  logs       - View Sidekiq logs"
+        echo "  stats      - Show Sidekiq statistics"
+        echo "  cron:load  - Load cron jobs from schedule"
+        echo "  cron:list  - List all cron jobs"
+        echo "  clear      - Clear all job queues"
+        ;;
+esac

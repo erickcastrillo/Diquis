@@ -1,0 +1,174 @@
+#!/bin/bash
+# Docker management script for Diquis Football Academy
+
+set -e
+
+# Function to show usage
+show_usage() {
+    echo "🚀 Docker Management for Diquis Football Academy"
+    echo ""
+    echo "Usage: $0 [command]"
+    echo ""
+    echo "Commands:"
+    echo "  up        Start all services (default)"
+    echo "  down      Stop all services"
+    echo "  restart   Restart all services"
+    echo "  status    Show service status"
+    echo "  logs      Follow logs for all services"
+    echo "  help      Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  $0              # Start services"
+    echo "  $0 up           # Start services"
+    echo "  $0 down         # Stop services"
+    echo "  $0 restart      # Restart services"
+    echo "  $0 status       # Check status"
+}
+
+# Function to check Docker
+check_docker() {
+    if ! docker info >/dev/null 2>&1; then
+        echo "❌ Docker is not running. Please start Docker first."
+        exit 1
+    fi
+}
+
+# Function to ensure env file exists
+ensure_env_file() {
+    if [ ! -f .env.docker.local ]; then
+        echo "📋 Creating .env.docker.local from template..."
+        cp .env.docker .env.docker.local
+        echo "✅ Environment file created"
+        echo ""
+    fi
+}
+
+# Function to start services
+start_services() {
+    echo "🚀 Starting Diquis Football Academy Services"
+    echo ""
+
+    check_docker
+    ensure_env_file
+
+    echo "🏗️  Starting services with docker compose..."
+    docker compose --env-file .env.docker.local up -d
+
+    echo ""
+    echo "⏳ Waiting for services to initialize..."
+    sleep 15
+
+    echo ""
+    echo "🔍 Service Status:"
+    docker compose ps
+
+    echo ""
+    echo "✅ Services are running!"
+    echo ""
+    echo "🌐 Access Points:"
+    echo "  Rails App:       http://localhost:3000"
+    echo "  Vite Dev:        http://localhost:5173"
+    echo "  Sidekiq Web:     http://localhost:4567"
+    echo "  PostgreSQL:      localhost:5432"
+    echo "  Redis:           localhost:6379"
+    echo ""
+    echo "🔧 Quick Commands:"
+    echo "  Stop services:   ./docker-dev down"
+    echo "  View logs:       ./docker-dev logs"
+    echo "  Check status:    ./docker-dev status"
+    echo "  Rails console:   docker compose exec web bundle exec rails console"
+    echo ""
+    echo "🎉 Happy coding!"
+}
+
+# Function to stop services
+stop_services() {
+    echo "🛑 Stopping Diquis Football Academy Services"
+    echo ""
+
+    check_docker
+
+    echo "🏗️  Stopping services with docker compose..."
+    docker compose down
+
+    echo ""
+    echo "✅ All services stopped!"
+    echo ""
+    echo "💡 To start again: ./docker-dev up"
+}
+
+# Function to restart services
+restart_services() {
+    echo "🔄 Restarting Diquis Football Academy Services"
+    echo ""
+    
+    check_docker
+    
+    echo "🏗️  Restarting services..."
+    docker compose restart
+    
+    echo ""
+    echo "⏳ Waiting for services to stabilize..."
+    sleep 10
+    
+    echo ""
+    echo "🔍 Service Status:"
+    docker compose ps
+    
+    echo ""
+    echo "✅ Services restarted!"
+}
+
+# Function to show status
+show_status() {
+    echo "🔍 Diquis Football Academy Service Status"
+    echo ""
+    
+    check_docker
+    
+    docker compose ps
+    
+    echo ""
+    echo "💡 Commands:"
+    echo "  Start:    ./docker-dev up"
+    echo "  Stop:     ./docker-dev down"
+    echo "  Restart:  ./docker-dev restart"
+    echo "  Logs:     ./docker-dev logs"
+}
+
+# Function to show logs
+show_logs() {
+    echo "📋 Following logs for all services (Ctrl+C to exit)"
+    echo ""
+    
+    check_docker
+    docker compose logs -f
+}
+
+# Parse command line arguments
+case "${1:-up}" in
+    up|start)
+        start_services
+        ;;
+    down|stop)
+        stop_services
+        ;;
+    restart)
+        restart_services
+        ;;
+    status|ps)
+        show_status
+        ;;
+    logs)
+        show_logs
+        ;;
+    help|--help|-h)
+        show_usage
+        ;;
+    *)
+        echo "❌ Unknown command: $1"
+        echo ""
+        show_usage
+        exit 1
+        ;;
+esac

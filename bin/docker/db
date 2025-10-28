@@ -1,0 +1,45 @@
+#!/bin/bash
+# Docker database operations script
+
+set -e
+
+COMMAND=${1:-""}
+
+case $COMMAND in
+    "migrate")
+        echo "🔄 Running database migrations..."
+        docker compose exec web bundle exec rails db:migrate
+        ;;
+    "seed")
+        echo "🌱 Seeding database..."
+        docker compose exec web bundle exec rails db:seed
+        ;;
+    "reset")
+        echo "🔄 Resetting database..."
+        docker compose exec web bundle exec rails db:drop db:create db:migrate db:seed
+        ;;
+    "console")
+        echo "🖥️  Opening Rails console..."
+        docker compose exec web bundle exec rails console
+        ;;
+    "psql")
+        echo "🗄️  Opening PostgreSQL console..."
+        docker compose exec postgres psql -U diquis_user -d diquis_development
+        ;;
+    "redis")
+        echo "🔴 Opening Redis console..."
+        docker compose exec redis redis-cli -a diquis_redis_password
+        ;;
+    *)
+        echo "🗄️  Database Operations"
+        echo "Usage: $0 [COMMAND]"
+        echo ""
+        echo "Commands:"
+        echo "  migrate  - Run database migrations"
+        echo "  seed     - Seed the database"
+        echo "  reset    - Drop, create, migrate, and seed"
+        echo "  console  - Open Rails console"
+        echo "  psql     - Open PostgreSQL console"
+        echo "  redis    - Open Redis console"
+        ;;
+esac

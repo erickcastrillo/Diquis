@@ -15,6 +15,7 @@
 - [Features](#features)
 - [Architecture](#architecture)
 - [Quick Start](#quick-start)
+- [Docker Development](#docker-development)
 - [Documentation](#documentation)
 - [Technology Stack](#technology-stack)
 - [Project Status](#project-status)
@@ -172,7 +173,73 @@ curl -X POST http://localhost:3000/auth/sign_in \
 # Use token to access API
 curl http://localhost:3000/api/v1/academies \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
-```text
+```
+
+## 🐳 Docker Development
+
+For a complete containerized development environment with PostgreSQL and Redis:
+
+### Quick Docker Commands
+
+```bash
+# Start all services (default)
+./docker-dev
+./docker-dev up
+
+# Stop all services
+./docker-dev down
+
+# Restart all services
+./docker-dev restart
+
+# Check service status
+./docker-dev status
+
+# Follow logs for all services
+./docker-dev logs
+
+# Show available commands
+./docker-dev help
+```
+
+### Manual Docker Setup
+
+```bash
+# 1. Copy environment configuration
+cp .env.docker .env.docker.local
+
+# 2. Start all services
+docker compose up -d
+
+# 3. Setup database
+docker compose exec web bundle exec rails db:migrate
+docker compose exec web bundle exec rails db:seed
+```
+
+### Docker Services
+
+- **Rails App:** http://localhost:3000
+- **Vite Dev Server:** http://localhost:5173
+- **Sidekiq Web UI:** http://localhost:4567
+- **PostgreSQL:** localhost:5432
+- **Redis:** localhost:6379
+
+### Additional Docker Commands
+
+```bash
+# Rails console
+docker compose exec web bundle exec rails console
+
+# Database operations
+docker compose exec web bundle exec rails db:migrate
+
+# Individual service management
+docker compose stop web    # Stop specific service
+docker compose start web   # Start specific service
+docker compose logs web    # View specific service logs
+```
+
+📚 **Complete Docker Guide:** [docs/DOCKER_SETUP.md](docs/DOCKER_SETUP.md)
 
 ## 📚 Documentation
 

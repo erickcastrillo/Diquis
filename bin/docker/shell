@@ -1,0 +1,9 @@
+#!/bin/bash
+# Docker shell access script
+
+set -e
+
+SERVICE=${1:-"web"}
+
+echo "🐚 Opening shell in $SERVICE container..."
+docker compose exec "$SERVICE" bash

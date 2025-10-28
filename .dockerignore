@@ -49,3 +49,32 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+/docker-compose*
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.env.docker*
+/bin/docker/
+
+# Documentation
+docs/
+*.md
+README*
+CONTRIBUTING*
+CHANGELOG*
+
+# Test files
+/test/*
+/spec/*
+.rspec
+.rspec_parallel
+/coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

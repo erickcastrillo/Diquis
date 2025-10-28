@@ -1,0 +1,64 @@
+# Development Dockerfile
+# This Dockerfile is optimized for development with faster rebuilds and debugging capabilities
+
+ARG RUBY_VERSION=3.4.5
+FROM docker.io/library/ruby:$RUBY_VERSION-slim
+
+# Rails app lives here
+WORKDIR /rails
+
+# Install base packages needed for development
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    curl \
+    git \
+    libjemalloc2 \
+    libpq-dev \
+    libvips \
+    libyaml-dev \
+    pkg-config \
+    postgresql-client \
+    redis-tools \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Set development environment
+ENV RAILS_ENV="development" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT=""
+
+# Create a non-root user for development
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
+
+# Install bundler
+RUN gem install bundler
+
+# Copy dependency files first for better caching
+COPY --chown=rails:rails Gemfile Gemfile.lock package.json ./
+
+# Install gems
+RUN bundle install
+
+# Install Node.js dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY --chown=rails:rails . .
+
+# Set proper ownership
+RUN chown -R rails:rails /rails
+
+# Switch to non-root user
+USER rails
+
+# Create necessary directories
+RUN mkdir -p tmp/pids tmp/cache tmp/sockets log storage
+
+# Expose ports
+EXPOSE 3000 5173
+
+# Default command (can be overridden)
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]

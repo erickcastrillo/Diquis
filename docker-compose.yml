@@ -1,0 +1,183 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: diquis_postgres
+    environment:
+      POSTGRES_USER: diquis_user
+      POSTGRES_PASSWORD: diquis_password
+      POSTGRES_DB: diquis_development
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - diquis_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U diquis_user -d diquis_development"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis Cache and Job Queue
+  redis:
+    image: redis:7-alpine
+    container_name: diquis_redis
+    command: redis-server --appendonly yes --requirepass diquis_redis_password
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - diquis_network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "--no-auth-warning",
+          "-a",
+          "diquis_redis_password",
+          "ping",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Rails Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: diquis_web
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://diquis_user:diquis_password@postgres:5432/diquis_development
+      REDIS_URL: redis://:diquis_redis_password@redis:6379/0
+      RAILS_MAX_THREADS: 5
+      WEB_CONCURRENCY: 1
+    volumes:
+      - .:/rails
+      - rails_cache:/rails/tmp/cache
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - diquis_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    command: >
+      bash -c "
+        echo 'Waiting for database to be ready...' &&
+        sleep 5 &&
+        bundle exec rails db:prepare &&
+        bundle exec rails server -b 0.0.0.0
+      "
+    restart: unless-stopped
+
+  # Sidekiq Background Jobs
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: diquis_sidekiq
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://diquis_user:diquis_password@postgres:5432/diquis_development
+      REDIS_URL: redis://:diquis_redis_password@redis:6379/0
+      RAILS_MAX_THREADS: 5
+    volumes:
+      - .:/rails
+      - rails_cache:/rails/tmp/cache
+      - bundle_cache:/usr/local/bundle
+    networks:
+      - diquis_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      web:
+        condition: service_started
+    command: >
+      bash -c "
+        echo 'Waiting for Rails app to be ready...' &&
+        sleep 10 &&
+        bundle exec sidekiq -e development
+      "
+    restart: unless-stopped
+
+  # Vite Development Server
+  vite:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: diquis_vite
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/rails
+      - node_modules:/rails/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - diquis_network
+    command: >
+      bash -c "
+        npm install &&
+        bin/vite dev --host 0.0.0.0
+      "
+    restart: unless-stopped
+
+  # Sidekiq Web UI (optional)
+  sidekiq_web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: diquis_sidekiq_web
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://diquis_user:diquis_password@postgres:5432/diquis_development
+      REDIS_URL: redis://:diquis_redis_password@redis:6379/0
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "4567:4567"
+    networks:
+      - diquis_network
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: >
+      bash -c "
+        sleep 15 &&
+        bundle exec sidekiq-web -e development -p 4567 -r 0.0.0.0
+      "
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  rails_cache:
+    driver: local
+  bundle_cache:
+    driver: local
+  node_modules:
+    driver: local
+
+networks:
+  diquis_network:
+    driver: bridge
