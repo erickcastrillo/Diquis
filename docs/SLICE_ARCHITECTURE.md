@@ -312,6 +312,135 @@ bundle exec rspec app/slices/user_management/spec/
 bundle exec rspec app/slices/user_management/spec/models/profile_spec.rb
 ```
 
+## Code Quality Standards
+
+### Linting Rules Compliance
+
+All generated code follows strict linting standards to ensure consistency and maintainability:
+
+#### Ruby Code (RuboCop)
+```ruby
+# ✅ Correct: Frozen string literal at top
+# frozen_string_literal: true
+
+class ExampleController < ApplicationController
+  # ✅ Correct: 2-space indentation, method length under limit
+  def index
+    service = ExampleService.new(academy: @academy)
+    result = service.list(page: params[:page] || 1)
+
+    if result.success?
+      render_success(result.data)
+    else
+      render_error(result.errors)
+    end
+  end
+
+  private
+
+  # ✅ Correct: Private method separation, clear naming
+  def render_success(data)
+    render inertia: "Example/Index", props: {
+      examples: ExampleSerializer.new(data).as_json
+    }
+  end
+end
+```
+
+#### TypeScript/React (ESLint + Prettier)
+```typescript
+// ✅ Correct: Proper imports, interface definitions
+import React from 'react';
+import { InertiaLink } from '@inertiajs/react';
+
+interface ExampleProps {
+  examples: Example[];
+  academy: Academy;
+}
+
+// ✅ Correct: Function component with proper typing
+export default function Index({ examples, academy }: ExampleProps) {
+  return (
+    <div className="container">
+      <h1>Examples for {academy.name}</h1>
+      {examples.map((example) => (
+        <div key={example.id} className="example-card">
+          <h2>{example.name}</h2>
+          <p>{example.description}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+#### ERB Templates
+```erb
+<%# ✅ Correct: Proper indentation and HTML structure %>
+<div class="example-form">
+  <%= form_with model: @example, local: false do |form| %>
+    <div class="form-group">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+    
+    <div class="form-actions">
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+```
+
+### Generated Code Standards
+
+#### 1. Ruby Files
+- **Frozen string literals**: All Ruby files start with `# frozen_string_literal: true`
+- **Indentation**: 2 spaces, no tabs
+- **Method length**: Maximum 10-15 lines per method
+- **Class length**: Maximum 100 lines per class
+- **Naming**: snake_case for methods/variables, PascalCase for classes
+- **Documentation**: Public methods have comments explaining purpose
+- **Error handling**: Explicit error handling with service layer pattern
+
+#### 2. JavaScript/TypeScript Files
+- **Formatting**: Prettier-compliant with 2-space indentation
+- **Types**: Full TypeScript coverage with interface definitions
+- **Imports**: Sorted alphabetically, unused imports removed
+- **Functions**: Arrow functions for callbacks, regular functions for components
+- **Props**: Properly typed interfaces for all component props
+- **Hooks**: Follow React hooks rules and best practices
+
+#### 3. CSS/SCSS Files
+- **Property ordering**: Logical grouping (positioning, box model, typography, visual)
+- **Nesting**: Maximum 3 levels deep
+- **Variables**: Use CSS custom properties or SCSS variables
+- **Naming**: BEM methodology or consistent class naming convention
+
+#### 4. Template Files (ERB)
+- **HTML5**: Valid markup with proper semantic elements
+- **Indentation**: 2 spaces consistent with Ruby code
+- **Accessibility**: ARIA labels and semantic HTML
+- **Forms**: Proper form structure with labels and validation
+
+### Quality Assurance
+
+#### Pre-commit Hooks
+```bash
+# Ruby linting
+bundle exec rubocop --auto-correct
+
+# JavaScript/TypeScript linting  
+npm run lint:fix
+
+# ERB linting
+bundle exec erblint --lint-all --autocorrect
+```
+
+#### Continuous Integration
+- All generated code passes linting in CI/CD pipeline
+- Automated formatting checks prevent non-compliant code
+- Style guide violations fail the build
+
 ## Best Practices
 
 ### 1. Slice Naming
@@ -337,6 +466,13 @@ bundle exec rspec app/slices/user_management/spec/models/profile_spec.rb
 - Write comprehensive tests within each slice
 - Use slice-specific factories
 - Test slice boundaries and interactions
+
+### 5. Code Quality
+
+- Run linters before committing code
+- Follow established style guides consistently
+- Use automated formatting tools
+- Review generated code for compliance
 
 ## Example: Complete Slice Setup
 

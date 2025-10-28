@@ -180,6 +180,7 @@ Comprehensive documentation is available in the `/docs` directory:
 | [🆔 UUID_AND_MULTITENANCY.md](./docs/UUID_AND_MULTITENANCY.md) | UUID primary keys and ActsAsTenant multi-tenancy implementation guide |
 | [🧱 SLICE_ARCHITECTURE.md](./docs/SLICE_ARCHITECTURE.md) | **NEW** - Complete slice-based architecture guide with generators, best practices, and examples |
 | [⚡ SLICE_GENERATORS.md](./docs/SLICE_GENERATORS.md) | **NEW** - Quick reference for slice generator commands and usage |
+| [📏 CODING_STANDARDS.md](./docs/CODING_STANDARDS.md) | **NEW** - Comprehensive coding standards and linting guidelines for all languages |
 
 ### Quick Links
 
@@ -218,6 +219,7 @@ Comprehensive documentation is available in the `/docs` directory:
 - [Creating Services](./docs/DEVELOPMENT_GUIDE.md#service-layer-development)
 - [Writing Tests](./docs/DEVELOPMENT_GUIDE.md#testing-guidelines)
 - [Code Style Guide](./docs/DEVELOPMENT_GUIDE.md#code-style-guidelines)
+- [Coding Standards](./docs/CODING_STANDARDS.md) - Comprehensive linting and style guidelines
 - [Slice Architecture](./docs/SLICE_ARCHITECTURE.md) - Complete guide to slice-based development
 - [Slice Generators](./docs/SLICE_GENERATORS.md) - Quick reference for generator commands
 

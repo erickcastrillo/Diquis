@@ -137,14 +137,53 @@ app/slices/slice_name/
 - Example: `/football/categories`
 - Generated automatically with proper namespace
 
+## Route Structure
+
+- All routes: `/app/module_name/resources`
+- Example: `/app/football/categories`
+- Generated automatically with proper namespace using `scope '/app'`
+
 ## Key Features
 
 - ✅ **Full-stack generation** - Backend + Frontend + Tests + Migration
 - ✅ **Module-based organization** - `ModuleName::ModelName` structure
-- ✅ **Automatic route namespace creation**
+- ✅ **Automatic route namespace creation** - Uses `scope '/app'` for URL structure
 - ✅ **React/TypeScript components** with Inertia.js integration
 - ✅ **Complete test suite** - RSpec + Vitest
 - ✅ **Service layer pattern** - Business logic separation
 - ✅ **Policy-based authorization** - Pundit integration
 - ✅ **Serializer for API responses**
 - ✅ **Academy multi-tenancy** - Automatic academy scoping
+- ✅ **Lint-compliant code** - Generated code follows all project linting rules
+
+## Code Quality Standards
+
+All generated code follows these linting standards:
+
+### Ruby (RuboCop)
+- 2-space indentation
+- Frozen string literals
+- Method length limits
+- Proper naming conventions
+- No trailing whitespace
+
+### ERB Templates
+- Proper HTML structure
+- Consistent indentation
+- Valid HTML5 markup
+
+### TypeScript/React (ESLint)
+- Consistent formatting with Prettier
+- TypeScript strict mode compliance
+- React hooks best practices
+- No unused variables or imports
+
+### CSS/SCSS
+- Consistent property ordering
+- No duplicate selectors
+- Proper nesting limits
+
+### Generated Code Validation
+- All templates include linting compliance
+- Automatic code formatting applied
+- Style guide adherence verified
