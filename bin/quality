@@ -1,0 +1,240 @@
+#!/bin/bash
+# Quality control script for Diquis Football Academy
+# Usage: ./bin/quality [command]
+
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+print_usage() {
+    echo "🎯 Diquis Quality Control"
+    echo ""
+    echo "Usage: $0 [command]"
+    echo ""
+    echo "Commands:"
+    echo "  check        Run all quality checks"
+    echo "  fix          Auto-fix linting issues"
+    echo "  pre-commit   Run pre-commit checks"
+    echo "  pre-push     Run pre-push checks"
+    echo "  rubocop      Run RuboCop linter"
+    echo "  security     Run security audit"
+    echo "  debug        Check for debug statements"
+    echo "  help         Show this help"
+    echo ""
+    echo "Examples:"
+    echo "  $0 check     # Run all checks"
+    echo "  $0 fix       # Auto-fix issues"
+    echo "  $0 rubocop   # Just RuboCop"
+}
+
+print_status() {
+    echo -e "${GREEN}✓${NC} $1"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}✗${NC} $1"
+}
+
+run_rubocop() {
+    echo "🚨 Running RuboCop..."
+    if bin/rubocop; then
+        print_status "RuboCop passed"
+        return 0
+    else
+        print_error "RuboCop failed"
+        return 1
+    fi
+}
+
+run_rubocop_fix() {
+    echo "🔧 Auto-fixing RuboCop issues..."
+    bin/rubocop -A
+    print_status "RuboCop auto-fix completed"
+}
+
+run_security() {
+    echo "🔒 Running security audit..."
+    if command -v bundle-audit &> /dev/null; then
+        if bundle exec bundle-audit check --update; then
+            print_status "Security audit passed"
+            return 0
+        else
+            print_error "Security vulnerabilities found"
+            return 1
+        fi
+    else
+        print_warning "bundle-audit not installed"
+        print_info "Install with: gem install bundle-audit"
+        return 0
+    fi
+}
+
+check_debug() {
+    echo "🐛 Checking for debug statements..."
+    
+    # Check for debug statements, excluding our quality tools
+    found_issues=false
+    
+    # Check for binding.pry and debugger in Ruby files
+    if grep -r "binding\.pry\|binding\.irb" app/ config/ 2>/dev/null | grep -v "lib/tasks/quality.rake" | grep -v "bin/quality"; then
+        print_error "Found binding.pry or binding.irb statements"
+        found_issues=true
+    fi
+    
+    if grep -r "^\s*debugger" app/ config/ lib/ 2>/dev/null | grep -v "lib/tasks/quality.rake" | grep -v "bin/quality"; then
+        print_error "Found debugger statements"
+        found_issues=true
+    fi
+    
+    # Check for console.log in JS files (but allow in comments)
+    if grep -r "console\.log(" app/frontend/ 2>/dev/null; then
+        print_error "Found console.log statements in frontend code"
+        found_issues=true
+    fi
+    
+    if [ "$found_issues" = true ]; then
+        print_error "Remove debug statements before committing"
+        return 1
+    else
+        print_status "No debug statements found"
+        return 0
+    fi
+}
+
+run_tests() {
+    echo "🧪 Running tests..."
+    if [ -d "test" ]; then
+        if bin/rails test; then
+            print_status "Tests passed"
+            return 0
+        else
+            print_error "Tests failed"
+            return 1
+        fi
+    else
+        print_warning "No tests found"
+        return 0
+    fi
+}
+
+run_all_checks() {
+    echo "🔍 Running all quality checks..."
+    echo ""
+    
+    failed_checks=0
+    
+    if ! run_rubocop; then
+        ((failed_checks++))
+    fi
+    
+    echo ""
+    if ! check_debug; then
+        ((failed_checks++))
+    fi
+    
+    echo ""
+    if ! run_security; then
+        ((failed_checks++))
+    fi
+    
+    echo ""
+    if [ "$failed_checks" -eq 0 ]; then
+        print_status "All quality checks passed! 🎉"
+        return 0
+    else
+        print_error "$failed_checks check(s) failed"
+        echo ""
+        print_info "To auto-fix RuboCop issues: $0 fix"
+        return 1
+    fi
+}
+
+run_pre_commit() {
+    echo "🔍 Running pre-commit checks..."
+    echo ""
+    
+    # Check only staged files for performance
+    staged_ruby_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(rb|rake)$' || true)
+    
+    if [ -z "$staged_ruby_files" ]; then
+        print_status "No Ruby files staged for commit"
+        return 0
+    fi
+    
+    echo "📁 Checking staged files: $staged_ruby_files"
+    echo ""
+    
+    if bin/rubocop $staged_ruby_files && check_debug; then
+        print_status "Pre-commit checks passed! 🎉"
+        return 0
+    else
+        print_error "Pre-commit checks failed"
+        return 1
+    fi
+}
+
+run_pre_push() {
+    echo "🚀 Running pre-push checks..."
+    echo ""
+    
+    if run_all_checks; then
+        echo ""
+        if run_tests; then
+            print_status "All pre-push checks passed! 🎉"
+            return 0
+        else
+            print_warning "Tests failed, but continuing..."
+            return 0
+        fi
+    else
+        print_error "Pre-push checks failed"
+        return 1
+    fi
+}
+
+# Parse command
+case "${1:-check}" in
+    check)
+        run_all_checks
+        ;;
+    fix)
+        run_rubocop_fix
+        ;;
+    pre-commit)
+        run_pre_commit
+        ;;
+    pre-push)
+        run_pre_push
+        ;;
+    rubocop)
+        run_rubocop
+        ;;
+    security)
+        run_security
+        ;;
+    debug)
+        check_debug
+        ;;
+    help|--help|-h)
+        print_usage
+        ;;
+    *)
+        print_error "Unknown command: $1"
+        echo ""
+        print_usage
+        exit 1
+        ;;
+esac

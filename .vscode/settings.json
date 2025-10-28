@@ -18,6 +18,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.markdownlint": "explicit",
     "source.fixAll.eslint": "explicit",
+    "source.fixAll.rubocop": "explicit",
     "source.organizeImports": "explicit"
   },
   "github.copilot.enable": {
@@ -42,8 +43,12 @@
   "editor.formatOnSave": true,
   "ruby.format": "rubocop",
   "ruby.lint": {
-    "rubocop": true
+    "rubocop": {
+      "command": "bin/rubocop",
+      "useBundler": true
+    }
   },
+  "ruby.rubocop.onSave": true,
   "[ruby]": {
     "editor.defaultFormatter": "Shopify.ruby-lsp",
     "editor.formatOnSave": true,

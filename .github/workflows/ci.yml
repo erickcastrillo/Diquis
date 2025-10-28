@@ -37,6 +37,23 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
+      - name: Check for debug statements
+        run: |
+          if grep -r "binding\.pry\|debugger\|console\.log" app/ config/ lib/ 2>/dev/null; then
+            echo "❌ Debug statements found! Remove before pushing."
+            exit 1
+          else
+            echo "✅ No debug statements found"
+          fi
+
+      - name: Security audit
+        run: |
+          if command -v bundle-audit &> /dev/null; then
+            bundle exec bundle-audit check --update
+          else
+            echo "⚠️ bundle-audit not installed, skipping security check"
+          fi
+
   test:
     runs-on: ubuntu-latest
 
