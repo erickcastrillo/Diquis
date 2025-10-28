@@ -85,7 +85,7 @@ const appCalendarInit = () => {
       const endingMonth = weekEndDate.toLocaleString('en-US', {
         month: 'short'
       });
-      console.log(weekEndDate);
+      // weekEndDate calculation complete
       const endingDate = weekEndDate.getDate();
 
       document.querySelector(

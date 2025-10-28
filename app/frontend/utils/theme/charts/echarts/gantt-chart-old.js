@@ -661,7 +661,7 @@ const taskDeleteHandler = () => {
 
       offcanvasInstance.hide();
       const modalEl = document.querySelector(Selectors.GANTT_DELETE_TASK_MODAL);
-      console.log(modalEl);
+      // modal element processed
 
       const modal = new window.bootstrap.Modal(modalEl);
       offcanvasEl.addEventListener('hidden.bs.offcanvas', () => {

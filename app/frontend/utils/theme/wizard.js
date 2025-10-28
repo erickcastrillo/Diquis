@@ -46,7 +46,7 @@ const wizardInit = () => {
     const tabs = Array.from(tabToggleButtonEl).map(item => {
       return window.bootstrap.Tab.getOrCreateInstance(item);
     });
-    // console.log({ tabs });
+    // tabs configuration processed
 
     let count = 0;
     let showEvent = null;
