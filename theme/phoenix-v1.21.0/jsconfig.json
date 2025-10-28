@@ -2,7 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "baseUrl": "src/scripts"
+    "baseUrl": "src/scripts",
+    "ignoreDeprecations": "6.0"
   },
   "exclude": ["node_modules"]
 }
