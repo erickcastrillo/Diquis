@@ -4,6 +4,12 @@ Rails.application.routes.draw do
     registrations: "auth/registrations"
   }
 
+  namespace :app do
+    namespace :football do
+      resources :academies
+    end
+  end
+
   # Example Inertia page
   get "inertia-example", to: "inertia_example#index"
 
