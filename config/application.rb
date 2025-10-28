@@ -23,5 +23,22 @@ module Diquis
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Configure generators for slice-based architecture
+    config.generators do |g|
+      # Generate specs in slice directories instead of central spec folder
+      g.test_framework :rspec,
+        fixtures: false,
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false,
+        controller_specs: false,
+        request_specs: true
+
+      # Configure Factory Bot to generate factories in slice directories
+      g.factory_bot dir: "spec/factories"
+
+      # This will be overridden by slice-specific configuration when needed
+    end
   end
 end

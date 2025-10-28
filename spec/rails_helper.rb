@@ -41,6 +41,19 @@ RSpec.configure do |config|
   # Include Factory Bot methods
   config.include FactoryBot::Syntax::Methods
 
+  # Configure Factory Bot to load factories from slice directories
+  config.before(:suite) do
+    # Load factories from traditional spec/factories
+    FactoryBot.definition_file_paths = [ Rails.root.join('spec', 'factories') ]
+
+    # Also load factories from slice directories
+    slice_factory_paths = Dir.glob(Rails.root.join('app', 'slices', '*', 'spec', 'factories'))
+    FactoryBot.definition_file_paths += slice_factory_paths
+
+    # Reload factory definitions
+    FactoryBot.reload
+  end
+
   # Include Pundit matchers
   config.include Pundit::Matchers
 
