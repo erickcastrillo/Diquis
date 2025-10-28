@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
   scope "/app" do
+    get "dashboard", to: "dashboard#index"
   end
 
   # Example Inertia page
