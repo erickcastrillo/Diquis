@@ -515,3 +515,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For detailed information, start with the [Project Overview](./docs/PROJECT_OVERVIEW.md) or jump directly
 to the [Setup Guide](./docs/SETUP_GUIDE.md) to begin development.
+# Quality control system installed
