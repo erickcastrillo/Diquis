@@ -1,0 +1,315 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+# <%= full_model_name %>Policy Specs
+# 
+# Tests for authorization rules governing <%= model_name.humanize.pluralize.downcase %> access.
+# Covers permission checks, scoping, and permitted attributes.
+# 
+<% if module_name -%>
+module <%= module_name %>
+  RSpec.describe <%= model_name.camelize %>Policy, type: :policy do
+<% else -%>
+module <%= slice_name.camelize %>
+  RSpec.describe <%= model_name.camelize %>Policy, type: :policy do
+<% end -%>
+<% unless skip_academy? -%>
+    # Test setup with users and academy context
+    let(:admin_user) { create(:user, :admin) }
+    let(:manager_user) { create(:user, :manager) }
+    let(:member_user) { create(:user, :member) }
+    let(:other_user) { create(:user) }
+    
+    let(:academy) { create(:academy) }
+    let(:other_academy) { create(:academy) }
+    
+    let(:<%= model_name.underscore %>) { create(:<%= model_name.underscore %>, academy: academy) }
+    let(:<%= model_name.underscore %>_other_academy) { create(:<%= model_name.underscore %>, academy: other_academy) }
+
+    before do
+      # Set up user academy access (adjust based on your user model)
+      allow(admin_user).to receive(:can_access_academy?).with(academy).and_return(true)
+      allow(admin_user).to receive(:can_manage_academy?).with(academy).and_return(true)
+      allow(admin_user).to receive(:system_admin?).and_return(true)
+      
+      allow(manager_user).to receive(:can_access_academy?).with(academy).and_return(true)
+      allow(manager_user).to receive(:can_manage_academy?).with(academy).and_return(true)
+      allow(manager_user).to receive(:system_admin?).and_return(false)
+      
+      allow(member_user).to receive(:can_access_academy?).with(academy).and_return(true)
+      allow(member_user).to receive(:can_manage_academy?).with(academy).and_return(false)
+      allow(member_user).to receive(:system_admin?).and_return(false)
+      
+      allow(other_user).to receive(:can_access_academy?).with(academy).and_return(false)
+      allow(other_user).to receive(:can_manage_academy?).with(academy).and_return(false)
+      allow(other_user).to receive(:system_admin?).and_return(false)
+    end
+<% else -%>
+    # Test setup for foundation model policy
+    let(:admin_user) { create(:user, :admin) }
+    let(:manager_user) { create(:user, :manager) }
+    let(:member_user) { create(:user, :member) }
+    let(:guest_user) { create(:user) }
+    
+    let(:<%= model_name.underscore %>) { create(:<%= model_name.underscore %>) }
+
+    before do
+      # Set up user roles (adjust based on your user model)
+      allow(admin_user).to receive(:system_admin?).and_return(true)
+      allow(manager_user).to receive(:system_admin?).and_return(false)
+      allow(member_user).to receive(:system_admin?).and_return(false)
+      allow(guest_user).to receive(:system_admin?).and_return(false)
+    end
+<% end -%>
+
+    # Test index permission
+    describe "#index?" do
+<% unless skip_academy? -%>
+      it "allows access for users who can access the academy" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).index?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).index?).to be true
+        expect(described_class.new(member_user, <%= model_name.underscore %>).index?).to be true
+      end
+
+      it "denies access for users who cannot access the academy" do
+        expect(described_class.new(other_user, <%= model_name.underscore %>).index?).to be false
+      end
+
+      it "denies access for nil user" do
+        expect(described_class.new(nil, <%= model_name.underscore %>).index?).to be false
+      end
+<% else -%>
+      it "allows access for authenticated users" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).index?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).index?).to be true
+        expect(described_class.new(member_user, <%= model_name.underscore %>).index?).to be true
+      end
+
+      it "denies access for nil user" do
+        expect(described_class.new(nil, <%= model_name.underscore %>).index?).to be false
+      end
+<% end -%>
+    end
+
+    # Test show permission
+    describe "#show?" do
+<% unless skip_academy? -%>
+      it "allows access for users who can access the academy" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).show?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).show?).to be true
+        expect(described_class.new(member_user, <%= model_name.underscore %>).show?).to be true
+      end
+
+      it "denies access for users who cannot access the academy" do
+        expect(described_class.new(other_user, <%= model_name.underscore %>).show?).to be false
+      end
+
+      it "denies access for <%= model_name.humanize.pluralize.downcase %> from other academies" do
+        expect(described_class.new(member_user, <%= model_name.underscore %>_other_academy).show?).to be false
+      end
+<% else -%>
+      it "allows access for authenticated users" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).show?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).show?).to be true
+        expect(described_class.new(member_user, <%= model_name.underscore %>).show?).to be true
+      end
+
+      it "denies access for nil user" do
+        expect(described_class.new(nil, <%= model_name.underscore %>).show?).to be false
+      end
+<% end -%>
+    end
+
+    # Test create permission
+    describe "#create?" do
+<% unless skip_academy? -%>
+      it "allows creation for users who can manage the academy" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).create?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).create?).to be true
+      end
+
+      it "denies creation for users who cannot manage the academy" do
+        expect(described_class.new(member_user, <%= model_name.underscore %>).create?).to be false
+        expect(described_class.new(other_user, <%= model_name.underscore %>).create?).to be false
+      end
+<% else -%>
+      it "allows creation for admin users" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).create?).to be true
+      end
+
+      it "denies creation for non-admin users" do
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).create?).to be false
+        expect(described_class.new(member_user, <%= model_name.underscore %>).create?).to be false
+        expect(described_class.new(guest_user, <%= model_name.underscore %>).create?).to be false
+      end
+<% end -%>
+
+      it "denies creation for nil user" do
+        expect(described_class.new(nil, <%= model_name.underscore %>).create?).to be false
+      end
+    end
+
+    # Test update permission
+    describe "#update?" do
+<% unless skip_academy? -%>
+      it "allows updates for users who can manage the academy" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).update?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).update?).to be true
+      end
+
+      it "denies updates for users who cannot manage the academy" do
+        expect(described_class.new(member_user, <%= model_name.underscore %>).update?).to be false
+        expect(described_class.new(other_user, <%= model_name.underscore %>).update?).to be false
+      end
+
+      it "denies updates for <%= model_name.humanize.pluralize.downcase %> from other academies" do
+        expect(described_class.new(manager_user, <%= model_name.underscore %>_other_academy).update?).to be false
+      end
+<% else -%>
+      it "allows updates for admin users" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).update?).to be true
+      end
+
+      it "denies updates for non-admin users" do
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).update?).to be false
+        expect(described_class.new(member_user, <%= model_name.underscore %>).update?).to be false
+        expect(described_class.new(guest_user, <%= model_name.underscore %>).update?).to be false
+      end
+<% end -%>
+
+      it "denies updates for nil user" do
+        expect(described_class.new(nil, <%= model_name.underscore %>).update?).to be false
+      end
+    end
+
+    # Test destroy permission
+    describe "#destroy?" do
+<% unless skip_academy? -%>
+      it "allows deletion for users who can manage the academy" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).destroy?).to be true
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).destroy?).to be true
+      end
+
+      it "denies deletion for users who cannot manage the academy" do
+        expect(described_class.new(member_user, <%= model_name.underscore %>).destroy?).to be false
+        expect(described_class.new(other_user, <%= model_name.underscore %>).destroy?).to be false
+      end
+
+      it "denies deletion for <%= model_name.humanize.pluralize.downcase %> from other academies" do
+        expect(described_class.new(manager_user, <%= model_name.underscore %>_other_academy).destroy?).to be false
+      end
+<% else -%>
+      it "allows deletion for admin users" do
+        expect(described_class.new(admin_user, <%= model_name.underscore %>).destroy?).to be true
+      end
+
+      it "denies deletion for non-admin users" do
+        expect(described_class.new(manager_user, <%= model_name.underscore %>).destroy?).to be false
+        expect(described_class.new(member_user, <%= model_name.underscore %>).destroy?).to be false
+        expect(described_class.new(guest_user, <%= model_name.underscore %>).destroy?).to be false
+      end
+<% end -%>
+
+      it "denies deletion for nil user" do
+        expect(described_class.new(nil, <%= model_name.underscore %>).destroy?).to be false
+      end
+    end
+
+    # Test permitted attributes
+    describe "#permitted_attributes" do
+      let(:policy) { described_class.new(admin_user, <%= model_name.underscore %>) }
+
+      it "returns the correct permitted attributes" do
+        expected_attributes = [<% attributes.each_with_index do |attr, index| %>:<%= attr[:name] %><%= index < attributes.length - 1 ? ', ' : '' %><% end %>]
+        expect(policy.permitted_attributes).to match_array(expected_attributes)
+      end
+    end
+
+    # Test policy scope
+    describe "Scope" do
+      subject { described_class::Scope.new(user, <%= full_model_name %>.all).resolve }
+
+<% unless skip_academy? -%>
+      let!(:<%= model_name.underscore %>_in_academy) { create(:<%= model_name.underscore %>, academy: academy) }
+      let!(:<%= model_name.underscore %>_in_other_academy) { create(:<%= model_name.underscore %>, academy: other_academy) }
+
+      before do
+        # Mock user's accessible academy IDs
+        allow(admin_user).to receive(:accessible_academy_ids).and_return([academy.id, other_academy.id])
+        allow(manager_user).to receive(:accessible_academy_ids).and_return([academy.id])
+        allow(member_user).to receive(:accessible_academy_ids).and_return([academy.id])
+        allow(other_user).to receive(:accessible_academy_ids).and_return([])
+      end
+
+      context "for system admin" do
+        let(:user) { admin_user }
+
+        it "returns all <%= model_name.humanize.pluralize.downcase %>" do
+          expect(subject).to include(<%= model_name.underscore %>_in_academy)
+          expect(subject).to include(<%= model_name.underscore %>_in_other_academy)
+        end
+      end
+
+      context "for regular user with academy access" do
+        let(:user) { manager_user }
+
+        it "returns only <%= model_name.humanize.pluralize.downcase %> from accessible academies" do
+          expect(subject).to include(<%= model_name.underscore %>_in_academy)
+          expect(subject).not_to include(<%= model_name.underscore %>_in_other_academy)
+        end
+      end
+
+      context "for user without academy access" do
+        let(:user) { other_user }
+
+        it "returns no <%= model_name.humanize.pluralize.downcase %>" do
+          expect(subject).to be_empty
+        end
+      end
+<% else -%>
+      let!(:<%= model_name.underscore %>1) { create(:<%= model_name.underscore %>) }
+      let!(:<%= model_name.underscore %>2) { create(:<%= model_name.underscore %>) }
+
+      context "for system admin" do
+        let(:user) { admin_user }
+
+        it "returns all <%= model_name.humanize.pluralize.downcase %>" do
+          expect(subject).to include(<%= model_name.underscore %>1)
+          expect(subject).to include(<%= model_name.underscore %>2)
+        end
+      end
+
+      context "for regular user" do
+        let(:user) { manager_user }
+
+        it "returns all <%= model_name.humanize.pluralize.downcase %> (foundation model)" do
+          expect(subject).to include(<%= model_name.underscore %>1)
+          expect(subject).to include(<%= model_name.underscore %>2)
+        end
+      end
+<% end -%>
+    end
+
+    # Test edge cases
+    describe "edge cases" do
+      it "handles nil record gracefully" do
+        policy = described_class.new(admin_user, nil)
+        expect { policy.index? }.not_to raise_error
+        expect { policy.show? }.not_to raise_error
+        expect { policy.create? }.not_to raise_error
+        expect { policy.update? }.not_to raise_error
+        expect { policy.destroy? }.not_to raise_error
+      end
+
+      it "handles policy instantiation with both nil user and record" do
+        policy = described_class.new(nil, nil)
+        expect(policy.index?).to be false
+        expect(policy.show?).to be false
+        expect(policy.create?).to be false
+        expect(policy.update?).to be false
+        expect(policy.destroy?).to be false
+      end
+    end
+  end
+end

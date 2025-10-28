@@ -1,0 +1,361 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+# <%= full_model_name %>Service Specs
+# 
+# Tests for the business logic layer handling <%= model_name.humanize.pluralize.downcase %> operations.
+# Covers CRUD operations, error handling, and service result patterns.
+# 
+<% if module_name -%>
+module <%= module_name %>
+  RSpec.describe <%= model_name.camelize %>Service, type: :service do
+<% else -%>
+module <%= slice_name.camelize %>
+  RSpec.describe <%= model_name.camelize %>Service, type: :service do
+<% end -%>
+<% unless skip_academy? -%>
+    # Test setup with required associations
+    let(:academy) { create(:academy) }
+    let(:valid_params) do
+      {
+        <%= model_name.underscore %>: {
+<% attributes.each_with_index do |attr, index| -%>
+<% if attr[:name] == 'name' -%>
+          name: "Test <%= model_name.humanize %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'boolean' -%>
+          <%= attr[:name] %>: true<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'text' -%>
+          <%= attr[:name] %>: "Test <%= attr[:name].humanize.downcase %> description"<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'string' -%>
+          <%= attr[:name] %>: "Test <%= attr[:name].humanize.downcase %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% else -%>
+          <%= attr[:name] %>: "test_value"<%= index < attributes.length - 1 ? ',' : '' %>
+<% end -%>
+<% end -%>
+        }
+      }
+    end
+    let(:service) { described_class.new(academy: academy, params: valid_params) }
+<% else -%>
+    # Test setup for foundation model service
+    let(:valid_params) do
+      {
+        <%= model_name.underscore %>: {
+<% attributes.each_with_index do |attr, index| -%>
+<% if attr[:name] == 'name' -%>
+          name: "Test <%= model_name.humanize %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'boolean' -%>
+          <%= attr[:name] %>: true<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'text' -%>
+          <%= attr[:name] %>: "Test <%= attr[:name].humanize.downcase %> description"<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'string' -%>
+          <%= attr[:name] %>: "Test <%= attr[:name].humanize.downcase %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% else -%>
+          <%= attr[:name] %>: "test_value"<%= index < attributes.length - 1 ? ',' : '' %>
+<% end -%>
+<% end -%>
+        }
+      }
+    end
+    let(:service) { described_class.new(params: valid_params) }
+<% end -%>
+
+    # Test service initialization
+    describe "initialization" do
+<% unless skip_academy? -%>
+      it "requires academy parameter" do
+        expect { described_class.new(params: valid_params) }.to raise_error(ArgumentError)
+      end
+
+      it "accepts academy and params" do
+        expect(service.academy).to eq(academy)
+        expect(service.params).to eq(valid_params)
+      end
+<% else -%>
+      it "accepts params without academy" do
+        expect(service.params).to eq(valid_params)
+      end
+
+      it "does not require academy parameter for foundation model" do
+        expect { described_class.new(params: valid_params) }.not_to raise_error
+      end
+<% end -%>
+    end
+
+    # Test create operation
+    describe "#create" do
+      context "with valid parameters" do
+        it "creates a new <%= model_name.humanize.downcase %>" do
+<% unless skip_academy? -%>
+          ActsAsTenant.with_tenant(academy) do
+            expect { service.create }.to change(<%= full_model_name %>, :count).by(1)
+          end
+<% else -%>
+          expect { service.create }.to change(<%= full_model_name %>, :count).by(1)
+<% end -%>
+        end
+
+        it "returns a successful result" do
+          result = service.create
+          expect(result).to be_success
+          expect(result.data).to be_a(<%= full_model_name %>)
+        end
+
+        it "sets the correct attributes" do
+          result = service.create
+          <%= model_name.underscore %> = result.data
+
+<% attributes.each do |attr| -%>
+<% if attr[:name] == 'name' -%>
+          expect(<%= model_name.underscore %>.name).to eq("Test <%= model_name.humanize %>")
+<% elsif attr[:type] == 'boolean' -%>
+          expect(<%= model_name.underscore %>.<%= attr[:name] %>).to be(true)
+<% elsif attr[:type] == 'text' -%>
+          expect(<%= model_name.underscore %>.<%= attr[:name] %>).to eq("Test <%= attr[:name].humanize.downcase %> description")
+<% elsif attr[:type] == 'string' -%>
+          expect(<%= model_name.underscore %>.<%= attr[:name] %>).to eq("Test <%= attr[:name].humanize.downcase %>")
+<% end -%>
+<% end -%>
+        end
+
+<% unless skip_academy? -%>
+        it "assigns the <%= model_name.humanize.downcase %> to the correct academy" do
+          result = service.create
+          expect(result.data.academy).to eq(academy)
+        end
+<% end -%>
+      end
+
+      context "with invalid parameters" do
+        let(:invalid_params) do
+          {
+            <%= model_name.underscore %>: {
+<% attributes.each_with_index do |attr, index| -%>
+<% if attr[:name] == 'name' -%>
+              name: ""<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'string' -%>
+              <%= attr[:name] %>: ""<%= index < attributes.length - 1 ? ',' : '' %>
+<% else -%>
+              <%= attr[:name] %>: nil<%= index < attributes.length - 1 ? ',' : '' %>
+<% end -%>
+<% end -%>
+            }
+          }
+        end
+<% unless skip_academy? -%>
+        let(:invalid_service) { described_class.new(academy: academy, params: invalid_params) }
+<% else -%>
+        let(:invalid_service) { described_class.new(params: invalid_params) }
+<% end -%>
+
+        it "does not create a <%= model_name.humanize.downcase %>" do
+          expect { invalid_service.create }.not_to change(<%= full_model_name %>, :count)
+        end
+
+        it "returns an error result" do
+          result = invalid_service.create
+          expect(result).to be_error
+          expect(result.errors).to be_present
+        end
+      end
+    end
+
+    # Test update operation
+    describe "#update" do
+      let!(:<%= model_name.underscore %>) { create(:<%= model_name.underscore %><% unless skip_academy? %>, academy: academy<% end %>) }
+
+      context "with valid parameters" do
+        let(:update_params) do
+          {
+            <%= model_name.underscore %>: {
+<% attributes.each_with_index do |attr, index| -%>
+<% if attr[:name] == 'name' -%>
+              name: "Updated <%= model_name.humanize %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'boolean' -%>
+              <%= attr[:name] %>: false<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'text' -%>
+              <%= attr[:name] %>: "Updated <%= attr[:name].humanize.downcase %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'string' -%>
+              <%= attr[:name] %>: "Updated <%= attr[:name].humanize.downcase %>"<%= index < attributes.length - 1 ? ',' : '' %>
+<% else -%>
+              <%= attr[:name] %>: "updated_value"<%= index < attributes.length - 1 ? ',' : '' %>
+<% end -%>
+<% end -%>
+            }
+          }
+        end
+<% unless skip_academy? -%>
+        let(:update_service) { described_class.new(academy: academy, params: update_params) }
+<% else -%>
+        let(:update_service) { described_class.new(params: update_params) }
+<% end -%>
+
+        it "updates the <%= model_name.humanize.downcase %>" do
+          result = update_service.update(<%= model_name.underscore %>.id)
+          expect(result).to be_success
+
+          <%= model_name.underscore %>.reload
+<% attributes.each do |attr| -%>
+<% if attr[:name] == 'name' -%>
+          expect(<%= model_name.underscore %>.name).to eq("Updated <%= model_name.humanize %>")
+<% elsif attr[:type] == 'boolean' -%>
+          expect(<%= model_name.underscore %>.<%= attr[:name] %>).to be(false)
+<% end -%>
+<% end -%>
+        end
+
+        it "returns the updated <%= model_name.humanize.downcase %>" do
+          result = update_service.update(<%= model_name.underscore %>.id)
+          expect(result.data).to eq(<%= model_name.underscore %>)
+        end
+      end
+
+      context "with invalid parameters" do
+        let(:invalid_update_params) do
+          {
+            <%= model_name.underscore %>: {
+<% attributes.each_with_index do |attr, index| -%>
+<% if attr[:name] == 'name' -%>
+              name: ""<%= index < attributes.length - 1 ? ',' : '' %>
+<% elsif attr[:type] == 'string' -%>
+              <%= attr[:name] %>: ""<%= index < attributes.length - 1 ? ',' : '' %>
+<% else -%>
+              <%= attr[:name] %>: <%= model_name.underscore %>.<%= attr[:name] %><%= index < attributes.length - 1 ? ',' : '' %>
+<% end -%>
+<% end -%>
+            }
+          }
+        end
+<% unless skip_academy? -%>
+        let(:invalid_update_service) { described_class.new(academy: academy, params: invalid_update_params) }
+<% else -%>
+        let(:invalid_update_service) { described_class.new(params: invalid_update_params) }
+<% end -%>
+
+        it "returns an error result" do
+          result = invalid_update_service.update(<%= model_name.underscore %>.id)
+          expect(result).to be_error
+          expect(result.errors).to be_present
+        end
+      end
+
+      context "with non-existent <%= model_name.humanize.downcase %>" do
+        it "returns an error result" do
+          result = service.update("non-existent-id")
+          expect(result).to be_error
+          expect(result.errors).to include("<%= model_name.humanize %> not found")
+        end
+      end
+    end
+
+    # Test find operation
+    describe "#find" do
+      let!(:<%= model_name.underscore %>) { create(:<%= model_name.underscore %><% unless skip_academy? %>, academy: academy<% end %>) }
+
+      context "with existing <%= model_name.humanize.downcase %>" do
+        it "returns the <%= model_name.humanize.downcase %>" do
+          result = service.find(<%= model_name.underscore %>.id)
+          expect(result).to be_success
+          expect(result.data).to eq(<%= model_name.underscore %>)
+        end
+      end
+
+      context "with non-existent <%= model_name.humanize.downcase %>" do
+        it "returns an error result" do
+          result = service.find("non-existent-id")
+          expect(result).to be_error
+          expect(result.errors).to include("<%= model_name.humanize %> not found")
+        end
+      end
+
+<% unless skip_academy? -%>
+      context "with <%= model_name.humanize.downcase %> from different academy" do
+        let(:other_academy) { create(:academy) }
+        let!(:<%= model_name.underscore %>_other_academy) { create(:<%= model_name.underscore %>, academy: other_academy) }
+
+        it "returns an error result" do
+          result = service.find(<%= model_name.underscore %>_other_academy.id)
+          expect(result).to be_error
+          expect(result.errors).to include("<%= model_name.humanize %> not found")
+        end
+      end
+<% end -%>
+    end
+
+    # Test list operation
+    describe "#list" do
+      let!(:<%= model_name.underscore.pluralize %>) { create_list(:<%= model_name.underscore %>, 3<% unless skip_academy? %>, academy: academy<% end %>) }
+
+      it "returns paginated <%= model_name.humanize.pluralize.downcase %>" do
+        result = service.list
+        expect(result).to be_success
+        expect(result.data).to be_a(Kaminari::PaginatableArray)
+      end
+
+      it "returns the correct number of <%= model_name.humanize.pluralize.downcase %>" do
+        result = service.list
+        expect(result.data.size).to eq(3)
+      end
+
+      it "supports pagination" do
+        result = service.list(page: 1, per_page: 2)
+        expect(result.data.size).to eq(2)
+      end
+
+<% unless skip_academy? -%>
+      context "with <%= model_name.humanize.pluralize.downcase %> from different academy" do
+        let(:other_academy) { create(:academy) }
+        let!(:<%= model_name.underscore.pluralize %>_other_academy) { create_list(:<%= model_name.underscore %>, 2, academy: other_academy) }
+
+        it "only returns <%= model_name.humanize.pluralize.downcase %> from the correct academy" do
+          result = service.list
+          expect(result.data.size).to eq(3) # Only from our academy
+        end
+      end
+<% end -%>
+    end
+
+    # Test destroy operation
+    describe "#destroy" do
+      let!(:<%= model_name.underscore %>) { create(:<%= model_name.underscore %><% unless skip_academy? %>, academy: academy<% end %>) }
+
+      context "with existing <%= model_name.humanize.downcase %>" do
+        it "destroys the <%= model_name.humanize.downcase %>" do
+<% unless skip_academy? -%>
+          ActsAsTenant.with_tenant(academy) do
+            expect { service.destroy(<%= model_name.underscore %>.id) }.to change(<%= full_model_name %>, :count).by(-1)
+          end
+<% else -%>
+          expect { service.destroy(<%= model_name.underscore %>.id) }.to change(<%= full_model_name %>, :count).by(-1)
+<% end -%>
+        end
+
+        it "returns a successful result" do
+          result = service.destroy(<%= model_name.underscore %>.id)
+          expect(result).to be_success
+          expect(result.data).to eq(<%= model_name.underscore %>)
+        end
+      end
+
+      context "with non-existent <%= model_name.humanize.downcase %>" do
+        it "returns an error result" do
+          result = service.destroy("non-existent-id")
+          expect(result).to be_error
+          expect(result.errors).to include("<%= model_name.humanize %> not found")
+        end
+      end
+    end
+
+    # Test private methods
+    describe "private methods" do
+      describe "#permitted_params" do
+        it "permits the correct parameters" do
+          permitted = service.send(:permitted_params)
+          expected_keys = [<% attributes.each_with_index do |attr, index| %>"<%= attr[:name] %>"<%= index < attributes.length - 1 ? ', ' : '' %><% end %>]
+          expect(permitted.keys).to match_array(expected_keys)
+        end
+      end
+    end
+  end
+end

@@ -15,6 +15,7 @@ class SliceGenerator < Rails::Generators::Base
     generate_serializer
     generate_policy
     generate_react_components
+    generate_tests
     generate_routes
   end
 
@@ -28,9 +29,11 @@ class SliceGenerator < Rails::Generators::Base
     empty_directory "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/models"
     empty_directory "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/serializers"
     empty_directory "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/policies"
+    empty_directory "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/specs"
 
     # Create frontend directories with module hierarchy
     empty_directory "app/frontend/pages/#{frontend_path}"
+    empty_directory "app/frontend/pages/#{frontend_path}/__tests__"
   end
 
   def generate_migration
@@ -95,6 +98,19 @@ class SliceGenerator < Rails::Generators::Base
     template "Show.tsx.erb", "app/frontend/pages/#{frontend_path}/Show.tsx"
     template "Form.tsx.erb", "app/frontend/pages/#{frontend_path}/Form.tsx"
     template "types.ts.erb", "app/frontend/pages/#{frontend_path}/types.ts"
+  end
+
+  def generate_tests
+    # Backend RSpec tests - now co-located within the slice
+    template "model_spec.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/specs/#{model_name.underscore}_spec.rb"
+    template "service_spec.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/specs/#{model_name.underscore}_service_spec.rb"
+    template "controller_spec.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/specs/#{model_name.underscore.pluralize}_controller_spec.rb"
+    template "policy_spec.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/specs/#{model_name.underscore}_policy_spec.rb"
+
+    # Frontend Vitest tests
+    template "Index.test.tsx.erb", "app/frontend/pages/#{frontend_path}/__tests__/Index.test.tsx"
+    template "Show.test.tsx.erb", "app/frontend/pages/#{frontend_path}/__tests__/Show.test.tsx"
+    template "Form.test.tsx.erb", "app/frontend/pages/#{frontend_path}/__tests__/Form.test.tsx"
   end
 
   def generate_routes
