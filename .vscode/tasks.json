@@ -1,0 +1,598 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Start bin/dev",
+      "type": "shell",
+      "command": "./bin/dev",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "development"
+      },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
+          }
+        }
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔧 Rails Server",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "server", "-p", "3000"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "backend"
+      },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
+          }
+        }
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "⚛️ Vite Dev Server",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
+          }
+        }
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🧪 Run RSpec Tests",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rspec"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true,
+        "group": "testing"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🧪 Run Current RSpec File",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rspec", "${file}"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true,
+        "group": "testing"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "⚡ Run Vitest Tests",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true,
+        "group": "testing"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔍 Rails Console",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "console"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": false,
+        "group": "tools"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔨 Generate Slice",
+      "type": "shell",
+      "command": "rails",
+      "args": [
+        "generate",
+        "slice",
+        "${input:sliceModuleName}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "generators"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔄 Database Reset",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "db:reset"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "database"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "📦 Bundle Install",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["install"],
+      "group": "build", 
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "setup"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "📦 NPM Install",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "setup"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔄 Start Sidekiq",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "sidekiq"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "sidekiq"
+      },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
+          }
+        }
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔄 Sidekiq Stats",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "sidekiq", "-e", "development", "-r", "./config/environment.rb", "-c", "puts Sidekiq::Stats.new.inspect"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "sidekiq"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🧹 Clear Sidekiq Jobs",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "runner", "Sidekiq::Queue.new.clear; Sidekiq::RetrySet.new.clear; Sidekiq::DeadSet.new.clear; puts 'All Sidekiq queues cleared'"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "sidekiq"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "📅 Load Cron Jobs",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "sidekiq:cron:load"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "sidekiq"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "📋 List Cron Jobs",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "sidekiq:cron:list"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "sidekiq"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🧪 Test Cron Configuration",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "rails", "sidekiq:cron:test"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "sidekiq"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔨 Generate Background Job",
+      "type": "shell",
+      "command": "rails",
+      "args": [
+        "generate",
+        "background_job",
+        "${input:jobName}",
+        "--slice=${input:sliceName}",
+        "--type=background",
+        "--queue=${input:jobQueue}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "generators"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "📅 Generate Cron Job",
+      "type": "shell",
+      "command": "rails",
+      "args": [
+        "generate",
+        "background_job",
+        "${input:jobName}",
+        "--slice=${input:sliceName}",
+        "--type=cron",
+        "--cron=${input:cronExpression}",
+        "--queue=${input:jobQueue}",
+        "--description=${input:jobDescription}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "generators"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🔨📅 Generate Background + Cron Job",
+      "type": "shell",
+      "command": "rails",
+      "args": [
+        "generate",
+        "background_job",
+        "${input:jobName}",
+        "--slice=${input:sliceName}",
+        "--type=both",
+        "--cron=${input:cronExpression}",
+        "--queue=${input:jobQueue}",
+        "--description=${input:jobDescription}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "generators"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "🎯 Generate Slice Job",
+      "type": "shell",
+      "command": "rails",
+      "args": [
+        "generate",
+        "job",
+        "${input:jobName}",
+        "--slice=${input:sliceName}",
+        "--type=${input:jobType}",
+        "--queue=${input:jobQueue}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "generators"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "sliceModuleName",
+      "description": "Enter slice name (e.g., Football::Categories name:string description:text)",
+      "type": "promptString"
+    },
+    {
+      "id": "jobName",
+      "description": "Enter job name (e.g., user_notification, player_stats)",
+      "type": "promptString"
+    },
+    {
+      "id": "sliceName",
+      "description": "Enter slice module name (e.g., Football, Academy)",
+      "type": "promptString"
+    },
+    {
+      "id": "jobType",
+      "description": "Select job type",
+      "type": "pickString",
+      "options": [
+        {
+          "label": "Background Job Only",
+          "value": "background"
+        },
+        {
+          "label": "Cron Job Only", 
+          "value": "cron"
+        },
+        {
+          "label": "Both Background + Cron",
+          "value": "both"
+        }
+      ]
+    },
+    {
+      "id": "jobQueue",
+      "description": "Select job queue",
+      "type": "pickString",
+      "options": [
+        {
+          "label": "Default Queue",
+          "value": "default"
+        },
+        {
+          "label": "Critical (High Priority)",
+          "value": "critical"
+        },
+        {
+          "label": "Low Priority",
+          "value": "low"
+        },
+        {
+          "label": "Mailers",
+          "value": "mailers"
+        },
+        {
+          "label": "Reports",
+          "value": "reports"
+        },
+        {
+          "label": "Maintenance",
+          "value": "maintenance"
+        },
+        {
+          "label": "Monitoring",
+          "value": "monitoring"
+        }
+      ]
+    },
+    {
+      "id": "cronExpression",
+      "description": "Enter cron expression (e.g., '0 2 * * *' for daily at 2 AM)",
+      "type": "promptString"
+    },
+    {
+      "id": "jobDescription",
+      "description": "Enter job description for cron schedule",
+      "type": "promptString"
+    }
+  ]
+}

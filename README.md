@@ -143,7 +143,18 @@ rails db:create db:migrate db:seed
 
 - **API:** http://localhost:3000
 - **API Documentation:** http://localhost:3000/api-docs
-- **Sidekiq Dashboard:** http://localhost:3000/sidekiq
+- **Sidekiq Dashboard:** http://localhost:3000/sidekiq (Job monitoring, management, and cron jobs)
+
+### VS Code Debugging
+
+For full debugging support in VS Code:
+
+1. Press `F5` to open debug configurations
+2. Select "🚀 Debug bin/dev with Remote Attach" to start with debugging
+3. Or select "🔧 Debug Rails Server" for Rails-only debugging
+4. Set breakpoints and debug your code
+
+See [🐛 VS Code Debug Setup](./.vscode/DEBUG_SETUP.md) for complete setup guide.
 
 ### Quick API Test
 
@@ -181,6 +192,9 @@ Comprehensive documentation is available in the `/docs` directory:
 | [🧱 SLICE_ARCHITECTURE.md](./docs/SLICE_ARCHITECTURE.md) | **NEW** - Complete slice-based architecture guide with generators, best practices, and examples |
 | [⚡ SLICE_GENERATORS.md](./docs/SLICE_GENERATORS.md) | **NEW** - Quick reference for slice generator commands and usage |
 | [📏 CODING_STANDARDS.md](./docs/CODING_STANDARDS.md) | **NEW** - Comprehensive coding standards and linting guidelines for all languages |
+| [🤖 Copilot Configuration](./.copilot/README.md) | **NEW** - GitHub Copilot optimization for project-specific code suggestions |
+| [🐛 VS Code Debug Setup](./.vscode/DEBUG_SETUP.md) | **NEW** - Complete debugging configuration for Rails and React |
+| [🔄 Sidekiq Setup](./docs/SIDEKIQ_SETUP.md) | **NEW** - Background job processing with Sidekiq and cron jobs |
 
 ### Quick Links
 
@@ -220,6 +234,9 @@ Comprehensive documentation is available in the `/docs` directory:
 - [Writing Tests](./docs/DEVELOPMENT_GUIDE.md#testing-guidelines)
 - [Code Style Guide](./docs/DEVELOPMENT_GUIDE.md#code-style-guidelines)
 - [Coding Standards](./docs/CODING_STANDARDS.md) - Comprehensive linting and style guidelines
+- [Copilot Configuration](./.copilot/README.md) - GitHub Copilot optimization and patterns
+- [VS Code Debugging](./.vscode/DEBUG_SETUP.md) - Complete debugging setup for full-stack development
+- [Sidekiq Setup](./docs/SIDEKIQ_SETUP.md) - Background job processing configuration and usage
 - [Slice Architecture](./docs/SLICE_ARCHITECTURE.md) - Complete guide to slice-based development
 - [Slice Generators](./docs/SLICE_GENERATORS.md) - Quick reference for generator commands
 

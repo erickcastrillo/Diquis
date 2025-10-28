@@ -6,6 +6,34 @@ This document describes the Sidekiq and Redis configuration for background job p
 
 Sidekiq is configured as the background job processor with Redis as the message broker. This setup enables asynchronous task processing for operations like email sending, data processing, and scheduled tasks.
 
+## Quick Start
+
+### Generate Jobs with Our Custom Generator
+
+Use our custom `background_job` generator to create jobs with slice support:
+
+```bash
+# Generate a background job for a specific slice
+rails generate background_job player_stats --slice=Football --type=background --queue=reports
+
+# Generate a cron job
+rails generate background_job match_reminder --slice=Football --type=cron --cron="0 18 * * *" --description="Daily match reminders" --queue=mailers
+
+# Generate both background and cron job
+rails generate background_job team_analytics --slice=Academy --type=both --cron="0 3 * * *" --description="Nightly analytics" --queue=reports
+
+# Generate a regular job without slice
+rails generate background_job notification_cleanup --type=background --queue=maintenance
+```
+
+### Generator Options
+
+- `--slice=SliceName` - Creates job in `app/slices/slice_name/jobs/` (optional)
+- `--type=background|cron|both` - Job type (default: background)
+- `--queue=queue_name` - Target queue (default: default)
+- `--cron="expression"` - Cron expression (required for cron jobs)
+- `--description="text"` - Job description for cron schedule
+
 ## Configuration
 
 ### Gems
@@ -174,6 +202,38 @@ redis-cli
 > LLEN queue:default
 > LRANGE queue:default 0 -1
 ```text
+
+### Custom Generator Benefits
+
+Our `background_job` generator provides several advantages over Rails' default job generator:
+
+- **Slice Support**: Automatically organizes jobs by business domain
+- **Cron Integration**: Creates both job classes and schedule configurations
+- **Best Practices**: Includes retry logic, error handling, and logging
+- **Testing**: Generates RSpec tests with proper job testing patterns
+- **VS Code Integration**: Works with our predefined VS Code tasks
+
+### Generated Files Structure
+
+For slice jobs:
+
+```text
+app/slices/football/jobs/player_stats_job.rb
+spec/slices/football/jobs/player_stats_job_spec.rb
+```
+
+For regular jobs:
+
+```text
+app/jobs/notification_cleanup_job.rb  
+spec/jobs/notification_cleanup_job_spec.rb
+```
+
+Cron jobs also update:
+
+```text
+config/schedule.yml
+```
 
 ## Best Practices
 

@@ -1,0 +1,30 @@
+# Redis Configuration for Development
+#
+# This file provides Redis configuration examples for development.
+# Make sure Redis is running on your system before starting Sidekiq.
+#
+# Installation:
+# - macOS: brew install redis && brew services start redis
+# - Ubuntu: sudo apt-get install redis-server
+# - Docker: docker run -d -p 6379:6379 redis:7-alpine
+#
+# Environment Variables:
+# REDIS_URL=redis://localhost:6379/0 (default)
+# REDIS_URL=redis://localhost:6379/1 (for test environment)
+
+# Development Redis Configuration
+development: &default
+  url: <%= ENV.fetch("REDIS_URL", "redis://localhost:6379/0") %>
+  timeout: 1
+  
+# Test Redis Configuration (separate database)
+test:
+  <<: *default
+  url: <%= ENV.fetch("REDIS_URL", "redis://localhost:6379/1") %>
+
+# Production Redis Configuration
+production:
+  url: <%= ENV.fetch("REDIS_URL") %>
+  timeout: 1
+  pool_timeout: 5
+  size: 25

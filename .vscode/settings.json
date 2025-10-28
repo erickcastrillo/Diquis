@@ -11,9 +11,85 @@
     "editor.rulers": [120]
   },
   "files.associations": {
-    "*.md": "markdown"
+    "*.md": "markdown",
+    "*.rb.erb": "erb",
+    "*.html.erb": "erb"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.markdownlint": "explicit"
+    "source.fixAll.markdownlint": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "ruby": true,
+    "typescript": true,
+    "javascript": true,
+    "typescriptreact": true,
+    "erb": true,
+    "scss": true,
+    "css": true
+  },
+  "github.copilot.editor.enableAutoCompletions": true,
+  "github.copilot.advanced": {
+    "inlineSuggestCount": 3,
+    "listCount": 10
+  },
+  "emmet.includeLanguages": {
+    "erb": "html",
+    "typescript": "typescriptreact"
+  },
+  "editor.formatOnSave": true,
+  "ruby.format": "rubocop",
+  "ruby.lint": {
+    "rubocop": true
+  },
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[erb]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.saveBeforeStart": "allEditorsInActiveGroup",
+  "debug.openDebug": "openOnDebugBreak",
+  "debug.showInlineBreakpointCandidates": true,
+  "debug.showSubSessionsInToolBar": true,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.defaultProfile.osx": "bash",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash",
+      "args": ["-l"]
+    }
+  },
+  "rdbg.useIntegratedTerminal": true,
+  "rdbg.showProtocolLog": false,
+  "files.watcherExclude": {
+    "**/tmp/**": true,
+    "**/log/**": true,
+    "**/node_modules/**": true,
+    "**/vendor/**": true,
+    "**/.git/**": true
   }
 }

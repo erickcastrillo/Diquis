@@ -1,0 +1,73 @@
+# Sidekiq-Cron Job Schedule Configuration
+# 
+# This file defines recurring/scheduled jobs that run automatically.
+# Jobs are defined using cron syntax and reference job classes.
+#
+# Cron Format: "minute hour day month weekday"
+# Examples:
+# - "0 2 * * *"     # Daily at 2:00 AM
+# - "0 */6 * * *"   # Every 6 hours  
+# - "0 9 * * 1"     # Every Monday at 9:00 AM
+# - "*/15 * * * *"  # Every 15 minutes
+#
+# Online cron expression generator: https://crontab.guru/
+
+# Daily maintenance jobs (run at 2 AM)
+daily_maintenance:
+  cron: "0 2 * * *"
+  class: "DailyMaintenanceJob"
+  description: "Daily cleanup and maintenance tasks"
+  queue: "maintenance"
+
+# Hourly statistics update
+hourly_stats_update:
+  cron: "0 * * * *"
+  class: "HourlyStatsJob"
+  description: "Update hourly statistics and metrics"
+  queue: "reports"
+
+# Weekly reports (Mondays at 9 AM)
+weekly_reports:
+  cron: "0 9 * * 1"
+  class: "WeeklyReportJob"
+  description: "Generate and send weekly reports"
+  queue: "reports"
+
+# Monthly data cleanup (1st of month at 3 AM)
+monthly_cleanup:
+  cron: "0 3 1 * *"
+  class: "MonthlyCleanupJob"
+  description: "Monthly data archival and cleanup"
+  queue: "maintenance"
+
+# Health check job (every 5 minutes)
+health_check:
+  cron: "*/5 * * * *"
+  class: "HealthCheckJob"
+  description: "System health monitoring"
+  queue: "monitoring"
+
+# Example development job (every minute in development only)
+development_test:
+  cron: "* * * * *"
+  class: "ExampleJob"
+  description: "Test cron job - development only"
+  queue: "default"
+  args: [999, "Scheduled job test"]
+# Daily match reminder notifications
+football_match_reminder:
+  cron: "0 18 * * *"
+  class: "Football::MatchReminderJob"
+  description: "Daily match reminder notifications"
+  queue: "mailers"
+  # Slice: Football
+
+
+# Nightly team analytics processing
+academy_team_analytics:
+  cron: "0 3 * * *"
+  class: "Academy::TeamAnalyticsJob"
+  description: "Nightly team analytics processing"
+  queue: "reports"
+  # Slice: Academy
+

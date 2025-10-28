@@ -2,12 +2,19 @@
 
 # <%= full_model_name.pluralize %>Controller
 # 
+# Generated controller following Diquis project coding standards:
+# - 2-space indentation (RuboCop compliant)
+# - Method length under 15 lines maximum
+# - Explicit error handling with service layer pattern
+# - Inertia.js integration for React frontend components
+# - RESTful routing with standard actions (index, show, new, create, edit, update, destroy)
+# 
 # Handles HTTP requests for <%= model_name.humanize.pluralize.downcase %> management.
 # Uses Inertia.js for seamless SPA-like experience with server-side routing.
 <% unless skip_academy? -%>
 # 
 # This controller is academy-scoped and requires academy context
-# for all operations to ensure proper multi-tenancy.
+# for all operations to ensure proper multi-tenancy with ActsAsTenant.
 <% else -%>
 # 
 # This controller operates without academy scoping as it's a foundation model.

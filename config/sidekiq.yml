@@ -1,0 +1,45 @@
+# Sidekiq Configuration
+# https://github.com/sidekiq/sidekiq/wiki/Advanced-Options
+
+# Global settings
+:max_retries: 5
+:timeout: 30
+
+# Development environment
+development:
+  :concurrency: 5
+  :queues:
+    - critical
+    - default
+    - low
+  :scheduler:
+    enabled: true
+
+# Test environment  
+test:
+  :concurrency: 1
+  :queues:
+    - default
+  :scheduler:
+    enabled: false
+
+# Production environment
+production:
+  :concurrency: 25
+  :queues:
+    - critical
+    - default
+    - low
+    - mailers
+    - reports
+  :scheduler:
+    enabled: true
+  :max_retries: 10
+  :timeout: 60
+
+# Queue priorities (higher numbers = higher priority)
+# critical: 10
+# default: 5  
+# low: 1
+# mailers: 3
+# reports: 2

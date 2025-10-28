@@ -133,12 +133,6 @@ app/slices/slice_name/
 
 ## Route Structure
 
-- All routes: `/module_name/resources`
-- Example: `/football/categories`
-- Generated automatically with proper namespace
-
-## Route Structure
-
 - All routes: `/app/module_name/resources`
 - Example: `/app/football/categories`
 - Generated automatically with proper namespace using `scope '/app'`

@@ -1,0 +1,39 @@
+<% if slice_module -%>
+module <%= slice_module %>
+  class <%= name.camelize %>Job < ApplicationJob
+<% else -%>
+class <%= name.camelize %>Job < ApplicationJob
+<% end -%>
+    queue_as :<%= @queue_name %>
+
+    # Retry configuration
+    retry_on StandardError, wait: :exponentially_longer, attempts: 3
+    discard_on ActiveJob::DeserializationError
+
+    def perform(*args)
+      # Starting <%= @job_class_name %> with args:
+      
+      # TODO: Implement your job logic here
+      # Example:
+      # process_data(args.first) if args.any?
+      
+      Rails.logger.info "Completed <%= @job_class_name %> successfully"
+    rescue => error
+      Rails.logger.error "Error in <%= @job_class_name %>: #{error.message}"
+      Rails.logger.error error.backtrace.join("\n")
+      raise # Re-raise to trigger retry mechanism
+    end
+
+    private
+
+    # TODO: Add your private methods here
+    # Example:
+    # def process_data(data)
+    #   # Your processing logic
+    # end
+<% if slice_module -%>
+  end
+end
+<% else -%>
+end
+<% end -%>

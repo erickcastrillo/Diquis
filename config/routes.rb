@@ -4,8 +4,12 @@ Rails.application.routes.draw do
     registrations: "auth/registrations"
   }
 
-  scope "/app" do
+  # Sidekiq web UI (development and production)
+  require "sidekiq/web"
+  require "sidekiq/cron/web"
+  mount Sidekiq::Web => "/sidekiq"
 
+  scope "/app" do
   end
 
   # Example Inertia page

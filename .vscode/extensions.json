@@ -1,11 +1,48 @@
 {
   "recommendations": [
+    // Markdown
     "DavidAnson.vscode-markdownlint",
-    "yzhang.markdown-all-in-one",
+    "yzhang.markdown-all-in-one", 
     "shd101wyy.markdown-preview-enhanced",
     "bierner.markdown-mermaid",
+    
+    // Ruby Development & Debugging
     "shopify.ruby-lsp",
     "koichisasada.vscode-rdbg",
-    "bradlc.vscode-tailwindcss"
+    
+    // JavaScript/TypeScript Development  
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.js-debug",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    
+    // React Development
+    "dsznajder.es7-react-js-snippets",
+    "burkeholland.simple-react-snippets",
+    "bradlc.vscode-tailwindcss",
+    
+    // Testing
+    "hbenl.vscode-test-explorer",
+    "connorshea.vscode-ruby-test-adapter",
+    
+    // Git Integration
+    "eamodio.gitlens",
+    "donjayamanne.githistory",
+    
+    // General Development
+    "ms-vscode.live-server",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    
+    // Docker (if using containers)
+    "ms-azuretools.vscode-docker",
+    
+    // Copilot Enhancement
+    "github.copilot",
+    "github.copilot-chat",
+    
+    // Code Quality
+    "streetsidesoftware.code-spell-checker",
+    "shardulm94.trailing-spaces"
   ]
 }

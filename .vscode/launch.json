@@ -1,0 +1,273 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🚀 Start bin/dev (Full Stack)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/dev",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "RUBY_DEBUG_OPEN": "true",
+        "RUBY_DEBUG_HOST": "127.0.0.1",
+        "RUBY_DEBUG_PORT": "12345",
+        "RAILS_ENV": "development"
+      },
+      "presentation": {
+        "group": "development",
+        "order": 1
+      }
+    },
+    {
+      "name": "🚀 Debug bin/dev with Remote Attach",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "rdbg",
+      "args": ["--open", "--host=127.0.0.1", "--port=12345", "--", "${workspaceFolder}/bin/dev"],
+      "askParameters": false,
+      "env": {
+        "RAILS_ENV": "development"
+      },
+      "presentation": {
+        "group": "development",
+        "order": 2
+      }
+    },
+    {
+      "name": "🔧 Debug Rails Server",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "${workspaceFolder}/bin/rails",
+      "args": ["server", "-p", "3000"],
+      "askParameters": false,
+      "env": {
+        "RUBY_DEBUG_OPEN": "true",
+        "RUBY_DEBUG_HOST": "127.0.0.1",
+        "RUBY_DEBUG_PORT": "12345",
+        "RAILS_ENV": "development"
+      },
+      "presentation": {
+        "group": "backend",
+        "order": 1
+      }
+    },
+    {
+      "name": "📎 Attach to Rails Server",
+      "type": "rdbg",
+      "request": "attach",
+      "rdbgPath": "rdbg",
+      "debugPort": "12345",
+      "localfs": true,
+      "showProtocolLog": false,
+      "presentation": {
+        "group": "backend",
+        "order": 2
+      }
+    },
+    {
+      "name": "⚛️ Debug Vite Dev Server",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/vite",
+      "args": ["dev", "--host", "localhost", "--port", "5173"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "VITE_DEBUG": "true"
+      },
+      "presentation": {
+        "group": "frontend",
+        "order": 1
+      }
+    },
+    {
+      "name": "🌐 Debug in Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/app/frontend",
+      "sourceMaps": true,
+      "presentation": {
+        "group": "frontend",
+        "order": 2
+      }
+    },
+    {
+      "name": "🔗 Attach to Chrome",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}/app/frontend",
+      "presentation": {
+        "group": "frontend",
+        "order": 3
+      }
+    },
+    {
+      "name": "🧪 Debug RSpec Tests",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "${workspaceFolder}/bin/rspec",
+      "args": ["${file}"],
+      "askParameters": false,
+      "env": {
+        "RAILS_ENV": "test",
+        "RUBY_DEBUG_OPEN": "true"
+      },
+      "presentation": {
+        "group": "testing",
+        "order": 1
+      }
+    },
+    {
+      "name": "🧪 Debug Current RSpec Test",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "${workspaceFolder}/bin/rspec",
+      "args": ["${file}:${lineNumber}"],
+      "askParameters": false,
+      "env": {
+        "RAILS_ENV": "test",
+        "RUBY_DEBUG_OPEN": "true"
+      },
+      "presentation": {
+        "group": "testing",
+        "order": 2
+      }
+    },
+    {
+      "name": "⚡ Debug Vitest Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/vitest",
+      "args": ["run", "${fileBasenameNoExtension}"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "test",
+        "VITEST_DEBUG": "true"
+      },
+      "presentation": {
+        "group": "testing",
+        "order": 3
+      }
+    },
+    {
+      "name": "📋 Rails Console",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "${workspaceFolder}/bin/rails",
+      "args": ["console"],
+      "askParameters": false,
+      "env": {
+        "RAILS_ENV": "development",
+        "RUBY_DEBUG_OPEN": "true"
+      },
+      "presentation": {
+        "group": "tools",
+        "order": 1
+      }
+    },
+    {
+      "name": "🔄 Debug Sidekiq",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "bundle",
+      "args": ["exec", "sidekiq"],
+      "askParameters": false,
+      "env": {
+        "RAILS_ENV": "development",
+        "RUBY_DEBUG_OPEN": "true",
+        "SIDEKIQ_VERBOSE": "true"
+      },
+      "presentation": {
+        "group": "tools",
+        "order": 2
+      }
+    },
+    {
+      "name": "📅 Debug Sidekiq with Cron",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "bundle",
+      "args": ["exec", "sidekiq", "--require", "./config/environment.rb"],
+      "askParameters": false,
+      "env": {
+        "RAILS_ENV": "development",
+        "RUBY_DEBUG_OPEN": "true",
+        "SIDEKIQ_VERBOSE": "true",
+        "SIDEKIQ_CRON_DEBUG": "true"
+      },
+      "presentation": {
+        "group": "tools",
+        "order": 3
+      }
+    },
+    {
+      "name": "📎 Attach to Sidekiq",
+      "type": "rdbg",
+      "request": "attach",
+      "rdbgPath": "rdbg",
+      "debugPort": "12346",
+      "localfs": true,
+      "showProtocolLog": false,
+      "presentation": {
+        "group": "tools",
+        "order": 4
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🚀 Full Stack Debug",
+      "configurations": [
+        "🔧 Debug Rails Server",
+        "⚛️ Debug Vite Dev Server"
+      ],
+      "presentation": {
+        "group": "development",
+        "order": 2
+      },
+      "stopAll": true
+    },
+    {
+      "name": "🔍 Full Stack + Browser Debug",
+      "configurations": [
+        "🔧 Debug Rails Server",
+        "⚛️ Debug Vite Dev Server", 
+        "🌐 Debug in Chrome"
+      ],
+      "presentation": {
+        "group": "development",
+        "order": 3
+      },
+      "stopAll": true
+    },
+    {
+      "name": "🚀 Debug bin/dev + Attach",
+      "configurations": [
+        "🚀 Debug bin/dev with Remote Attach"
+      ],
+      "presentation": {
+        "group": "development",
+        "order": 4
+      },
+      "stopAll": true
+    },
+    {
+      "name": "🔄 Full Stack + Sidekiq Debug",
+      "configurations": [
+        "🔧 Debug Rails Server",
+        "⚛️ Debug Vite Dev Server",
+        "🔄 Debug Sidekiq"
+      ],
+      "presentation": {
+        "group": "development",
+        "order": 5
+      },
+      "stopAll": true
+    }
+  ]
+}

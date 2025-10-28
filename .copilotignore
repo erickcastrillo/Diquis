@@ -1,0 +1,34 @@
+# Copilot ignore file - exclude files that shouldn't influence code suggestions
+
+# Dependencies and build artifacts
+node_modules/
+vendor/
+tmp/
+log/
+.git/
+coverage/
+public/assets/
+public/packs/
+
+# Generated files that might contain noise
+db/schema.rb
+db/structure.sql
+
+# Configuration files with sensitive data
+config/master.key
+config/credentials.yml.enc
+.env
+.env.*
+
+# Documentation (we want specific examples, not general docs)
+docs/
+README.md
+CHANGELOG.md
+
+# Test fixtures that might not represent good patterns
+test/fixtures/
+spec/fixtures/
+
+# Storage and cache
+storage/
+tmp/cache/
