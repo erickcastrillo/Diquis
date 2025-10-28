@@ -3,6 +3,12 @@ import { createElement, ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
+// Import Phoenix theme styles
+import '../stylesheets/application.scss'
+
+// Import Phoenix theme provider
+import { PhoenixProvider } from '../hooks/usePhoenix'
+
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
   default: any
@@ -36,7 +42,9 @@ createInertiaApp({
 
   setup({ el, App, props }) {
     if (el) {
-      createRoot(el).render(createElement(App, props))
+      createRoot(el).render(
+        createElement(PhoenixProvider, { children: createElement(App, props) })
+      )
     } else {
       console.error(
         'Missing root element.\n\n' +
