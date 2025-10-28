@@ -3,9 +3,9 @@
 /* -------------------------------------------------------------------------- */
 import { ganttData } from './gantt-data';
 import {
-  formatDate,
-  ganttConfigColumnsData,
-  taskTextHandler
+    formatDate,
+    ganttConfigColumnsData,
+    taskTextHandler
 } from './layout-config';
 
 const { gantt } = window;
