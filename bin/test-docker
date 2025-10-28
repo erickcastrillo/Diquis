@@ -1,0 +1,84 @@
+#!/bin/bash
+# Test runner script for Docker environment
+
+set -e
+
+# Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+print_status() {
+    echo -e "${GREEN}✓${NC} $1"
+}
+
+print_info() {
+    echo -e "${YELLOW}ℹ${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}✗${NC} $1"
+}
+
+echo "🧪 Running tests in Docker environment..."
+
+# Check if Docker services are running
+if ! docker compose ps | grep -q "Up"; then
+    print_info "Starting Docker services..."
+    ./docker-dev up
+    sleep 10
+fi
+
+# Set up test database
+print_info "Setting up test database..."
+docker compose exec -e RAILS_ENV=test -e DATABASE_URL=postgresql://diquis_user:diquis_password@postgres:5432/diquis_test web bash -c "
+    bundle exec rails db:drop db:create db:migrate 2>/dev/null || bundle exec rails db:create db:migrate
+"
+
+if [ $? -eq 0 ]; then
+    print_status "Test database ready"
+else
+    print_error "Failed to set up test database"
+    exit 1
+fi
+
+# Run tests based on argument
+case "${1:-rspec}" in
+    rspec)
+        print_info "Running RSpec tests..."
+        docker compose exec -e RAILS_ENV=test -e DATABASE_URL=postgresql://diquis_user:diquis_password@postgres:5432/diquis_test web bundle exec rspec "${@:2}"
+        ;;
+    rails)
+        print_info "Running Rails tests..."
+        docker compose exec -e RAILS_ENV=test -e DATABASE_URL=postgresql://diquis_user:diquis_password@postgres:5432/diquis_test web bundle exec rails test "${@:2}"
+        ;;
+    system)
+        print_info "Running system tests..."
+        docker compose exec -e RAILS_ENV=test -e DATABASE_URL=postgresql://diquis_user:diquis_password@postgres:5432/diquis_test web bundle exec rails test:system "${@:2}"
+        ;;
+    all)
+        print_info "Running all tests..."
+        docker compose exec -e RAILS_ENV=test -e DATABASE_URL=postgresql://diquis_user:diquis_password@postgres:5432/diquis_test web bash -c "
+            bundle exec rspec && bundle exec rails test
+        "
+        ;;
+    *)
+        echo "Usage: $0 [rspec|rails|system|all] [additional args]"
+        echo ""
+        echo "Examples:"
+        echo "  $0 rspec                    # Run RSpec tests"
+        echo "  $0 rspec spec/models/       # Run specific RSpec tests"
+        echo "  $0 rails                    # Run Rails tests"
+        echo "  $0 system                   # Run system tests"
+        echo "  $0 all                      # Run all tests"
+        exit 1
+        ;;
+esac
+
+if [ $? -eq 0 ]; then
+    print_status "Tests completed successfully! 🎉"
+else
+    print_error "Tests failed!"
+    exit 1
+fi

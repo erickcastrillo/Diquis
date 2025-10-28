@@ -7,7 +7,7 @@ module Football
     discard_on ActiveJob::DeserializationError
 
     def perform(*args)
-      # Starting Football::PlayerStatsJob with args:
+      Rails.logger.info "Starting Football::PlayerStatsJob with args: #{args.inspect}"
 
       # TODO: Implement your job logic here
       # Example:

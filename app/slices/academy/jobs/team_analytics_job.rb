@@ -7,7 +7,7 @@ module Academy
     discard_on ActiveJob::DeserializationError
 
     def perform(*args)
-      # Starting Academy::TeamAnalyticsJob with args:
+      Rails.logger.info "Starting Academy::TeamAnalyticsJob with args: #{args.inspect}"
 
       # TODO: Implement your job logic here
       # Example:

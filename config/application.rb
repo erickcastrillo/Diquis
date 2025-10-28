@@ -24,6 +24,10 @@ module Diquis
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Add slice directories to autoload paths
+    config.autoload_paths += Dir.glob("#{Rails.root}/app/slices/*/")
+    config.eager_load_paths += Dir.glob("#{Rails.root}/app/slices/*/") if Rails.env.production?
+
     # Configure generators for slice-based architecture
     config.generators do |g|
       # Generate specs in slice directories instead of central spec folder

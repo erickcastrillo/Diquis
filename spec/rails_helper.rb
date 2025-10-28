@@ -60,6 +60,10 @@ RSpec.configure do |config|
   # Configure database cleaner
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
+
+    # Disable safeguard for Docker environment
+    DatabaseCleaner.allow_remote_database_url = true if ENV['DATABASE_URL']&.include?('postgres:5432')
+
     DatabaseCleaner.clean_with(:truncation)
   end
 
