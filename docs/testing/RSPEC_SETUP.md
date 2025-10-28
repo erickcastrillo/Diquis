@@ -399,7 +399,7 @@ bundle exec rspec --format documentation   # Detailed output
 
 Create `.rspec` file in project root:
 
-```
+```txt
 --require spec_helper
 --format documentation
 --color
@@ -425,7 +425,7 @@ bundle exec parallel_rspec app/slices/
 
 With the updated generator, your slice structure will look like:
 
-```
+```txt
 app/slices/product/products/
 ├── controllers/
 ├── services/

@@ -186,19 +186,19 @@ To finish the full documentation migration, the following documents should be cr
 
 ### Medium Priority
 
-4. **API_DOCUMENTATION.md** (aspnet/ and django/)
+1. **API_DOCUMENTATION.md** (aspnet/ and django/)
    - All API endpoints
    - Request/response examples
    - Error codes
    - Swagger/OpenAPI setup
 
-5. **DEVELOPMENT_GUIDE.md** (aspnet/ and django/)
+2. **DEVELOPMENT_GUIDE.md** (aspnet/ and django/)
    - Development workflows
    - Testing guidelines
    - Code style and linting
    - Git workflow
 
-6. **DEPLOYMENT_GUIDE.md** (aspnet/ and django/)
+3. **DEPLOYMENT_GUIDE.md** (aspnet/ and django/)
    - Docker setup
    - Cloud deployment (Azure/AWS)
    - Environment configuration
@@ -206,7 +206,7 @@ To finish the full documentation migration, the following documents should be cr
 
 ### Lower Priority
 
-7. Feature-specific docs:
+1. Feature-specific docs:
    - `FEATURE_PLAYER_MANAGEMENT.md`
    - `FEATURE_TEAM_MANAGEMENT.md`
    - `FEATURE_TRAINING_MANAGEMENT.md`
