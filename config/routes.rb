@@ -4,10 +4,8 @@ Rails.application.routes.draw do
     registrations: "auth/registrations"
   }
 
-  namespace :app do
-    namespace :football do
-      resources :academies
-    end
+  scope "/app" do
+
   end
 
   # Example Inertia page

@@ -40,7 +40,7 @@ namespace :slice do
     puts "  rails generate model ModelName --slice=#{slice_name}"
     puts "\nTo generate a factory in this slice:"
     puts "  rails slice:factory[#{slice_name},model_name]"
-    puts "\nRoute namespace added: /app/#{slice_name}"
+    puts "\nRoute namespace added: /#{slice_name}"
   end
 
   desc "Generate a factory in a specific slice"
@@ -86,7 +86,7 @@ namespace :slice do
     end
 
     add_resource_to_slice(slice_name, resource_name)
-    puts "Added resource :#{resource_name} to /app/#{slice_name} namespace"
+    puts "Added resource :#{resource_name} to /#{slice_name} namespace"
   end
 
   desc "List all slices"
@@ -115,28 +115,27 @@ namespace :slice do
     routes_file = Rails.root.join("config", "routes.rb")
     routes_content = File.read(routes_file)
 
-    # Check if app namespace already exists
-    if routes_content.include?("namespace :app do")
-      # Find the app namespace and add the new slice namespace inside it
-      # Look for the pattern that includes nested namespaces
-      app_namespace_pattern = /(namespace :app do\s*\n)((?:.*\n)*?)(\s*end)/m
+    # Check if the slice namespace already exists
+    namespace_route = "namespace :#{slice_name} do"
 
-      if routes_content.match(app_namespace_pattern)
-        new_namespace = "    \n    namespace :#{slice_name} do\n      # Add resources here\n      # Example: resources :models\n    end"
+    if routes_content.include?(namespace_route)
+      puts "Namespace :#{slice_name} already exists"
+      return
+    end
 
-        # Insert the new namespace before the closing 'end' of the app namespace
-        routes_content.gsub!(app_namespace_pattern) do |match|
-          opening = $1
-          content = $2
-          closing = $3
-          "#{opening}#{content}#{new_namespace}\n#{closing}"
-        end
+    # Check if we have the app scope structure
+    app_scope_pattern = /scope '\/app' do\s*\n((?:.*\n)*?)\s*end/m
+
+    if routes_content.match(app_scope_pattern)
+      # Add new namespace within existing app scope
+      routes_content.gsub!(/(scope '\/app' do\s*\n)/) do |match|
+        "#{match}    namespace :#{slice_name} do\n      # Add resources here\n      # Example: resources :models\n    end\n\n"
       end
     else
-      # Create the app namespace with the slice namespace inside
+      # Create new app scope with namespace
       new_content = <<~RUBY
 
-        namespace :app do
+        scope '/app' do
           namespace :#{slice_name} do
             # Add resources here
             # Example: resources :models
@@ -160,7 +159,7 @@ namespace :slice do
     routes_file = Rails.root.join("config", "routes.rb")
     routes_content = File.read(routes_file)
 
-    # Find the slice namespace and add the resource
+    # Find the slice namespace and add the resource (within app scope)
     slice_namespace_pattern = /(namespace :#{slice_name} do\s*\n)((?:.*\n)*?)(\s*end)/m
 
     if routes_content.match(slice_namespace_pattern)

@@ -6,33 +6,92 @@ This document describes the slice-based architecture generators and tools availa
 
 The slice-based architecture organizes code by business domain rather than technical layers. Each slice contains all the components needed for a specific feature or domain area, including models, controllers, services, views, tests, and factories.
 
-## Directory Structure
+## Two Approaches
 
-Each slice follows this structure:
+### Approach 1: Complete Slice Generation (Recommended)
 
-```txt
-app/slices/[slice_name]/
-├── controllers/          # Controllers specific to this slice
-├── models/              # Models specific to this slice
-├── services/            # Business logic services
-├── views/               # View templates
-└── spec/
-    ├── controllers/     # Controller specs
-    ├── models/          # Model specs
-    ├── services/        # Service specs
-    ├── factories/       # FactoryBot factories
-    └── support/         # Test support files
+Use `rails generate slice ModuleName::ModelName` to create a complete, production-ready slice with model, controller, service, serializer, policy, React components, tests, migration, and routes all in one command.
+
+### Approach 2: Manual Slice Building  
+
+Use the individual `rails slice:*` commands to build slices piece by piece - first create the structure, then manually add models, controllers, and routes as needed.
+
+## Available Generators
+
+### 1. Complete Slice Generator (Recommended)
+
+**Command:**
+
+```bash
+rails generate slice ModuleName::ModelName attribute:type attribute2:type
 ```
 
-## Available Commands
+This is the **preferred method** for creating slices as it generates a complete, production-ready slice with all necessary components.
 
-### 1. Generate a New Slice
+**Example:**
 
-Create a complete slice structure with all necessary directories and route namespace.
+```bash
+rails generate slice Football::Categories name:string description:text
+```
+
+**What it generates:**
+
+1. **Database Migration** - With proper module-based table naming
+2. **Model** - With Academy multi-tenancy, validations, and associations
+3. **Service Layer** - Complete CRUD operations with error handling
+4. **Controller** - Inertia.js-based with proper authorization
+5. **Serializer** - For consistent API responses
+6. **Policy** - Pundit authorization rules
+7. **React Components** - Index, Show, Form with TypeScript
+8. **Complete Test Suite** - RSpec + Vitest tests
+9. **Routes** - Automatic namespace and resource routes
+
+**Directory Structure Created:**
+
+```txt
+app/slices/football/categories/
+├── controllers/
+│   └── categories_controller.rb
+├── services/
+│   └── categories_service.rb  
+├── models/
+│   └── categories.rb
+├── serializers/
+│   └── categories_serializer.rb
+├── policies/
+│   └── categories_policy.rb
+└── specs/
+    ├── categories_spec.rb
+    ├── categories_service_spec.rb
+    ├── categories_controller_spec.rb
+    └── categories_policy_spec.rb
+
+app/controllers/football/
+└── categories_controller.rb  # Copy for Rails routing
+
+app/frontend/pages/Football/Categories/
+├── Index.tsx
+├── Show.tsx
+├── Form.tsx
+├── types.ts
+└── __tests__/
+    ├── Index.test.tsx
+    ├── Show.test.tsx
+    └── Form.test.tsx
+
+db/migrate/
+└── xxx_create_football_categories.rb
+```
+
+### 2. Basic Slice Structure Generator
+
+**Command:**
 
 ```bash
 rails slice:generate[slice_name]
 ```
+
+Creates only the basic directory structure without any models or controllers.
 
 **Example:**
 
@@ -46,7 +105,7 @@ rails slice:generate[user_management]
 - Adds a route namespace in `config/routes.rb` under the `app` namespace
 - Creates `.keep` files to ensure empty directories are tracked by Git
 
-**Output:**
+**Basic Structure Created:**
 
 ```txt
 Generated slice: user_management
@@ -73,7 +132,7 @@ namespace :app do
 end
 ```
 
-### 2. Generate a Factory in a Slice
+### 3. Generate a Factory in a Slice
 
 Create a FactoryBot factory within a specific slice.
 
@@ -107,7 +166,7 @@ FactoryBot.define do
 end
 ```
 
-### 3. Add a Resource Route to a Slice
+### 4. Add a Resource Route to a Slice
 
 Add a resource route to an existing slice namespace.
 
@@ -147,7 +206,7 @@ namespace :app do
 end
 ```
 
-### 4. List All Slices
+### 5. List All Slices
 
 Display all available slices in the application.
 

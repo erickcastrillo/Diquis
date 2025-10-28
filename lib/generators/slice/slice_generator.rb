@@ -120,16 +120,26 @@ class SliceGenerator < Rails::Generators::Base
       namespace_route = "namespace :#{namespace_name} do"
       routes_content = File.read("config/routes.rb")
 
-      if routes_content.include?(namespace_route)
-        # Add resource to existing namespace
+      # Check if we have the app scope structure
+      app_scope_pattern = /scope '\/app' do\s*\n((?:.*\n)*?)\s*end/m
+
+      if routes_content.match(app_scope_pattern) && routes_content.include?(namespace_route)
+        # Add resource to existing namespace within app scope
         inject_into_file "config/routes.rb", after: namespace_route do
-          "\n    resources :#{model_name.underscore.pluralize}"
+          "\n      resources :#{model_name.underscore.pluralize}"
+        end
+      elsif routes_content.match(app_scope_pattern)
+        # Add new namespace within existing app scope
+        inject_into_file "config/routes.rb", after: "scope '/app' do" do
+          "\n    namespace :#{namespace_name} do\n      resources :#{model_name.underscore.pluralize}\n    end"
         end
       else
-        # Create new namespace
+        # Create new app scope with namespace
         route_content = <<~ROUTE
-          namespace :#{namespace_name} do
-            resources :#{model_name.underscore.pluralize}
+          scope '/app' do
+            namespace :#{namespace_name} do
+              resources :#{model_name.underscore.pluralize}
+            end
           end
         ROUTE
         route route_content
