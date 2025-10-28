@@ -381,16 +381,19 @@ When writing code manually (not generated), ensure:
 ### Common Linting Issues
 
 **RuboCop:**
+
 - Line too long → Break into multiple lines
 - Missing frozen string literal → Add to top of file
 - Trailing whitespace → Remove extra spaces
 
 **ESLint:**
+
 - Unused variables → Remove or prefix with underscore
 - Missing types → Add TypeScript interfaces
 - Inconsistent quotes → Use single quotes consistently
 
 **ERB Lint:**
+
 - Invalid HTML → Fix tag structure
 - Missing labels → Add proper form labels
 - Accessibility issues → Add ARIA attributes

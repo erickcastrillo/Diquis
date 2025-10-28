@@ -319,6 +319,7 @@ bundle exec rspec app/slices/user_management/spec/models/profile_spec.rb
 All generated code follows strict linting standards to ensure consistency and maintainability:
 
 #### Ruby Code (RuboCop)
+
 ```ruby
 # ✅ Correct: Frozen string literal at top
 # frozen_string_literal: true
@@ -348,6 +349,7 @@ end
 ```
 
 #### TypeScript/React (ESLint + Prettier)
+
 ```typescript
 // ✅ Correct: Proper imports, interface definitions
 import React from 'react';
@@ -375,6 +377,7 @@ export default function Index({ examples, academy }: ExampleProps) {
 ```
 
 #### ERB Templates
+
 ```erb
 <%# ✅ Correct: Proper indentation and HTML structure %>
 <div class="example-form">
@@ -394,6 +397,7 @@ export default function Index({ examples, academy }: ExampleProps) {
 ### Generated Code Standards
 
 #### 1. Ruby Files
+
 - **Frozen string literals**: All Ruby files start with `# frozen_string_literal: true`
 - **Indentation**: 2 spaces, no tabs
 - **Method length**: Maximum 10-15 lines per method
@@ -403,6 +407,7 @@ export default function Index({ examples, academy }: ExampleProps) {
 - **Error handling**: Explicit error handling with service layer pattern
 
 #### 2. JavaScript/TypeScript Files
+
 - **Formatting**: Prettier-compliant with 2-space indentation
 - **Types**: Full TypeScript coverage with interface definitions
 - **Imports**: Sorted alphabetically, unused imports removed
@@ -411,12 +416,14 @@ export default function Index({ examples, academy }: ExampleProps) {
 - **Hooks**: Follow React hooks rules and best practices
 
 #### 3. CSS/SCSS Files
+
 - **Property ordering**: Logical grouping (positioning, box model, typography, visual)
 - **Nesting**: Maximum 3 levels deep
 - **Variables**: Use CSS custom properties or SCSS variables
 - **Naming**: BEM methodology or consistent class naming convention
 
 #### 4. Template Files (ERB)
+
 - **HTML5**: Valid markup with proper semantic elements
 - **Indentation**: 2 spaces consistent with Ruby code
 - **Accessibility**: ARIA labels and semantic HTML
@@ -425,6 +432,7 @@ export default function Index({ examples, academy }: ExampleProps) {
 ### Quality Assurance
 
 #### Pre-commit Hooks
+
 ```bash
 # Ruby linting
 bundle exec rubocop --auto-correct
@@ -437,6 +445,7 @@ bundle exec erblint --lint-all --autocorrect
 ```
 
 #### Continuous Integration
+
 - All generated code passes linting in CI/CD pipeline
 - Automated formatting checks prevent non-compliant code
 - Style guide violations fail the build

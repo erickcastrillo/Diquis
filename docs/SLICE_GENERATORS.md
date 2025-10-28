@@ -161,6 +161,7 @@ app/slices/slice_name/
 All generated code follows these linting standards:
 
 ### Ruby (RuboCop)
+
 - 2-space indentation
 - Frozen string literals
 - Method length limits
@@ -168,22 +169,26 @@ All generated code follows these linting standards:
 - No trailing whitespace
 
 ### ERB Templates
+
 - Proper HTML structure
 - Consistent indentation
 - Valid HTML5 markup
 
 ### TypeScript/React (ESLint)
+
 - Consistent formatting with Prettier
 - TypeScript strict mode compliance
 - React hooks best practices
 - No unused variables or imports
 
 ### CSS/SCSS
+
 - Consistent property ordering
 - No duplicate selectors
 - Proper nesting limits
 
 ### Generated Code Validation
+
 - All templates include linting compliance
 - Automatic code formatting applied
 - Style guide adherence verified
