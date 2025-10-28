@@ -12,6 +12,7 @@
  */
 
 import { Head, Link } from '@inertiajs/react'
+import { Fragment } from 'react'
 import { <%= model_name.camelize %>Type } from './types'
 
 interface Props {
@@ -24,37 +25,37 @@ interface Props {
 
 export default function Show({ <%= model_name.underscore %>, academy }: Props) {
   return (
-    <>
+    <Fragment>
       <Head title={<%= model_name.underscore %>.name} />
       
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <div className="flex justify-between items-start mb-6">
+      <div className="card">
+        <div className="card-body">
+          <div className="d-flex justify-content-between align-items-start mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              <h1 className="h2 mb-2">
                 {<%= model_name.underscore %>.name}
               </h1>
 <% if attributes.any? { |attr| attr[:name] == 'is_active' } -%>
-              <span className={`px-2 py-1 text-xs font-medium rounded-full ${ 
+              <span className={`badge ${
                 <%= model_name.underscore %>.is_active 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-red-100 text-red-800'
+                  ? 'bg-success' 
+                  : 'bg-danger'
               }`}>
                 {<%= model_name.underscore %>.is_active ? 'Active' : 'Inactive'}
               </span>
 <% end -%>
             </div>
             
-            <div className="flex space-x-3">
+            <div className="d-flex gap-2">
               <Link
                 href={`/<%= model_name.underscore.pluralize %>/${<%= model_name.underscore %>.id}/edit`}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                className="btn btn-primary"
               >
                 Edit
               </Link>
               <Link
                 href="/<%= model_name.underscore.pluralize %>"
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium"
+                className="btn btn-secondary"
               >
                 Back to List
               </Link>
@@ -62,42 +63,36 @@ export default function Show({ <%= model_name.underscore %>, academy }: Props) {
           </div>
 
           {/* Details Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Details</h3>
-              <dl className="space-y-3">
+          <div className="row">
+            <div className="col-md-6">
+              <h3 className="h5 mb-3">Details</h3>
+              <dl className="row">
 <% attributes.each do |attr| -%>
 <% next if attr[:name] == 'name' -%>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500"><%= attr[:name].humanize %></dt>
-                  <dd className="mt-1 text-sm text-gray-900">
+                <dt className="col-sm-4 text-muted"><%= attr[:name].humanize %></dt>
+                <dd className="col-sm-8">
 <% if attr[:type] == 'boolean' -%>
-                    {<%= model_name.underscore %>.<%= attr[:name] %> ? 'Yes' : 'No'}
+                  {<%= model_name.underscore %>.<%= attr[:name] %> ? 'Yes' : 'No'}
 <% elsif attr[:type] == 'text' -%>
-                    {<%= model_name.underscore %>.<%= attr[:name] %> || 'Not provided'}
+                  {<%= model_name.underscore %>.<%= attr[:name] %> || 'Not provided'}
 <% else -%>
-                    {<%= model_name.underscore %>.<%= attr[:name] %> || 'Not provided'}
+                  {<%= model_name.underscore %>.<%= attr[:name] %> || 'Not provided'}
 <% end -%>
-                  </dd>
-                </div>
+                </dd>
 <% end -%>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Created</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {new Date(<%= model_name.underscore %>.created_at).toLocaleDateString()}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Last Updated</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {new Date(<%= model_name.underscore %>.updated_at).toLocaleDateString()}
-                  </dd>
-                </div>
+                <dt className="col-sm-4 text-muted">Created</dt>
+                <dd className="col-sm-8">
+                  {new Date(<%= model_name.underscore %>.created_at).toLocaleDateString()}
+                </dd>
+                <dt className="col-sm-4 text-muted">Last Updated</dt>
+                <dd className="col-sm-8">
+                  {new Date(<%= model_name.underscore %>.updated_at).toLocaleDateString()}
+                </dd>
               </dl>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   )
 }

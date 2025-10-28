@@ -1,6 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react'
 import { createElement, ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import Layout from '../pages/Layout'
 
 // Temporary type definition, until @inertiajs/react provides one

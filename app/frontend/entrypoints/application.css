@@ -1,4 +1,11 @@
-@import "tailwindcss";
+/* Import Bootstrap CSS */
+@import "bootstrap/dist/css/bootstrap.min.css";
 
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/forms";
+/* Custom application styles */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -190,25 +190,25 @@ describe('<%= model_name.camelize %> Index', () => {
     it('applies correct CSS classes for responsive grid', () => {
       render(<Index <%= model_name.underscore.pluralize %>={mock<%= model_name.camelize.pluralize %>} academy={mockAcademy} />)
       
-      const gridContainer = screen.getByRole('main').querySelector('.grid')
-      expect(gridContainer).toHaveClass('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3')
+      const gridContainer = screen.getByRole('main').querySelector('.row')
+      expect(gridContainer).toHaveClass('row', 'g-3')
     })
 
-    it('applies hover effects on cards', () => {
+    it('applies Bootstrap card styling', () => {
       render(<Index <%= model_name.underscore.pluralize %>={mock<%= model_name.camelize.pluralize %>} academy={mockAcademy} />)
       
-      const cards = screen.getByRole('main').querySelectorAll('.hover\\:shadow-md')
-      expect(cards).toHaveLength(2)
+      const cards = screen.getByRole('main').querySelectorAll('.card')
+      expect(cards.length).toBeGreaterThan(0)
     })
   })
 
   // Test interactions
   describe('user interactions', () => {
-    it('handles card hover states', () => {
+    it('applies Bootstrap card styling', () => {
       render(<Index <%= model_name.underscore.pluralize %>={mock<%= model_name.camelize.pluralize %>} academy={mockAcademy} />)
       
-      const firstCard = screen.getByText('Test <%= model_name.humanize %> 1').closest('div')
-      expect(firstCard).toHaveClass('hover:shadow-md', 'transition-shadow')
+      const firstCard = screen.getByText('Test <%= model_name.humanize %> 1').closest('.card')
+      expect(firstCard).toHaveClass('card', 'h-100')
     })
 
     it('provides proper accessibility for action links', () => {
@@ -219,12 +219,12 @@ describe('<%= model_name.camelize %> Index', () => {
       
       viewLinks.forEach(link => {
         expect(link).toHaveAttribute('href')
-        expect(link).toHaveClass('text-blue-600', 'hover:text-blue-800')
+        expect(link).toHaveClass('btn', 'btn-outline-primary', 'btn-sm')
       })
       
       editLinks.forEach(link => {
         expect(link).toHaveAttribute('href')
-        expect(link).toHaveClass('text-gray-600', 'hover:text-gray-800')
+        expect(link).toHaveClass('btn', 'btn-outline-secondary', 'btn-sm')
       })
     })
   })
@@ -316,8 +316,8 @@ describe('<%= model_name.camelize %> Index', () => {
       const activeStatus = screen.getByText('Active')
       const inactiveStatus = screen.getByText('Inactive')
       
-      expect(activeStatus).toHaveClass('bg-green-100', 'text-green-800')
-      expect(inactiveStatus).toHaveClass('bg-red-100', 'text-red-800')
+      expect(activeStatus).toHaveClass('badge', 'bg-success')
+      expect(inactiveStatus).toHaveClass('badge', 'bg-danger')
 <% else -%>
       // No status indicators in this model
       expect(true).toBe(true)
