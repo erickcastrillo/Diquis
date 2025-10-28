@@ -41,6 +41,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # RSpec testing framework
+  gem "rspec-rails", "~> 6.1"
+  gem "factory_bot_rails", "~> 6.4"
+  gem "faker", "~> 3.2"
 end
 
 group :development do
@@ -52,8 +57,18 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # RSpec additional testing gems
+  gem "shoulda-matchers", "~> 5.3"
+  gem "database_cleaner-active_record", "~> 2.1"
+  gem "pundit-matchers", "~> 3.1"
+  gem "webmock", "~> 3.18"
+  gem "timecop", "~> 0.9"
 end
 
 gem "inertia_rails", "~> 3.11"
 
 gem "vite_rails", "~> 3.0"
+
+# Authentication
+gem "devise", "~> 4.9"

@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+    sessions: "auth/sessions",
+    registrations: "auth/registrations"
+  }
+
   # Example Inertia page
   get "inertia-example", to: "inertia_example#index"
 
