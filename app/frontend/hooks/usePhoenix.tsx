@@ -10,7 +10,7 @@ import {
   getStoredConfig,
   initialConfig,
   setStoredConfig,
-} from "../utils/config";
+} from "../utils/config.ts";
 
 interface PhoenixContextType {
   config: PhoenixConfig;
