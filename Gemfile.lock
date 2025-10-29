@@ -243,7 +243,7 @@ GEM
     public_suffix (6.0.2)
     puma (7.1.0)
       nio4r (~> 2.0)
-    pundit-matchers (3.1.2)
+    pundit-matchers (4.0.0)
       rspec-core (~> 3.12)
       rspec-expectations (~> 3.12)
       rspec-mocks (~> 3.12)
@@ -469,7 +469,7 @@ DEPENDENCIES
   kamal
   pg (~> 1.1)
   puma (>= 5.0)
-  pundit-matchers (~> 3.1)
+  pundit-matchers (~> 4.0)
   rails (~> 8.1.0)
   redis (~> 5.0)
   rspec-rails (~> 6.1)
