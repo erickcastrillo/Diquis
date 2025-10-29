@@ -77,6 +77,6 @@ gem "vite_rails", "~> 3.0"
 gem "devise", "~> 4.9"
 
 # Background job processing
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron", "~> 1.12"
 gem "redis", "~> 5.0"
