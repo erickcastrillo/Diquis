@@ -64,7 +64,7 @@ group :test do
   # RSpec additional testing gems
   gem "shoulda-matchers", "~> 6.5"
   gem "database_cleaner-active_record", "~> 2.1"
-  gem "pundit-matchers", "~> 3.1"
+  gem "pundit-matchers", "~> 4.0"
   gem "webmock", "~> 3.18"
   gem "timecop", "~> 0.9"
 end
