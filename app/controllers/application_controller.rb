@@ -10,12 +10,10 @@ class ApplicationController < ActionController::Base
   inertia_share do
     {
       locale: I18n.locale.to_s,
-      available_locales: I18n.available_locales.map { |locale|
-        {
-          code: locale.to_s,
-          name: I18n.t("locale_name", locale: locale, default: locale.to_s.upcase)
-        }
-      },
+      available_locales: [
+        { code: "en", name: I18n.with_locale(:en) { I18n.t("locale_name") }, flag: "🇬🇧" },
+        { code: "es", name: I18n.with_locale(:es) { I18n.t("locale_name") }, flag: "🇪🇸" }
+      ],
       # Share specific namespaces needed by frontend
       translations: {
         app: I18n.t("app", default: {}),

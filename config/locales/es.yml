@@ -4,6 +4,168 @@ es:
   app:
     name: "Diquis"
     
+    landing:
+      nav:
+        features: "Características"
+        pricing: "Precios"
+        documentation: "Documentación"
+        api_reference: "Referencia API"
+        github: "GitHub"
+        login: "Iniciar Sesión"
+      hero:
+        title: "Gestión de Academia de Fútbol"
+        subtitle: "Simple y Poderosa"
+        description: "Gestiona jugadores, equipos y sesiones de entrenamiento con %{app_name} - la plataforma multi-inquilino completa construida para academias de fútbol en todo el mundo."
+        social_proof: "Amado por grandes clientes"
+        cta_start_trial: "Iniciar Prueba Gratuita"
+        cta_view_docs: "Ver Documentación"
+      features:
+        section_label: "CARACTERÍSTICAS"
+        title: "Todo lo que necesitas para gestionar tu academia de fútbol"
+        subtitle: "Herramientas completas para gestión de jugadores, organización de equipos, programación de entrenamientos y análisis de rendimiento - todo en una plataforma."
+        player_management:
+          title: "Gestión de Jugadores"
+          description: "Perfiles completos de jugadores con registro, seguimiento de habilidades y análisis de rendimiento en todas las categorías de edad."
+        team_organization:
+          title: "Organización de Equipos"
+          description: "Crea y gestiona equipos con asignaciones de plantilla, formaciones y herramientas de gestión de escuadra."
+        training_sessions:
+          title: "Sesiones de Entrenamiento"
+          description: "Programa sesiones de entrenamiento con seguimiento automatizado de asistencia y detección de conflictos."
+        multi_tenancy:
+          title: "Multi-Inquilino"
+          description: "Aislamiento completo de datos para cada academia con gestión segura basada en inquilinos."
+        analytics:
+          title: "Análisis e Informes"
+          description: "Paneles completos para rastrear el rendimiento de jugadores, asistencia y métricas de la academia."
+        asset_management:
+          title: "Gestión de Activos"
+          description: "Rastrea equipamiento, uniformes e inventario con herramientas completas de gestión de activos."
+      pricing:
+        section_label: "PRECIOS"
+        title: "Elige el plan adecuado para tu academia"
+        subtitle: "Opciones de precios flexibles diseñadas para academias de todos los tamaños. Comienza gratis y escala a medida que creces."
+        starter:
+          name: "INICIAL"
+          price: "0"
+          description: "Perfecto para pequeñas academias que comienzan con la gestión de jugadores y equipos."
+          feature_1: "Hasta 50 Jugadores"
+          feature_2: "5 Equipos"
+          feature_3: "Gestión Básica de Entrenamientos"
+          feature_4: "Soporte por Email"
+          cta: "Comenzar Gratis"
+        growth:
+          name: "CRECIMIENTO"
+          price: "49"
+          description: "Para academias medianas listas para escalar con más jugadores y características avanzadas."
+          feature_1: "Hasta 200 Jugadores"
+          feature_2: "15 Equipos"
+          feature_3: "Gestión Completa de Entrenamientos"
+          feature_4: "Análisis de Rendimiento"
+          cta: "Comenzar"
+        professional:
+          name: "PROFESIONAL"
+          price: "99"
+          description: "Para academias en crecimiento que necesitan características avanzadas y jugadores ilimitados con soporte prioritario."
+          feature_1: "Jugadores Ilimitados"
+          feature_2: "Equipos Ilimitados"
+          feature_3: "Análisis e Informes Avanzados"
+          feature_4: "Gestión de Activos y Equipamiento"
+          feature_5: "Acceso al Portal de Padres"
+          feature_6: "Soporte Prioritario y Capacitación"
+          cta: "Comenzar"
+      footer:
+        description: "Sistema completo de gestión de academia de fútbol para gestionar jugadores, equipos y sesiones de entrenamiento con arquitectura multi-inquilino construida sobre Rails 8.0+."
+        product: "Producto"
+        product_features: "Características"
+        product_pricing: "Precios"
+        product_api: "Documentación API"
+        product_roadmap: "Hoja de Ruta"
+        resources: "Recursos"
+        resources_docs: "Documentación"
+        resources_github: "Repositorio GitHub"
+        resources_support: "Soporte y Ayuda"
+        resources_privacy: "Política de Privacidad"
+        newsletter: "Mantente Actualizado"
+        newsletter_placeholder: "Tu email..."
+        built_with: "Construido Con"
+        copyright: "©2025 %{app_name}, Hecho con ❤ para academias de fútbol en todo el mundo."
+    
+    layout:
+      sidebar:
+        workspace: "Espacio de Trabajo"
+        add_workspace: "Agregar Nuevo Espacio"
+        dashboard: "Tablero"
+        
+        # Gestión Principal
+        core_management: "Gestión Principal"
+        players: "Jugadores"
+        teams: "Equipos"
+        training: "Sesiones de Entrenamiento"
+        competitions: "Competiciones"
+        
+        # Eventos y Calendario
+        events_calendar: "Eventos y Calendario"
+        calendar: "Calendario"
+        events: "Eventos"
+        tournaments: "Torneos"
+        
+        # Recursos y Activos
+        resources_assets: "Recursos y Activos"
+        equipment: "Equipamiento y Activos"
+        facilities: "Instalaciones"
+        inventory: "Inventario"
+        
+        # Salud y Medicina
+        health_medical: "Salud y Medicina"
+        medical_records: "Registros Médicos"
+        injuries: "Lesiones y Tratamiento"
+        
+        # Comunicaciones
+        communications: "Comunicaciones"
+        messages: "Mensajes"
+        notifications_menu: "Notificaciones"
+        parent_portal: "Portal de Padres"
+        
+        # Análisis e Informes
+        analytics_reports: "Análisis e Informes"
+        analytics: "Panel de Análisis"
+        player_analytics: "Análisis de Jugadores"
+        financial_reports: "Informes Financieros"
+        custom_reports: "Informes Personalizados"
+        
+        # Administración
+        administration: "Administración"
+        users_roles: "Usuarios y Roles"
+        academy_settings: "Configuración de Academia"
+        shared_resources: "Recursos Compartidos"
+        integrations: "Integraciones"
+        settings: "Configuración"
+        
+        # Legacy/Other
+        reports: "Informes"
+        assets: "Activos y Equipamiento"
+        academy_section: "Gestión de Academia"
+        tools_section: "Herramientas y Características"
+        upgrade_title: "Mejora tu Plan"
+        upgrade_description: "Tu plan de prueba termina en %{days} días. ¡Mejora tu plan y desbloquea todo el potencial!"
+        upgrade_button: "Ver Todos los Planes"
+      header:
+        search_placeholder: "Buscar [CTRL + K]"
+        theme_toggle: "Cambiar tema"
+        language: "Idioma"
+        notifications: "Notificaciones"
+        notifications_title: "Notificaciones"
+        notifications_new: "%{count} Nuevas"
+        notifications_view_all: "Ver Todas las Notificaciones"
+        profile: "Menú de perfil"
+        my_profile: "Mi Perfil"
+        settings: "Configuración"
+        help: "Ayuda"
+        logout: "Cerrar Sesión"
+      footer:
+        copyright: "©2025 %{app_name}, Hecho con ❤ para academias de fútbol en todo el mundo."
+    
     dashboard:
       title: "Tablero"
       welcome: "Bienvenido de nuevo, %{name}!"

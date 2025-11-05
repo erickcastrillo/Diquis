@@ -16,12 +16,12 @@ This project uses Rails i18n with Inertia.js to provide seamless internationaliz
 
 ## File Structure
 
-```
+```text
 config/
   locales/
     en.yml          # English translations
     es.yml          # Spanish translations
-    
+
 app/
   controllers/
     application_controller.rb  # Locale switching logic
@@ -202,7 +202,7 @@ export default function Dashboard() {
   return (
     <div>
       <h1>{t("app.dashboard.title")}</h1>
-      
+
       {/* Stats Cards */}
       <div className="stats-grid">
         <div className="card">

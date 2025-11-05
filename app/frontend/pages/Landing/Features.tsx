@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslations } from "../../lib/i18n";
 
 const Features: React.FC = () => {
+  const { t } = useTranslations();
   return (
     <div
       id="features"
@@ -17,15 +19,13 @@ const Features: React.FC = () => {
         {/* Header Section */}
         <div className="mb-16 text-center">
           <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">
-            FEATURES
+            {t("app.landing.features.section_label")}
           </p>
           <h2 className="text-base-content text-3xl font-bold md:text-4xl lg:text-5xl mb-4">
-            Everything you need to manage your football academy
+            {t("app.landing.features.title")}
           </h2>
           <p className="text-base-content/70 text-lg md:text-xl max-w-3xl mx-auto">
-            Comprehensive tools for player management, team organization,
-            training scheduling, and performance analytics - all in one
-            platform.
+            {t("app.landing.features.subtitle")}
           </p>
         </div>
 
@@ -42,11 +42,10 @@ const Features: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base-content font-semibold text-lg mb-2">
-                  Player Management
+                  {t("app.landing.features.player_management.title")}
                 </h3>
                 <p className="text-base-content/70">
-                  Complete player profiles with registration, skill tracking,
-                  and performance analytics across all age categories.
+                  {t("app.landing.features.player_management.description")}
                 </p>
               </div>
             </div>
@@ -60,11 +59,10 @@ const Features: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base-content font-semibold text-lg mb-2">
-                  Team Organization
+                  {t("app.landing.features.team_organization.title")}
                 </h3>
                 <p className="text-base-content/70">
-                  Build and manage teams with roster assignments, formations,
-                  and squad management tools.
+                  {t("app.landing.features.team_organization.description")}
                 </p>
               </div>
             </div>
@@ -78,11 +76,10 @@ const Features: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base-content font-semibold text-lg mb-2">
-                  Training Sessions
+                  {t("app.landing.features.training_sessions.title")}
                 </h3>
                 <p className="text-base-content/70">
-                  Schedule training sessions with automated attendance tracking
-                  and conflict detection.
+                  {t("app.landing.features.training_sessions.description")}
                 </p>
               </div>
             </div>
@@ -108,11 +105,10 @@ const Features: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base-content font-semibold text-lg mb-2">
-                  Multi-Tenancy
+                  {t("app.landing.features.multi_tenancy.title")}
                 </h3>
                 <p className="text-base-content/70">
-                  Complete data isolation for each academy with secure,
-                  academy-based tenant management.
+                  {t("app.landing.features.multi_tenancy.description")}
                 </p>
               </div>
             </div>
@@ -126,11 +122,10 @@ const Features: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base-content font-semibold text-lg mb-2">
-                  Analytics & Reports
+                  {t("app.landing.features.analytics.title")}
                 </h3>
                 <p className="text-base-content/70">
-                  Comprehensive dashboards to track player performance,
-                  attendance, and academy metrics.
+                  {t("app.landing.features.analytics.description")}
                 </p>
               </div>
             </div>
@@ -144,11 +139,10 @@ const Features: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base-content font-semibold text-lg mb-2">
-                  Asset Management
+                  {t("app.landing.features.asset_management.title")}
                 </h3>
                 <p className="text-base-content/70">
-                  Track equipment, uniforms, and inventory with comprehensive
-                  asset management tools.
+                  {t("app.landing.features.asset_management.description")}
                 </p>
               </div>
             </div>

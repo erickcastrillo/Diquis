@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslations } from "../../../lib/i18n";
 
 const FlyonUISidebar: React.FC = () => {
+  const { t } = useTranslations();
   return (
     <aside
       id="layout-toggle"
@@ -47,10 +49,10 @@ const FlyonUISidebar: React.FC = () => {
                   </div>
                   <div className="text-left">
                     <div className="text-base-content text-sm font-semibold">
-                      FlyonUI
+                      {t("app.name")}
                     </div>
                     <div className="text-base-content/50 text-xs">
-                      Workspace
+                      {t("app.layout.sidebar.workspace")}
                     </div>
                   </div>
                 </div>
@@ -84,71 +86,13 @@ const FlyonUISidebar: React.FC = () => {
                     </div>
                     <div className="flex-1">
                       <div className="text-base-content text-sm font-semibold">
-                        FlyonUI
+                        {t("app.name")}
                       </div>
                       <div className="text-base-content/50 text-xs">
-                        Workspace
+                        {t("app.layout.sidebar.workspace")}
                       </div>
                     </div>
                     <span className="icon-[tabler--check] text-primary size-5"></span>
-                  </a>
-                </li>
-
-                {/* Other Workspaces */}
-                <li>
-                  <a
-                    href="#"
-                    className="dropdown-item flex items-center gap-3 px-3 py-2"
-                  >
-                    <div className="bg-base-content flex size-10 items-center justify-center rounded-lg">
-                      <span className="icon-[tabler--affiliate] size-6 text-white"></span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-base-content text-sm font-semibold">
-                        Shaden/Studio
-                      </div>
-                      <div className="text-base-content/50 text-xs">
-                        Workspace
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="dropdown-item flex items-center gap-3 px-3 py-2"
-                  >
-                    <div className="bg-info flex size-10 items-center justify-center rounded-lg">
-                      <span className="icon-[tabler--checkup-list] size-6 text-white"></span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-base-content text-sm font-semibold">
-                        Themeselection
-                      </div>
-                      <div className="text-base-content/50 text-xs">
-                        Workspace
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="dropdown-item flex items-center gap-3 px-3 py-2"
-                  >
-                    <div className="bg-warning flex size-10 items-center justify-center rounded-lg">
-                      <span className="icon-[tabler--flame] size-6 text-white"></span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-base-content text-sm font-semibold">
-                        Pixinvent
-                      </div>
-                      <div className="text-base-content/50 text-xs">
-                        Workspace
-                      </div>
-                    </div>
                   </a>
                 </li>
 
@@ -160,7 +104,7 @@ const FlyonUISidebar: React.FC = () => {
                   >
                     <span className="icon-[tabler--plus] size-5"></span>
                     <span className="text-sm font-semibold">
-                      Add New Workspace
+                      {t("app.layout.sidebar.add_workspace")}
                     </span>
                   </a>
                 </li>
@@ -177,135 +121,308 @@ const FlyonUISidebar: React.FC = () => {
                 className="bg-primary/10 text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium"
               >
                 <span className="icon-[tabler--dashboard] size-5"></span>
-                Dashboard
+                {t("app.layout.sidebar.dashboard")}
               </a>
 
-              {/* Pages Section */}
-              <div className="text-base-content/50 px-2 pb-2 pt-4 text-xs font-semibold uppercase">
-                Pages
-              </div>
+              {/* Core Management Section with Submenu */}
+              <details className="group" open>
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--layout-grid] size-5"></span>
+                    {t("app.layout.sidebar.core_management")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Players */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--users] size-5"></span>
+                    {t("app.layout.sidebar.players")}
+                  </a>
 
-              {/* Backlog */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--list-check] size-5"></span>
-                Backlog
-              </a>
+                  {/* Teams */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--users-group] size-5"></span>
+                    {t("app.layout.sidebar.teams")}
+                  </a>
 
-              {/* Iterations */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--refresh] size-5"></span>
-                Iterations
-              </a>
+                  {/* Training Sessions */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--calendar-event] size-5"></span>
+                    {t("app.layout.sidebar.training")}
+                  </a>
 
-              {/* Milestones */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--flag] size-5"></span>
-                Milestones
-              </a>
+                  {/* Competitions */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--trophy] size-5"></span>
+                    {t("app.layout.sidebar.competitions")}
+                  </a>
+                </div>
+              </details>
 
-              {/* Bug Tracker */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--bug] size-5"></span>
-                Bug Tracker
-              </a>
+              {/* Events & Calendar Section with Submenu */}
+              <details className="group">
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--calendar-month] size-5"></span>
+                    {t("app.layout.sidebar.events_calendar")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Calendar */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--calendar] size-5"></span>
+                    {t("app.layout.sidebar.calendar")}
+                  </a>
 
-              {/* Design Assets */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--palette] size-5"></span>
-                Design Assets
-              </a>
+                  {/* Events */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--confetti] size-5"></span>
+                    {t("app.layout.sidebar.events")}
+                  </a>
 
-              {/* Release Notes */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--notes] size-5"></span>
-                Release Notes
-              </a>
+                  {/* Tournaments */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--tournament] size-5"></span>
+                    {t("app.layout.sidebar.tournaments")}
+                  </a>
+                </div>
+              </details>
 
-              {/* Campaign Calendar */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--calendar] size-5"></span>
-                Campaign Calendar
-              </a>
+              {/* Resources & Assets Section with Submenu */}
+              <details className="group">
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--briefcase] size-5"></span>
+                    {t("app.layout.sidebar.resources_assets")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Equipment & Assets */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--package] size-5"></span>
+                    {t("app.layout.sidebar.equipment")}
+                  </a>
 
-              {/* Ad Performance */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--chart-bar] size-5"></span>
-                Ad Performance
-              </a>
+                  {/* Facilities */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--building-stadium] size-5"></span>
+                    {t("app.layout.sidebar.facilities")}
+                  </a>
 
-              {/* Supporting Features Section */}
-              <div className="text-base-content/50 px-2 pb-2 pt-4 text-xs font-semibold uppercase">
-                Supporting Features
-              </div>
+                  {/* Inventory */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--box] size-5"></span>
+                    {t("app.layout.sidebar.inventory")}
+                  </a>
+                </div>
+              </details>
 
-              {/* Real-Time Monitoring */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--activity] size-5"></span>
-                Real-Time Monitoring
-              </a>
+              {/* Health & Medical Section with Submenu */}
+              <details className="group">
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--medical-cross] size-5"></span>
+                    {t("app.layout.sidebar.health_medical")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Medical Records */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--heart-rate-monitor] size-5"></span>
+                    {t("app.layout.sidebar.medical_records")}
+                  </a>
 
-              {/* Scheduled Posts */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--clock] size-5"></span>
-                Scheduled Posts
-              </a>
+                  {/* Injuries */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--bandage] size-5"></span>
+                    {t("app.layout.sidebar.injuries")}
+                  </a>
+                </div>
+              </details>
 
-              {/* Reports & Export */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--file-export] size-5"></span>
-                Reports & Export
-              </a>
+              {/* Communications Section with Submenu */}
+              <details className="group">
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--send] size-5"></span>
+                    {t("app.layout.sidebar.communications")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Messages */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--message] size-5"></span>
+                    {t("app.layout.sidebar.messages")}
+                  </a>
 
-              {/* Settings & Integrations */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--settings] size-5"></span>
-                Settings & Integrations
-              </a>
+                  {/* Notifications */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--bell] size-5"></span>
+                    {t("app.layout.sidebar.notifications_menu")}
+                  </a>
 
-              {/* Management */}
-              <a
-                href="#"
-                className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-              >
-                <span className="icon-[tabler--users] size-5"></span>
-                Management
-              </a>
+                  {/* Parent Portal */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--user-heart] size-5"></span>
+                    {t("app.layout.sidebar.parent_portal")}
+                  </a>
+                </div>
+              </details>
+
+              {/* Analytics & Reports Section with Submenu */}
+              <details className="group">
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--chart-bar] size-5"></span>
+                    {t("app.layout.sidebar.analytics_reports")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Analytics Dashboard */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--chart-line] size-5"></span>
+                    {t("app.layout.sidebar.analytics")}
+                  </a>
+
+                  {/* Player Analytics */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--chart-dots] size-5"></span>
+                    {t("app.layout.sidebar.player_analytics")}
+                  </a>
+
+                  {/* Financial Reports */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--report-money] size-5"></span>
+                    {t("app.layout.sidebar.financial_reports")}
+                  </a>
+
+                  {/* Custom Reports */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--file-report] size-5"></span>
+                    {t("app.layout.sidebar.custom_reports")}
+                  </a>
+                </div>
+              </details>
+
+              {/* Administration Section with Submenu */}
+              <details className="group">
+                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-[tabler--shield-lock] size-5"></span>
+                    {t("app.layout.sidebar.administration")}
+                  </div>
+                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                </summary>
+                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                  {/* Users & Roles */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--user-shield] size-5"></span>
+                    {t("app.layout.sidebar.users_roles")}
+                  </a>
+
+                  {/* Academy Settings */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--building] size-5"></span>
+                    {t("app.layout.sidebar.academy_settings")}
+                  </a>
+
+                  {/* Shared Resources */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--database] size-5"></span>
+                    {t("app.layout.sidebar.shared_resources")}
+                  </a>
+
+                  {/* Integrations */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--plug] size-5"></span>
+                    {t("app.layout.sidebar.integrations")}
+                  </a>
+
+                  {/* Settings */}
+                  <a
+                    href="#"
+                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <span className="icon-[tabler--settings] size-5"></span>
+                    {t("app.layout.sidebar.settings")}
+                  </a>
+                </div>
+              </details>
             </div>
           </div>
 
@@ -313,11 +430,10 @@ const FlyonUISidebar: React.FC = () => {
           <div className="mt-auto p-4">
             <div className="bg-primary/10 rounded-lg p-4">
               <h4 className="text-base-content mb-2 text-sm font-semibold">
-                Upgrade Your Plan
+                {t("app.layout.sidebar.upgrade_title")}
               </h4>
               <p className="text-base-content/60 mb-3 text-xs">
-                Your trial plan ends in 12 days. Upgrade your plan and unlock
-                full potential!
+                {t("app.layout.sidebar.upgrade_description", { days: "12" })}
               </p>
               <div className="bg-base-200 mb-3 h-2 overflow-hidden rounded-full">
                 <div
@@ -326,7 +442,7 @@ const FlyonUISidebar: React.FC = () => {
                 ></div>
               </div>
               <button className="btn btn-primary btn-block btn-sm">
-                See All Plans
+                {t("app.layout.sidebar.upgrade_button")}
               </button>
             </div>
           </div>

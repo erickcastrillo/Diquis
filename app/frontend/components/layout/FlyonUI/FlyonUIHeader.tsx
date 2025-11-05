@@ -1,6 +1,15 @@
+import { router } from "@inertiajs/react";
 import React from "react";
+import { useTranslations } from "../../../lib/i18n";
 
 const FlyonUIHeader: React.FC = () => {
+  const { t, locale, available_locales } = useTranslations();
+
+  const switchLocale = (newLocale: string) => {
+    router.reload({
+      data: { locale: newLocale },
+    });
+  };
   return (
     <div className="sticky top-0 z-50 w-full py-4">
       <div className="mx-auto w-full max-w-7xl px-6">
@@ -24,7 +33,7 @@ const FlyonUIHeader: React.FC = () => {
               <span className="icon-[tabler--search] text-base-content/50 pointer-events-none absolute start-3 top-1/2 size-4.5 -translate-y-1/2"></span>
               <input
                 type="text"
-                placeholder="Search [CTRL + K]"
+                placeholder={t("app.layout.header.search_placeholder")}
                 className="h-9 w-64 rounded-lg border-0 bg-transparent ps-10 text-sm outline-none placeholder:text-base-content/50 max-md:hidden"
                 data-overlay="#search-modal"
                 readOnly
@@ -38,7 +47,7 @@ const FlyonUIHeader: React.FC = () => {
             <button
               type="button"
               className="btn btn-text btn-square btn-sm"
-              aria-label="Toggle theme"
+              aria-label={t("app.layout.header.theme_toggle")}
               onClick={() => {
                 const html = document.documentElement;
                 const currentTheme = html.getAttribute("data-theme");
@@ -58,7 +67,7 @@ const FlyonUIHeader: React.FC = () => {
                 className="dropdown-toggle btn btn-text btn-square btn-sm"
                 aria-haspopup="menu"
                 aria-expanded="false"
-                aria-label="Language"
+                aria-label={t("app.layout.header.language")}
               >
                 <span className="icon-[tabler--language] size-5"></span>
               </button>
@@ -66,24 +75,21 @@ const FlyonUIHeader: React.FC = () => {
                 className="dropdown-menu dropdown-open:opacity-100 hidden min-w-40"
                 role="menu"
               >
-                <li>
-                  <a className="dropdown-item" href="#">
-                    <span className="fi fi-us"></span>
-                    English
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    <span className="fi fi-es"></span>
-                    Español
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    <span className="fi fi-fr"></span>
-                    Français
-                  </a>
-                </li>
+                {available_locales.map(
+                  (loc: { code: string; name: string; flag: string }) => (
+                    <li key={loc.code}>
+                      <button
+                        className={`dropdown-item ${
+                          locale === loc.code ? "active" : ""
+                        }`}
+                        onClick={() => switchLocale(loc.code)}
+                      >
+                        <span className="mr-2">{loc.flag}</span>
+                        {loc.name}
+                      </button>
+                    </li>
+                  )
+                )}
               </ul>
             </div>
 
@@ -104,7 +110,7 @@ const FlyonUIHeader: React.FC = () => {
                 className="dropdown-toggle btn btn-text btn-square btn-sm"
                 aria-haspopup="menu"
                 aria-expanded="false"
-                aria-label="Notifications"
+                aria-label={t("app.layout.header.notifications")}
               >
                 <span className="relative">
                   <span className="bg-error absolute -end-0.5 -top-0.5 size-2 rounded-full"></span>
@@ -118,9 +124,11 @@ const FlyonUIHeader: React.FC = () => {
                 <li className="dropdown-header">
                   <div className="flex items-center justify-between">
                     <h6 className="text-base-content text-sm font-semibold">
-                      Notifications
+                      {t("app.layout.header.notifications_title")}
                     </h6>
-                    <span className="badge badge-primary badge-sm">3 New</span>
+                    <span className="badge badge-primary badge-sm">
+                      {t("app.layout.header.notifications_new", { count: "3" })}
+                    </span>
                   </div>
                 </li>
                 <li>
@@ -186,7 +194,7 @@ const FlyonUIHeader: React.FC = () => {
                     className="dropdown-item justify-center text-primary"
                     href="#"
                   >
-                    View All Notifications
+                    {t("app.layout.header.notifications_view_all")}
                   </a>
                 </li>
               </ul>
@@ -199,7 +207,7 @@ const FlyonUIHeader: React.FC = () => {
                 className="dropdown-toggle"
                 aria-haspopup="menu"
                 aria-expanded="false"
-                aria-label="Profile menu"
+                aria-label={t("app.layout.header.profile")}
               >
                 <div className="avatar">
                   <div className="size-8 rounded-full">
@@ -238,19 +246,19 @@ const FlyonUIHeader: React.FC = () => {
                 <li>
                   <a className="dropdown-item px-3 py-2" href="#">
                     <span className="icon-[tabler--user] size-4.5"></span>
-                    My Profile
+                    {t("app.layout.header.my_profile")}
                   </a>
                 </li>
                 <li>
                   <a className="dropdown-item px-3 py-2" href="#">
                     <span className="icon-[tabler--settings] size-4.5"></span>
-                    Settings
+                    {t("app.layout.header.settings")}
                   </a>
                 </li>
                 <li>
                   <a className="dropdown-item px-3 py-2" href="#">
                     <span className="icon-[tabler--help] size-4.5"></span>
-                    Help
+                    {t("app.layout.header.help")}
                   </a>
                 </li>
                 <li>
@@ -259,7 +267,7 @@ const FlyonUIHeader: React.FC = () => {
                 <li>
                   <a className="dropdown-item px-3 py-2 text-error" href="#">
                     <span className="icon-[tabler--logout] size-4.5"></span>
-                    Logout
+                    {t("app.layout.header.logout")}
                   </a>
                 </li>
               </ul>

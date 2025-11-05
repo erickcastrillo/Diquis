@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslations } from "../../lib/i18n";
 
 const Hero: React.FC = () => {
+  const { t } = useTranslations();
   return (
     <div
       id="hero"
@@ -20,19 +22,16 @@ const Hero: React.FC = () => {
             {/* Main Heading with Emoji */}
             <h1 className="text-base-content text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl mb-6">
               <span className="bg-linear-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-                Football Academy Management
+                {t("app.landing.hero.title")}
               </span>{" "}
               ⚽
               <br />
-              Made Simple and Powerful
+              {t("app.landing.hero.subtitle")}
             </h1>
 
             {/* Description */}
             <p className="text-base-content/70 text-lg mb-8">
-              Manage players, teams, and training sessions with{" "}
-              <span className="text-primary font-semibold">Diquis</span> - the
-              complete multi-tenant platform built for football academies
-              worldwide.
+              {t("app.landing.hero.description", { app_name: "Diquis" })}
             </p>
 
             {/* Avatar Group & Social Proof */}
@@ -72,7 +71,7 @@ const Hero: React.FC = () => {
                   <span className="icon-[tabler--star-filled] text-warning size-4"></span>
                 </div>
                 <p className="text-base-content/60 text-sm">
-                  Loved by great clients
+                  {t("app.landing.hero.social_proof")}
                 </p>
               </div>
             </div>
@@ -83,14 +82,14 @@ const Hero: React.FC = () => {
                 href="#"
                 className="btn btn-primary btn-lg shadow-lg hover:shadow-xl transition-all"
               >
-                Start Free Trial
+                {t("app.landing.hero.cta_start_trial")}
                 <span className="icon-[tabler--rocket] size-5"></span>
               </a>
               <a
                 href="#"
                 className="btn btn-outline btn-primary btn-lg hover:scale-105 transition-transform"
               >
-                View Documentation
+                {t("app.landing.hero.cta_view_docs")}
                 <span className="icon-[tabler--arrow-right] size-5"></span>
               </a>
             </div>

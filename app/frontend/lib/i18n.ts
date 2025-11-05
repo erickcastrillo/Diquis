@@ -12,6 +12,7 @@ export type Translations = {
 export type LocaleInfo = {
   code: string;
   name: string;
+  flag: string;
 };
 
 export type I18nPageProps = {
