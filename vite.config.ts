@@ -23,8 +23,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
-          bootstrap: ["bootstrap"],
-          fontawesome: ["@fortawesome/fontawesome-free"],
         },
       },
     },

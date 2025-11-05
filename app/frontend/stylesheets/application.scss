@@ -1,15 +1,12 @@
 /* -------------------------------------------------------------------------- */
-/*                            Phoenix Theme                                   */
+/*                            Tailwind CSS v4                                 */
 /* -------------------------------------------------------------------------- */
 
-// Import Phoenix theme
-@import "./theme";
+@use "./tailwind.css";
+
+/* -------------------------------------------------------------------------- */
+/*                            Custom Styles                                   */
+/* -------------------------------------------------------------------------- */
 
 // Import user customizations
-@import "./user";
-
-// FontAwesome icons
-@import "@fortawesome/fontawesome-free/scss/fontawesome";
-@import "@fortawesome/fontawesome-free/scss/solid";
-@import "@fortawesome/fontawesome-free/scss/regular";
-@import "@fortawesome/fontawesome-free/scss/brands";
+@use "./user";

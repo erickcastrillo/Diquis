@@ -74,6 +74,13 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
   "debug.allowBreakpointsEverywhere": true,
   "debug.saveBeforeStart": "allEditorsInActiveGroup",
   "debug.openDebug": "openOnDebugBreak",
