@@ -1,0 +1,55 @@
+/* stylelint-disable-next-line */
+@import "tailwindcss";
+
+/* FlyonUI plugin - loaded via @plugin */
+/* stylelint-disable-next-line */
+@plugin "flyonui";
+
+/* Iconify plugin for Tailwind v4 (Tabler icons) */
+/* stylelint-disable-next-line */
+@plugin "@iconify/tailwind4";
+
+/* FlyonUI variants for JS components */
+@import "../../../node_modules/flyonui/variants.css";
+
+/* Tailwind CSS v4 Configuration */
+/* stylelint-disable-next-line */
+@theme {
+  /* You can customize your theme here using CSS variables */
+  /* Example:
+  --color-primary: #3b82f6;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  */
+}
+
+/* Content sources for Tailwind v4 */
+/* stylelint-disable-next-line */
+@source "../../**/*.{js,jsx,ts,tsx}";
+/* stylelint-disable-next-line */
+@source "../../../app/views/**/*.html.erb";
+
+/* FlyonUI JS component source */
+/* stylelint-disable-next-line */
+@source "../../../node_modules/flyonui/dist/index.js";
+
+/* FlyonUI Menu Active State Customization */
+[data-theme="dark"]
+  li:not(.menu-title, .menu-disabled)
+  > :not(ul, .menu-title, .collapse, .accordion-content, .btn).menu-active {
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+[data-theme="black"]
+  li:not(.menu-title, .menu-disabled)
+  > :not(ul, .menu-title, .collapse, .accordion-content, .btn).menu-active {
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+[data-theme="luxury"]
+  li:not(.menu-title, .menu-disabled)
+  > :not(ul, .menu-title, .collapse, .accordion-content, .btn).menu-active {
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
