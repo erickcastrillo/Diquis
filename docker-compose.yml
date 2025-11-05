@@ -137,7 +137,7 @@ services:
     command: >
       bash -c "
         npm install &&
-        npx vite dev --host 0.0.0.0
+        bin/vite dev --host 0.0.0.0
       "
     restart: unless-stopped
 
