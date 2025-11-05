@@ -28,4 +28,110 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  locale_name: "English"
+  
+  app:
+    name: "Diquis"
+    
+    dashboard:
+      title: "Dashboard"
+      welcome: "Welcome back, %{name}!"
+      stats:
+        total_customers: "Total Customers"
+        new_last_week: "New %{count} last week"
+        revenue: "Revenue"
+        sessions: "Sessions"
+        transactions: "Transactions"
+        order: "Order"
+      sales_report:
+        title: "Sales Report"
+        subtitle: "until your daily purchase target"
+        monthly: "Monthly"
+        yearly: "Yearly"
+        los_angeles: "Los Angeles"
+        new_york: "New York"
+        canada: "Canada"
+      delivery_performance:
+        title: "Delivery Performance"
+        subtitle: "%{percent}% increase in this month"
+        package_in_transit: "Package in transit"
+        package_out_for_delivery: "Package out for delivery"
+        package_delivered: "Package delivered"
+        delivery_success_rate: "Delivery success rate"
+        average_delivery_time: "Average delivery time"
+        customer_satisfaction: "Customer satisfaction"
+        days: "Days"
+      order_statistics:
+        title: "Order Statistics"
+        total_sales: "Total Sales"
+        total_orders: "Total Orders"
+        weekly: "Weekly"
+        electronic: "Electronic"
+        electronic_desc: "Mobile, Earbuds, TV"
+        fashion: "Fashion"
+        fashion_desc: "Shirts, Jeans, Shoes"
+        total_expenses: "Total Expenses"
+        total_expenses_desc: "ADVT, Marketing"
+        sports: "Sports"
+        sports_desc: "Football, Cricket Kit"
+      invoice:
+        title: "Invoice"
+        status: "Status"
+        show: "Show %{count}"
+        create: "Create Invoice"
+        showing: "Showing %{from} to %{to} of %{total} entries"
+        previous: "Previous"
+        next: "Next"
+        
+    navigation:
+      dashboard: "Dashboard"
+      pages: "PAGES"
+      backlog: "Backlog"
+      iterations: "Iterations"
+      milestones: "Milestones"
+      bug_tracker: "Bug Tracker"
+      design_assets: "Design Assets"
+      release_notes: "Release Notes"
+      campaign_calendar: "Campaign Calendar"
+      ad_performance: "Ad Performance"
+      supporting_features: "SUPPORTING FEATURES"
+      real_time_monitoring: "Real-Time Monitoring"
+      scheduled_posts: "Scheduled Posts"
+      reports_export: "Reports & Export"
+      settings: "Settings"
+      management: "Management"
+      upgrade_plan: "Upgrade Your Plan"
+      see_all_plans: "See All Plans"
+      
+    header:
+      search: "Search [CTRL + K]"
+      theme: "Toggle theme"
+      language: "Language"
+      activity: "Activity"
+      notifications: "Notifications"
+      notifications_new: "%{count} New"
+      view_all_notifications: "View All Notifications"
+      profile: "My Profile"
+      help: "Help"
+      logout: "Logout"
+      
+    footer:
+      copyright: "©%{year} %{app_name}, Made With ❤️ for a better web"
+      
+  common:
+    loading: "Loading..."
+    save: "Save"
+    cancel: "Cancel"
+    delete: "Delete"
+    edit: "Edit"
+    create: "Create"
+    update: "Update"
+    back: "Back"
+    confirm: "Are you sure?"
+    success: "Success"
+    error: "Error"
+    
+  errors:
+    not_found: "Not found"
+    unauthorized: "Unauthorized"
+    server_error: "Server error"

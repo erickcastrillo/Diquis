@@ -1,0 +1,108 @@
+es:
+  locale_name: "Español"
+  
+  app:
+    name: "Diquis"
+    
+    dashboard:
+      title: "Tablero"
+      welcome: "Bienvenido de nuevo, %{name}!"
+      stats:
+        total_customers: "Total de Clientes"
+        new_last_week: "Nuevos %{count} la semana pasada"
+        revenue: "Ingresos"
+        sessions: "Sesiones"
+        transactions: "Transacciones"
+        order: "Pedido"
+      sales_report:
+        title: "Reporte de Ventas"
+        subtitle: "hasta tu objetivo diario de compra"
+        monthly: "Mensual"
+        yearly: "Anual"
+        los_angeles: "Los Ángeles"
+        new_york: "Nueva York"
+        canada: "Canadá"
+      delivery_performance:
+        title: "Rendimiento de Entrega"
+        subtitle: "%{percent}% de aumento este mes"
+        package_in_transit: "Paquete en tránsito"
+        package_out_for_delivery: "Paquete en reparto"
+        package_delivered: "Paquete entregado"
+        delivery_success_rate: "Tasa de éxito de entrega"
+        average_delivery_time: "Tiempo promedio de entrega"
+        customer_satisfaction: "Satisfacción del cliente"
+        days: "Días"
+      order_statistics:
+        title: "Estadísticas de Pedidos"
+        total_sales: "Ventas Totales"
+        total_orders: "Pedidos Totales"
+        weekly: "Semanal"
+        electronic: "Electrónica"
+        electronic_desc: "Móvil, Auriculares, TV"
+        fashion: "Moda"
+        fashion_desc: "Camisas, Jeans, Zapatos"
+        total_expenses: "Gastos Totales"
+        total_expenses_desc: "Publicidad, Marketing"
+        sports: "Deportes"
+        sports_desc: "Fútbol, Kit de Cricket"
+      invoice:
+        title: "Factura"
+        status: "Estado"
+        show: "Mostrar %{count}"
+        create: "Crear Factura"
+        showing: "Mostrando %{from} a %{to} de %{total} entradas"
+        previous: "Anterior"
+        next: "Siguiente"
+        
+    navigation:
+      dashboard: "Tablero"
+      pages: "PÁGINAS"
+      backlog: "Backlog"
+      iterations: "Iteraciones"
+      milestones: "Hitos"
+      bug_tracker: "Rastreador de Errores"
+      design_assets: "Recursos de Diseño"
+      release_notes: "Notas de Lanzamiento"
+      campaign_calendar: "Calendario de Campaña"
+      ad_performance: "Rendimiento de Anuncios"
+      supporting_features: "FUNCIONES DE SOPORTE"
+      real_time_monitoring: "Monitoreo en Tiempo Real"
+      scheduled_posts: "Publicaciones Programadas"
+      reports_export: "Informes y Exportación"
+      settings: "Configuración"
+      management: "Gestión"
+      upgrade_plan: "Mejora tu Plan"
+      see_all_plans: "Ver Todos los Planes"
+      
+    header:
+      search: "Buscar [CTRL + K]"
+      theme: "Cambiar tema"
+      language: "Idioma"
+      activity: "Actividad"
+      notifications: "Notificaciones"
+      notifications_new: "%{count} Nuevas"
+      view_all_notifications: "Ver Todas las Notificaciones"
+      profile: "Mi Perfil"
+      help: "Ayuda"
+      logout: "Cerrar Sesión"
+      
+    footer:
+      copyright: "©%{year} %{app_name}, Hecho Con ❤️ para una mejor web"
+      
+  common:
+    loading: "Cargando..."
+    save: "Guardar"
+    cancel: "Cancelar"
+    delete: "Eliminar"
+    edit: "Editar"
+    create: "Crear"
+    update: "Actualizar"
+    back: "Atrás"
+    confirm: "¿Estás seguro?"
+    success: "Éxito"
+    error: "Error"
+    
+  errors:
+    not_found: "No encontrado"
+    unauthorized: "No autorizado"
+    server_error: "Error del servidor"
