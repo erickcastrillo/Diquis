@@ -1,10 +1,12 @@
 # Internationalization (i18n) Implementation Guide
 
 ## Overview
-This project uses Rails i18n with Inertia.js to provide seamless internationalization support for English, Spanish, and French.
+
+This project uses Rails i18n with Inertia.js to provide seamless internationalization support for English and Spanish.
 
 ## Features
-- **3 Languages**: English (en), Spanish (es), French (fr)
+
+- **2 Languages**: English (en), Spanish (es)
 - **Server-side translations**: Managed in Rails locale files
 - **Automatic sharing**: Translations automatically available in React via Inertia
 - **Type-safe**: TypeScript helper with full type safety
@@ -13,12 +15,12 @@ This project uses Rails i18n with Inertia.js to provide seamless internationaliz
 - **Browser detection**: Auto-detects preferred language from browser
 
 ## File Structure
+
 ```
 config/
   locales/
     en.yml          # English translations
     es.yml          # Spanish translations
-    fr.yml          # French translations
     
 app/
   controllers/
@@ -41,7 +43,7 @@ export default function Dashboard() {
   return (
     <div>
       <h1>{t("app.dashboard.title")}</h1>
-      {/* Output: "Dashboard" (en), "Tablero" (es), "Tableau de Bord" (fr) */}
+      {/* Output: "Dashboard" (en), "Tablero" (es) */}
     </div>
   );
 }
@@ -61,7 +63,6 @@ export default function Dashboard() {
       <p>{t("app.dashboard.welcome", { name: userName })}</p>
       {/* Output: "Welcome back, John Doe!" (en) */}
       {/* Output: "Bienvenido de nuevo, John Doe!" (es) */}
-      {/* Output: "Bon retour, John Doe!" (fr) */}
     </div>
   );
 }

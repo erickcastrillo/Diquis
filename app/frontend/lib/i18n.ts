@@ -22,10 +22,10 @@ export type I18nPageProps = {
 
 /**
  * React hook for accessing translations in components
- * 
+ *
  * @example
  * const { t, locale, available_locales } = useTranslations();
- * 
+ *
  * return (
  *   <div>
  *     <h1>{t('app.dashboard.title')}</h1>
@@ -34,7 +34,8 @@ export type I18nPageProps = {
  * );
  */
 export function useTranslations() {
-  const { translations, locale, available_locales } = usePage<I18nPageProps>().props;
+  const { translations, locale, available_locales } =
+    usePage<I18nPageProps>().props;
 
   /**
    * Translate a key with optional interpolations
