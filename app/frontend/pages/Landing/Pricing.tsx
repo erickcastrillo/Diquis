@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslations } from "../../lib/i18n";
 
 const Pricing: React.FC = () => {
+  const { t } = useTranslations();
   return (
     <section
       id="pricing"
@@ -17,14 +19,13 @@ const Pricing: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-12 lg:mb-16">
           <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">
-            PRICING
+            {t("app.landing.pricing.section_label")}
           </p>
           <h2 className="text-base-content text-3xl lg:text-4xl font-bold mb-4">
-            Choose the right plan for your academy
+            {t("app.landing.pricing.title")}
           </h2>
           <p className="text-base-content/70 text-lg max-w-2xl mx-auto">
-            Flexible pricing options designed for academies of all sizes. Start
-            free and scale as you grow.
+            {t("app.landing.pricing.subtitle")}
           </p>
         </div>
 
@@ -37,16 +38,17 @@ const Pricing: React.FC = () => {
                 <span className="icon-[tabler--trophy] size-6 text-primary"></span>
               </div>
               <span className="badge badge-soft badge-primary mb-4">
-                STARTER
+                {t("app.landing.pricing.starter.name")}
               </span>
               <div className="mb-4">
                 <span className="text-base-content/70 text-lg">$</span>
-                <span className="text-base-content text-5xl font-bold">0</span>
+                <span className="text-base-content text-5xl font-bold">
+                  {t("app.landing.pricing.starter.price")}
+                </span>
                 <span className="text-base-content/70 text-sm">/month</span>
               </div>
               <p className="text-base-content/70 text-sm">
-                Perfect for small academies getting started with player and team
-                management.
+                {t("app.landing.pricing.starter.description")}
               </p>
             </div>
 
@@ -55,30 +57,32 @@ const Pricing: React.FC = () => {
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
                 <span className="text-base-content/70 text-sm">
-                  Up to 50 Players
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
-                <span className="text-base-content/70 text-sm">5 Teams</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
-                <span className="text-base-content/70 text-sm">
-                  Basic Training Management
+                  {t("app.landing.pricing.starter.feature_1")}
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
                 <span className="text-base-content/70 text-sm">
-                  Email Support
+                  {t("app.landing.pricing.starter.feature_2")}
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
+                <span className="text-base-content/70 text-sm">
+                  {t("app.landing.pricing.starter.feature_3")}
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
+                <span className="text-base-content/70 text-sm">
+                  {t("app.landing.pricing.starter.feature_4")}
                 </span>
               </li>
             </ul>
 
             {/* CTA Button */}
             <button className="btn btn-primary btn-outline btn-block">
-              Start Free
+              {t("app.landing.pricing.starter.cta")}
               <span className="icon-[tabler--arrow-right] size-5"></span>
             </button>
           </div>
@@ -90,16 +94,17 @@ const Pricing: React.FC = () => {
                 <span className="icon-[tabler--crown] size-6 text-primary-content"></span>
               </div>
               <span className="badge bg-primary-content/90 text-primary border-0 mb-4 font-semibold">
-                PROFESSIONAL
+                {t("app.landing.pricing.professional.name")}
               </span>
               <div className="mb-4">
                 <span className="text-xl">$</span>
-                <span className="text-5xl font-bold">99</span>
+                <span className="text-5xl font-bold">
+                  {t("app.landing.pricing.professional.price")}
+                </span>
                 <span className="text-primary-content/80">/month</span>
               </div>
               <p className="text-primary-content/90 text-sm">
-                For growing academies that need advanced features and unlimited
-                players with priority support.
+                {t("app.landing.pricing.professional.description")}
               </p>
             </div>
 
@@ -107,33 +112,45 @@ const Pricing: React.FC = () => {
             <ul className="space-y-3 mb-8">
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 shrink-0 mt-0.5"></span>
-                <span className="text-sm">Unlimited Players</span>
+                <span className="text-sm">
+                  {t("app.landing.pricing.professional.feature_1")}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 shrink-0 mt-0.5"></span>
-                <span className="text-sm">Unlimited Teams</span>
+                <span className="text-sm">
+                  {t("app.landing.pricing.professional.feature_2")}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 shrink-0 mt-0.5"></span>
-                <span className="text-sm">Advanced Analytics & Reports</span>
+                <span className="text-sm">
+                  {t("app.landing.pricing.professional.feature_3")}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 shrink-0 mt-0.5"></span>
-                <span className="text-sm">Asset & Equipment Management</span>
+                <span className="text-sm">
+                  {t("app.landing.pricing.professional.feature_4")}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 shrink-0 mt-0.5"></span>
-                <span className="text-sm">Parent Portal Access</span>
+                <span className="text-sm">
+                  {t("app.landing.pricing.professional.feature_5")}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 shrink-0 mt-0.5"></span>
-                <span className="text-sm">Priority Support & Onboarding</span>
+                <span className="text-sm">
+                  {t("app.landing.pricing.professional.feature_6")}
+                </span>
               </li>
             </ul>
 
             {/* CTA Button */}
             <button className="btn bg-primary-content text-primary border-0 hover:bg-primary-content/90 btn-block font-semibold shadow-lg">
-              Get started
+              {t("app.landing.pricing.professional.cta")}
               <span className="icon-[tabler--arrow-right] size-5"></span>
             </button>
           </div>
@@ -145,16 +162,17 @@ const Pricing: React.FC = () => {
                 <span className="icon-[tabler--star] size-6 text-primary"></span>
               </div>
               <span className="badge badge-soft badge-primary mb-4">
-                GROWTH
+                {t("app.landing.pricing.growth.name")}
               </span>
               <div className="mb-4">
                 <span className="text-base-content/70 text-lg">$</span>
-                <span className="text-base-content text-5xl font-bold">49</span>
+                <span className="text-base-content text-5xl font-bold">
+                  {t("app.landing.pricing.growth.price")}
+                </span>
                 <span className="text-base-content/70 text-sm">/month</span>
               </div>
               <p className="text-base-content/70 text-sm">
-                For mid-sized academies ready to scale with more players and
-                advanced features.
+                {t("app.landing.pricing.growth.description")}
               </p>
             </div>
 
@@ -163,30 +181,32 @@ const Pricing: React.FC = () => {
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
                 <span className="text-base-content/70 text-sm">
-                  Up to 200 Players
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
-                <span className="text-base-content/70 text-sm">15 Teams</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
-                <span className="text-base-content/70 text-sm">
-                  Full Training Management
+                  {t("app.landing.pricing.growth.feature_1")}
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
                 <span className="text-base-content/70 text-sm">
-                  Performance Analytics
+                  {t("app.landing.pricing.growth.feature_2")}
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
+                <span className="text-base-content/70 text-sm">
+                  {t("app.landing.pricing.growth.feature_3")}
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="icon-[tabler--circle-check-filled] size-5 text-primary shrink-0 mt-0.5"></span>
+                <span className="text-base-content/70 text-sm">
+                  {t("app.landing.pricing.growth.feature_4")}
                 </span>
               </li>
             </ul>
 
             {/* CTA Button */}
             <button className="btn btn-primary btn-outline btn-block">
-              Get started
+              {t("app.landing.pricing.growth.cta")}
               <span className="icon-[tabler--arrow-right] size-5"></span>
             </button>
           </div>

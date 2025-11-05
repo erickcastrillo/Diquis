@@ -24,6 +24,11 @@ module Diquis
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Internationalization (i18n) configuration
+    config.i18n.available_locales = [ :en, :es ]
+    config.i18n.default_locale = :en
+    config.i18n.fallbacks = true
+
     # Add slice directories to autoload paths
     config.autoload_paths += Dir.glob("#{Rails.root}/app/slices/*/")
     config.eager_load_paths += Dir.glob("#{Rails.root}/app/slices/*/") if Rails.env.production?

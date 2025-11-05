@@ -1,4 +1,6 @@
+import { router } from "@inertiajs/react";
 import React from "react";
+import { useTranslations } from "../../lib/i18n";
 
 interface NavbarProps {
   isDark: boolean;
@@ -6,6 +8,14 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
+  const { locale, available_locales, t } = useTranslations();
+
+  const switchLocale = (newLocale: string) => {
+    router.reload({
+      data: { locale: newLocale },
+    });
+  };
+
   return (
     <header className="bg-base-100/80 backdrop-blur-sm fixed top-0 z-10 w-full border-b border-base-content/10">
       <nav className="navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -28,31 +38,31 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
               href="#features"
               className="text-base-content/80 hover:text-primary transition-colors"
             >
-              Features
+              {t("app.landing.nav.features")}
             </a>
             <a
               href="#pricing"
               className="text-base-content/80 hover:text-primary transition-colors"
             >
-              Pricing
+              {t("app.landing.nav.pricing")}
             </a>
             <a
               href="#"
               className="text-base-content/80 hover:text-primary transition-colors"
             >
-              Documentation
+              {t("app.landing.nav.documentation")}
             </a>
             <a
               href="#"
               className="text-base-content/80 hover:text-primary transition-colors"
             >
-              API Reference
+              {t("app.landing.nav.api_reference")}
             </a>
             <a
               href="#"
               className="text-base-content/80 hover:text-primary transition-colors"
             >
-              GitHub
+              {t("app.landing.nav.github")}
             </a>
           </div>
         </div>
@@ -89,6 +99,38 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
             >
               <span className="icon-[tabler--brand-discord] size-5"></span>
             </a>
+            {/* Language Switcher */}
+            <div className="dropdown relative inline-flex [--offset:8]">
+              <button
+                type="button"
+                className="dropdown-toggle btn btn-circle btn-text btn-sm"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-label="Language"
+              >
+                <span className="icon-[tabler--language] size-5"></span>
+              </button>
+              <ul
+                className="dropdown-menu dropdown-open:opacity-100 hidden min-w-32"
+                role="menu"
+              >
+                {available_locales.map(
+                  (loc: { code: string; name: string; flag: string }) => (
+                    <li key={loc.code}>
+                      <button
+                        className={`dropdown-item ${
+                          locale === loc.code ? "active" : ""
+                        }`}
+                        onClick={() => switchLocale(loc.code)}
+                      >
+                        <span className="mr-2">{loc.flag}</span>
+                        {loc.name}
+                      </button>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
             <button
               onClick={onToggleTheme}
               className="btn btn-circle btn-text btn-sm"
@@ -102,7 +144,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
             </button>
             <div className="divider divider-horizontal mx-2"></div>
             <a href="#" className="btn btn-primary btn-sm">
-              Login
+              {t("app.landing.nav.login")}
             </a>
           </div>
         </div>

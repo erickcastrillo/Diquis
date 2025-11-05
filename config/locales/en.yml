@@ -28,4 +28,270 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  locale_name: "English"
+  app:
+    name: "Diquis"
+    landing:
+      nav:
+        features: "Features"
+        pricing: "Pricing"
+        documentation: "Documentation"
+        api_reference: "API Reference"
+        github: "GitHub"
+        login: "Login"
+      hero:
+        title: "Football Academy Management"
+        subtitle: "Made Simple and Powerful"
+        description: "Manage players, teams, and training sessions with %{app_name} - the complete multi-tenant platform built for football academies worldwide."
+        social_proof: "Loved by great clients"
+        cta_start_trial: "Start Free Trial"
+        cta_view_docs: "View Documentation"
+      features:
+        section_label: "FEATURES"
+        title: "Everything you need to manage your football academy"
+        subtitle: "Comprehensive tools for player management, team organization, training scheduling, and performance analytics - all in one platform."
+        player_management:
+          title: "Player Management"
+          description: "Complete player profiles with registration, skill tracking, and performance analytics across all age categories."
+        team_organization:
+          title: "Team Organization"
+          description: "Build and manage teams with roster assignments, formations, and squad management tools."
+        training_sessions:
+          title: "Training Sessions"
+          description: "Schedule training sessions with automated attendance tracking and conflict detection."
+        multi_tenancy:
+          title: "Multi-Tenancy"
+          description: "Complete data isolation for each academy with secure, academy-based tenant management."
+        analytics:
+          title: "Analytics & Reports"
+          description: "Comprehensive dashboards to track player performance, attendance, and academy metrics."
+        asset_management:
+          title: "Asset Management"
+          description: "Track equipment, uniforms, and inventory with comprehensive asset management tools."
+      pricing:
+        section_label: "PRICING"
+        title: "Choose the right plan for your academy"
+        subtitle: "Flexible pricing options designed for academies of all sizes. Start free and scale as you grow."
+        starter:
+          name: "STARTER"
+          price: "0"
+          description: "Perfect for small academies getting started with player and team management."
+          feature_1: "Up to 50 Players"
+          feature_2: "5 Teams"
+          feature_3: "Basic Training Management"
+          feature_4: "Email Support"
+          cta: "Start Free"
+        growth:
+          name: "GROWTH"
+          price: "49"
+          description: "For mid-sized academies ready to scale with more players and advanced features."
+          feature_1: "Up to 200 Players"
+          feature_2: "15 Teams"
+          feature_3: "Full Training Management"
+          feature_4: "Performance Analytics"
+          cta: "Get started"
+        professional:
+          name: "PROFESSIONAL"
+          price: "99"
+          description: "For growing academies that need advanced features and unlimited players with priority support."
+          feature_1: "Unlimited Players"
+          feature_2: "Unlimited Teams"
+          feature_3: "Advanced Analytics & Reports"
+          feature_4: "Asset & Equipment Management"
+          feature_5: "Parent Portal Access"
+          feature_6: "Priority Support & Onboarding"
+          cta: "Get started"
+      footer:
+        description: "Comprehensive football academy management system for managing players, teams, and training sessions with multi-tenant architecture built on Rails 8.0+."
+        product: "Product"
+        product_features: "Features"
+        product_pricing: "Pricing"
+        product_api: "API Documentation"
+        product_roadmap: "Roadmap"
+        resources: "Resources"
+        resources_docs: "Documentation"
+        resources_github: "GitHub Repository"
+        resources_support: "Support & Help"
+        resources_privacy: "Privacy Policy"
+        newsletter: "Stay Updated"
+        newsletter_placeholder: "Your email..."
+        built_with: "Built With"
+        copyright: "©2025 %{app_name}, Made With ❤ for football academies worldwide."
+    
+    layout:
+      sidebar:
+        workspace: "Workspace"
+        add_workspace: "Add New Workspace"
+        dashboard: "Dashboard"
+        
+        # Core Management
+        core_management: "Core Management"
+        players: "Players"
+        teams: "Teams"
+        training: "Training Sessions"
+        competitions: "Competitions"
+        
+        # Events & Calendar
+        events_calendar: "Events & Calendar"
+        calendar: "Calendar"
+        events: "Events"
+        tournaments: "Tournaments"
+        
+        # Resources & Assets
+        resources_assets: "Resources & Assets"
+        equipment: "Equipment & Assets"
+        facilities: "Facilities"
+        inventory: "Inventory"
+        
+        # Health & Medical
+        health_medical: "Health & Medical"
+        medical_records: "Medical Records"
+        injuries: "Injuries & Treatment"
+        
+        # Communications
+        communications: "Communications"
+        messages: "Messages"
+        notifications_menu: "Notifications"
+        parent_portal: "Parent Portal"
+        
+        # Analytics & Reports
+        analytics_reports: "Analytics & Reports"
+        analytics: "Analytics Dashboard"
+        player_analytics: "Player Analytics"
+        financial_reports: "Financial Reports"
+        custom_reports: "Custom Reports"
+        
+        # Administration
+        administration: "Administration"
+        users_roles: "Users & Roles"
+        academy_settings: "Academy Settings"
+        shared_resources: "Shared Resources"
+        integrations: "Integrations"
+        settings: "Settings"
+        
+        # Legacy/Other
+        reports: "Reports"
+        assets: "Assets & Equipment"
+        academy_section: "Academy Management"
+        tools_section: "Tools & Features"
+        upgrade_title: "Upgrade Your Plan"
+        upgrade_description: "Your trial plan ends in %{days} days. Upgrade your plan and unlock full potential!"
+        upgrade_button: "See All Plans"
+      header:
+        search_placeholder: "Search [CTRL + K]"
+        theme_toggle: "Toggle theme"
+        language: "Language"
+        notifications: "Notifications"
+        notifications_title: "Notifications"
+        notifications_new: "%{count} New"
+        notifications_view_all: "View All Notifications"
+        profile: "Profile menu"
+        my_profile: "My Profile"
+        settings: "Settings"
+        help: "Help"
+        logout: "Logout"
+      footer:
+        copyright: "©2025 %{app_name}, Made With ❤ for football academies worldwide."
+    
+    dashboard:
+      title: "Dashboard"
+      welcome: "Welcome back, %{name}!"
+      stats:
+        total_customers: "Total Customers"
+        new_last_week: "New %{count} last week"
+        revenue: "Revenue"
+        sessions: "Sessions"
+        transactions: "Transactions"
+        order: "Order"
+      sales_report:
+        title: "Sales Report"
+        subtitle: "until your daily purchase target"
+        monthly: "Monthly"
+        yearly: "Yearly"
+        los_angeles: "Los Angeles"
+        new_york: "New York"
+        canada: "Canada"
+      delivery_performance:
+        title: "Delivery Performance"
+        subtitle: "%{percent}% increase in this month"
+        package_in_transit: "Package in transit"
+        package_out_for_delivery: "Package out for delivery"
+        package_delivered: "Package delivered"
+        delivery_success_rate: "Delivery success rate"
+        average_delivery_time: "Average delivery time"
+        customer_satisfaction: "Customer satisfaction"
+        days: "Days"
+      order_statistics:
+        title: "Order Statistics"
+        total_sales: "Total Sales"
+        total_orders: "Total Orders"
+        weekly: "Weekly"
+        electronic: "Electronic"
+        electronic_desc: "Mobile, Earbuds, TV"
+        fashion: "Fashion"
+        fashion_desc: "Shirts, Jeans, Shoes"
+        total_expenses: "Total Expenses"
+        total_expenses_desc: "ADVT, Marketing"
+        sports: "Sports"
+        sports_desc: "Football, Cricket Kit"
+      invoice:
+        title: "Invoice"
+        status: "Status"
+        show: "Show %{count}"
+        create: "Create Invoice"
+        showing: "Showing %{from} to %{to} of %{total} entries"
+        previous: "Previous"
+        next: "Next"
+        
+    navigation:
+      dashboard: "Dashboard"
+      pages: "PAGES"
+      backlog: "Backlog"
+      iterations: "Iterations"
+      milestones: "Milestones"
+      bug_tracker: "Bug Tracker"
+      design_assets: "Design Assets"
+      release_notes: "Release Notes"
+      campaign_calendar: "Campaign Calendar"
+      ad_performance: "Ad Performance"
+      supporting_features: "SUPPORTING FEATURES"
+      real_time_monitoring: "Real-Time Monitoring"
+      scheduled_posts: "Scheduled Posts"
+      reports_export: "Reports & Export"
+      settings: "Settings"
+      management: "Management"
+      upgrade_plan: "Upgrade Your Plan"
+      see_all_plans: "See All Plans"
+      
+    header:
+      search: "Search [CTRL + K]"
+      theme: "Toggle theme"
+      language: "Language"
+      activity: "Activity"
+      notifications: "Notifications"
+      notifications_new: "%{count} New"
+      view_all_notifications: "View All Notifications"
+      profile: "My Profile"
+      help: "Help"
+      logout: "Logout"
+      
+    footer:
+      copyright: "©%{year} %{app_name}, Made With ❤️ for a better web"
+      
+  common:
+    loading: "Loading..."
+    save: "Save"
+    cancel: "Cancel"
+    delete: "Delete"
+    edit: "Edit"
+    create: "Create"
+    update: "Update"
+    back: "Back"
+    confirm: "Are you sure?"
+    success: "Success"
+    error: "Error"
+    
+  errors:
+    not_found: "Not found"
+    unauthorized: "Unauthorized"
+    server_error: "Server error"

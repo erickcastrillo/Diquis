@@ -1,15 +1,14 @@
 import React from "react";
+import { useTranslations } from "../../../lib/i18n";
 
 const FlyonUIFooter: React.FC = () => {
+  const { t } = useTranslations();
+
   return (
     <footer className="mx-auto w-full max-w-7xl px-6 py-3.5">
       <div className="flex items-center justify-between gap-3 text-sm max-lg:flex-col">
         <p className="text-base-content text-center">
-          ©2025{" "}
-          <a href="https://flyonui.com" className="text-primary">
-            FlyonUI
-          </a>
-          , Made With ❤️ for a better web.
+          {t("app.layout.footer.copyright", { app_name: t("app.name") })}
         </p>
         <div className="flex items-center gap-3">
           <a href="#" className="link size-4.5" aria-label="Facebook Link">

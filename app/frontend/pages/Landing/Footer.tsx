@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslations } from "../../lib/i18n";
 
 const Footer: React.FC = () => {
+  const { t } = useTranslations();
   return (
     <footer className="relative bg-base-100 border-t border-base-content/10 overflow-hidden">
       {/* Background Gradient */}
@@ -22,9 +24,7 @@ const Footer: React.FC = () => {
               </span>
             </a>
             <p className="text-base-content/70 text-sm mb-6">
-              Comprehensive football academy management system for managing
-              players, teams, and training sessions with multi-tenant
-              architecture built on Rails 8.0+.
+              {t("app.landing.footer.description")}
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-3">
@@ -61,14 +61,16 @@ const Footer: React.FC = () => {
 
           {/* Company Links */}
           <div>
-            <h4 className="text-base-content font-semibold mb-4">Product</h4>
+            <h4 className="text-base-content font-semibold mb-4">
+              {t("app.landing.footer.product")}
+            </h4>
             <ul className="space-y-3">
               <li>
                 <a
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  Features
+                  {t("app.landing.footer.product_features")}
                 </a>
               </li>
               <li>
@@ -76,7 +78,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  Pricing
+                  {t("app.landing.footer.product_pricing")}
                 </a>
               </li>
               <li>
@@ -84,7 +86,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  API Documentation
+                  {t("app.landing.footer.product_api")}
                 </a>
               </li>
               <li>
@@ -92,7 +94,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  Roadmap
+                  {t("app.landing.footer.product_roadmap")}
                 </a>
               </li>
             </ul>
@@ -100,14 +102,16 @@ const Footer: React.FC = () => {
 
           {/* Help Links */}
           <div>
-            <h4 className="text-base-content font-semibold mb-4">Resources</h4>
+            <h4 className="text-base-content font-semibold mb-4">
+              {t("app.landing.footer.resources")}
+            </h4>
             <ul className="space-y-3">
               <li>
                 <a
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  Documentation
+                  {t("app.landing.footer.resources_docs")}
                 </a>
               </li>
               <li>
@@ -115,7 +119,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  GitHub Repository
+                  {t("app.landing.footer.resources_github")}
                 </a>
               </li>
               <li>
@@ -123,7 +127,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  Support & Help
+                  {t("app.landing.footer.resources_support")}
                 </a>
               </li>
               <li>
@@ -131,7 +135,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-base-content/70 hover:text-primary transition-colors text-sm"
                 >
-                  Privacy Policy
+                  {t("app.landing.footer.resources_privacy")}
                 </a>
               </li>
             </ul>
@@ -140,19 +144,19 @@ const Footer: React.FC = () => {
           {/* Newsletter Section */}
           <div>
             <h4 className="text-base-content font-semibold mb-4">
-              Stay Updated
+              {t("app.landing.footer.newsletter")}
             </h4>
             <form className="mb-6">
               <div className="relative">
                 <input
                   type="email"
-                  placeholder="Your email..."
+                  placeholder={t("app.landing.footer.newsletter_placeholder")}
                   className="input input-sm w-full pr-12 bg-base-200 border-base-content/20 focus:border-primary"
                 />
                 <button
                   type="submit"
                   className="btn btn-primary btn-sm absolute right-0 top-0 rounded-l-none"
-                  aria-label="Subscribe"
+                  aria-label={t("app.landing.footer.newsletter")}
                 >
                   <span className="icon-[tabler--arrow-right] size-4"></span>
                 </button>
@@ -162,7 +166,7 @@ const Footer: React.FC = () => {
             {/* Technology Badges */}
             <div className="space-y-2">
               <p className="text-base-content/70 text-xs font-semibold uppercase tracking-wider">
-                Built With
+                {t("app.landing.footer.built_with")}
               </p>
               <div className="flex flex-wrap gap-2">
                 <span className="badge badge-soft badge-primary text-xs">
@@ -188,11 +192,7 @@ const Footer: React.FC = () => {
         {/* Copyright */}
         <div className="border-t border-base-content/10 pt-8">
           <p className="text-base-content/70 text-sm text-center">
-            ©2025{" "}
-            <a href="#" className="text-primary hover:underline">
-              Diquis
-            </a>{" "}
-            , Made With ❤ for football academies worldwide.
+            {t("app.landing.footer.copyright", { app_name: "Diquis" })}
           </p>
         </div>
       </div>
