@@ -1,5 +1,4 @@
-/* Import Bootstrap CSS */
-@import "bootstrap/dist/css/bootstrap.min.css";
+/* Tailwind CSS base styles are imported in application.scss */
 
 /* Custom application styles */
 .line-clamp-2 {

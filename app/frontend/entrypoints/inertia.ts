@@ -1,19 +1,37 @@
 import { createInertiaApp } from "@inertiajs/react";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { createElement, ReactNode } from "react";
+import { createElement, ReactNode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
-// Import Phoenix theme styles
-import "../stylesheets/application.scss";
+// Import FlyonUI JavaScript
+import "flyonui/flyonui";
 
-// Import Phoenix theme provider
-import { PhoenixProvider } from "../hooks/usePhoenix";
+// Import styles (includes Tailwind CSS)
+import "../stylesheets/application.scss";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
   default: any;
   layout?: (page: ReactNode) => ReactNode;
 };
+
+// FlyonUI wrapper component to reinitialize on page changes
+function FlyonUIWrapper({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    // Reinitialize FlyonUI components after navigation
+    const timer = setTimeout(() => {
+      if (
+        window.HSStaticMethods &&
+        typeof window.HSStaticMethods.autoInit === "function"
+      ) {
+        window.HSStaticMethods.autoInit();
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [children]);
+
+  return createElement("div", { style: { display: "contents" } }, children);
+}
 
 createInertiaApp({
   // Set default page title
@@ -43,7 +61,9 @@ createInertiaApp({
   setup({ el, App, props }) {
     if (el) {
       createRoot(el).render(
-        createElement(PhoenixProvider, { children: createElement(App, props) })
+        createElement(FlyonUIWrapper, {
+          children: createElement(App, props),
+        })
       );
     } else {
       console.error(

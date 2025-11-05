@@ -80,6 +80,8 @@ services:
       bash -c "
         echo 'Waiting for database to be ready...' &&
         sleep 5 &&
+        echo 'Removing stale PID file if it exists...' &&
+        rm -f /rails/tmp/pids/server.pid &&
         bundle exec rails db:prepare &&
         bundle exec rails server -b 0.0.0.0
       "
@@ -125,6 +127,7 @@ services:
     container_name: diquis_vite
     environment:
       NODE_ENV: development
+      VITE_RUBY_HOST: 0.0.0.0
     volumes:
       - .:/rails
       - node_modules:/rails/node_modules
@@ -135,7 +138,7 @@ services:
     command: >
       bash -c "
         npm install &&
-        bin/vite dev --host 0.0.0.0
+        bin/vite dev
       "
     restart: unless-stopped
 

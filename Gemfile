@@ -62,7 +62,7 @@ group :test do
   gem "selenium-webdriver"
 
   # RSpec additional testing gems
-  gem "shoulda-matchers", "~> 6.5"
+  gem "shoulda-matchers", "~> 7.0"
   gem "database_cleaner-active_record", "~> 2.1"
   gem "pundit-matchers", "~> 4.0"
   gem "webmock", "~> 3.18"
