@@ -16,8 +16,8 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
   end
 
-  # User Management routes
-  namespace :user_management, path: "admin" do
+  # User Management routes (using slice architecture)
+  namespace :user_management, path: "admin", module: "user_management" do
     resources :users
   end
 
