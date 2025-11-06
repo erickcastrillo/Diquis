@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { afterAll, beforeAll } from "vitest";
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+window.IntersectionObserver = class IntersectionObserver {
   readonly root = null;
   readonly rootMargin = "";
   readonly thresholds = [];
@@ -24,7 +24,7 @@ global.IntersectionObserver = class IntersectionObserver {
 } as any;
 
 // Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
+window.ResizeObserver = class ResizeObserver {
   constructor() {}
   observe() {
     return null;

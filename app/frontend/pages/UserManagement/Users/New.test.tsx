@@ -23,9 +23,12 @@ vi.mock("../../../lib/i18n", () => ({
         "user_management.users.new.create_button": "Create User",
         "user_management.users.new.creating": "Creating...",
         "user_management.users.new.help_title": "Important Information",
-        "user_management.users.new.help_note_1": "All users will receive an email with login instructions",
-        "user_management.users.new.help_note_2": "Email addresses must be unique across the system",
-        "user_management.users.new.help_note_3": "Players and parents require full profile information",
+        "user_management.users.new.help_note_1":
+          "All users will receive an email with login instructions",
+        "user_management.users.new.help_note_2":
+          "Email addresses must be unique across the system",
+        "user_management.users.new.help_note_3":
+          "Players and parents require full profile information",
         "user_management.users.fields.email": "Email",
         "user_management.users.fields.first_name": "First Name",
         "user_management.users.fields.last_name": "Last Name",
@@ -34,11 +37,15 @@ vi.mock("../../../lib/i18n", () => ({
         "user_management.users.fields.password": "Password",
         "user_management.users.fields.password_confirmation":
           "Confirm Password",
-        "user_management.users.form.sections.account_info": "Account Information",
-        "user_management.users.form.sections.profile_info": "Profile Information",
+        "user_management.users.form.sections.account_info":
+          "Account Information",
+        "user_management.users.form.sections.profile_info":
+          "Profile Information",
         "user_management.users.form.sections.password": "Password",
         "user_management.users.form.phone_placeholder": "e.g., +1 555-0000",
-        "user_management.users.form.minimum_chars": `Minimum ${options?.count || 6} characters`,
+        "user_management.users.form.minimum_chars": `Minimum ${
+          options?.count || 6
+        } characters`,
         "user_management.users.roles.player": "Player",
         "user_management.users.roles.parent": "Parent",
         "user_management.users.roles.staff": "Staff",
@@ -175,7 +182,7 @@ describe("UserManagement/Users/New", () => {
     // Find the select element by its value (first role becomes default)
     const selects = screen.getAllByRole("combobox");
     expect(selects.length).toBeGreaterThan(0);
-    
+
     // Check that role options are present
     expect(screen.getByText("Player")).toBeInTheDocument();
   });
@@ -222,9 +229,11 @@ describe("UserManagement/Users/New", () => {
     // Get inputs by type attribute
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBeGreaterThan(0);
-    
+
     // Verify form is interactive
-    expect(screen.getByRole("button", { name: /create user/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /create user/i })
+    ).toBeInTheDocument();
   });
 
   it("renders password requirement hints", () => {
