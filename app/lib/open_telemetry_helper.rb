@@ -72,12 +72,28 @@ module OpenTelemetryHelper
     # Wrap a method with automatic tracing
     # @param method_name [Symbol] Name of the method to trace
     # @param span_name [String] Optional custom span name
-    def trace_method(method_name, span_name: nil)
+    # @param attributes [Proc, Hash] Optional attributes to add to the span
+    #   - If a Proc, it will be called with the method arguments to generate dynamic attributes
+    #   - If a Hash, it will be used directly as static attributes
+    def trace_method(method_name, span_name: nil, attributes: nil)
       original_method = instance_method(method_name)
       span_name ||= "#{name}##{method_name}"
 
       define_method(method_name) do |*args, **kwargs, &block|
-        trace_span(span_name, attributes: { "method.name" => method_name.to_s }) do
+        # Build the attributes hash
+        span_attributes = { "method.name" => method_name.to_s }
+
+        # Add custom attributes if provided
+        if attributes.is_a?(Proc)
+          # Call the proc with method arguments to generate dynamic attributes
+          custom_attrs = instance_exec(*args, **kwargs, &attributes)
+          span_attributes.merge!(custom_attrs) if custom_attrs.is_a?(Hash)
+        elsif attributes.is_a?(Hash)
+          # Use static attributes directly
+          span_attributes.merge!(attributes)
+        end
+
+        trace_span(span_name, attributes: span_attributes) do
           original_method.bind(self).call(*args, **kwargs, &block)
         end
       end
