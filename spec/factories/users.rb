@@ -9,7 +9,12 @@ FactoryBot.define do
     role { :player } # Default role
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    phone { Faker::PhoneNumber.phone_number }
+    phone { "+1#{Faker::Number.number(digits: 10)}" } # Valid US phone format
+
+    # Skip email confirmation for tests
+    after(:build) do |user|
+      user.skip_confirmation! if user.respond_to?(:skip_confirmation!)
+    end
 
     # Traits for each role in the hierarchy
     trait :player do
