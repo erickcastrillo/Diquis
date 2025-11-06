@@ -64,16 +64,16 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
   const getStatusBadge = (user: User) => {
     if (user.locked_at) {
       return (
-        <span className="badge badge-soft badge-error badge-sm">Locked</span>
+        <span className="badge badge-soft badge-error badge-sm">{t("common.status.locked")}</span>
       );
     }
     if (!user.confirmed_at) {
       return (
-        <span className="badge badge-soft badge-warning badge-sm">Pending</span>
+        <span className="badge badge-soft badge-warning badge-sm">{t("common.status.pending")}</span>
       );
     }
     return (
-      <span className="badge badge-soft badge-success badge-sm">Active</span>
+      <span className="badge badge-soft badge-success badge-sm">{t("common.status.active")}</span>
     );
   };
 
@@ -104,7 +104,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
   };
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return "Never";
+    if (!dateString) return t("common.never");
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -120,7 +120,9 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">{t("user_management.users.index.title")}</h1>
+            <h1 className="text-3xl font-bold">
+              {t("user_management.users.index.title")}
+            </h1>
             <p className="text-base-content/60 mt-1">
               {t("user_management.users.index.subtitle")}
             </p>
@@ -145,7 +147,9 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
               <input
                 type="search"
                 className="grow"
-                placeholder={t("user_management.users.index.search_placeholder")}
+                placeholder={t(
+                  "user_management.users.index.search_placeholder"
+                )}
                 id="table-input-search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -173,7 +177,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                             onChange={handleSelectAll}
                           />
                           <label htmlFor="table-search-all" className="sr-only">
-                            Select All
+                            {t("common.select_all")}
                           </label>
                         </div>
                       </th>
@@ -356,7 +360,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                 disabled={currentPage === 1}
               >
                 <span className="icon-[tabler--chevrons-left] size-4.5 rtl:rotate-180"></span>
-                <span className="sr-only">Previous</span>
+                <span className="sr-only">{t("common.previous")}</span>
               </button>
               <div className="flex items-center space-x-1">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
@@ -382,7 +386,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                 }
                 disabled={currentPage === totalPages}
               >
-                <span className="sr-only">Next</span>
+                <span className="sr-only">{t("common.next")}</span>
                 <span className="icon-[tabler--chevrons-right] size-4.5 rtl:rotate-180"></span>
               </button>
             </div>

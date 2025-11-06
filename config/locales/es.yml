@@ -265,6 +265,14 @@ es:
     error: "Error"
     search: "Buscar"
     actions: "Acciones"
+    select_all: "Seleccionar Todos"
+    previous: "Anterior"
+    next: "Siguiente"
+    never: "Nunca"
+    status:
+      active: "Activo"
+      pending: "Pendiente"
+      locked: "Bloqueado"
     
   errors:
     not_found: "No encontrado"

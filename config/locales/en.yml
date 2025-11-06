@@ -292,6 +292,14 @@ en:
     error: "Error"
     search: "Search"
     actions: "Actions"
+    select_all: "Select All"
+    previous: "Previous"
+    next: "Next"
+    never: "Never"
+    status:
+      active: "Active"
+      pending: "Pending"
+      locked: "Locked"
     
   errors:
     not_found: "Not found"
