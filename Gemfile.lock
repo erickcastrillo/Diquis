@@ -661,9 +661,9 @@ DEPENDENCIES
   inertia_rails (~> 3.11)
   jbuilder
   kamal
-  opentelemetry-exporter-otlp (~> 0.29)
-  opentelemetry-instrumentation-all (~> 0.71)
-  opentelemetry-sdk (~> 1.5)
+  opentelemetry-exporter-otlp (~> 0.31)
+  opentelemetry-instrumentation-all (~> 0.87)
+  opentelemetry-sdk (~> 1.10)
   pg (~> 1.1)
   puma (>= 5.0)
   pundit-matchers (~> 4.0)

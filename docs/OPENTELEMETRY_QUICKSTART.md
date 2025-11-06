@@ -59,13 +59,13 @@ class UserService
       trace_attribute("user.role", params[:role])
       trace_attribute("academy.id", current_academy.id)
       trace_attribute("academy.name", current_academy.name)
-      
+
       user = User.create!(params)
-      
+
       # Track the result
       trace_attribute("user.id", user.id)
       trace_attribute("user.created", true)
-      
+
       user
     end
   end
@@ -84,19 +84,19 @@ class PaymentService
       trace_attribute("payment.amount", amount)
       trace_attribute("payment.currency", currency)
       trace_attribute("payment.method", "stripe")
-      
+
       result = charge_card(amount, currency)
-      
+
       # Track the outcome
       trace_attribute("payment.success", result.success?)
       trace_attribute("payment.transaction_id", result.id)
-      
+
       # Add an event milestone
       trace_event("payment.completed", {
         "amount" => amount,
         "status" => result.status
       })
-      
+
       result
     end
   end
@@ -113,15 +113,15 @@ class DataImportService
     trace_span("DataImportService.import_players") do
       trace_attribute("file.name", file.original_filename)
       trace_attribute("file.size", file.size)
-      
+
       begin
         players = parse_file(file)
         trace_attribute("players.count", players.size)
-        
+
         players.each do |player_data|
           import_player(player_data)
         end
-        
+
         trace_event("import.success")
       rescue CSV::MalformedCSVError => e
         trace_exception(e)
@@ -150,16 +150,16 @@ class PlayerStatsCalculator
   def calculate_average(player_id, season)
     player = Player.find(player_id)
     stats = player.stats.where(season: season)
-    
+
     # These attributes are automatically added to the span
     stats.average(:goals)
   end
-  
+
   # Manually add attributes for auto-traced methods
   trace_method :update_ranking, attributes: ->(player_id, new_rank) {
-    { 
+    {
       "player.id" => player_id,
-      "ranking.new" => new_rank 
+      "ranking.new" => new_rank
     }
   }
   def update_ranking(player_id, new_rank)
@@ -182,18 +182,18 @@ class PlayersController < ApplicationController
       trace_attribute("player.position", player_params[:position])
       trace_attribute("current_user.id", current_user.id)
       trace_attribute("academy.id", current_academy.id)
-      
+
       @player = Player.new(player_params)
-      
+
       if @player.save
         trace_attribute("player.id", @player.id)
         trace_event("player.created")
-        
+
         redirect_to @player, notice: "Player created"
       else
         trace_attribute("validation.failed", true)
         trace_attribute("errors", @player.errors.full_messages.join(", "))
-        
+
         render :new, status: :unprocessable_entity
       end
     end
@@ -206,21 +206,21 @@ end
 ```ruby
 class PlayerReportJob < ApplicationJob
   include OpenTelemetryHelper
-  
+
   def perform(player_id, report_type)
     trace_span("PlayerReportJob.perform") do
       trace_attribute("player.id", player_id)
       trace_attribute("report.type", report_type)
       trace_attribute("job.queue", queue_name)
-      
+
       player = Player.find(player_id)
       trace_attribute("player.name", player.full_name)
-      
+
       report = generate_report(player, report_type)
-      
+
       trace_attribute("report.pages", report.page_count)
       trace_event("report.generated")
-      
+
       report
     end
   end
@@ -236,24 +236,24 @@ class TournamentService
   def create_tournament(params)
     trace_span("TournamentService.create_tournament") do
       trace_attribute("tournament.name", params[:name])
-      
+
       tournament = Tournament.create!(params)
       trace_attribute("tournament.id", tournament.id)
-      
+
       # Create a nested span for team setup
       trace_span("setup_teams") do
         trace_attribute("teams.count", params[:team_ids].size)
         tournament.teams = Team.where(id: params[:team_ids])
         trace_event("teams.assigned")
       end
-      
+
       # Another nested span for scheduling
       trace_span("create_schedule") do
         matches = MatchScheduler.new(tournament).generate
         trace_attribute("matches.count", matches.size)
         trace_event("schedule.created")
       end
-      
+
       tournament
     end
   end
