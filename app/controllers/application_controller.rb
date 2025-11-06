@@ -1,10 +1,18 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
   protect_from_forgery with: :exception
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
   before_action :set_locale
+
+  # Pundit: Ensure authorization is performed on every action
+  after_action :verify_authorized, unless: :devise_controller?
+
+  # Pundit: Handle authorization errors
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Share data with all Inertia requests
   inertia_share do
@@ -61,5 +69,30 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(resource_or_scope)
     root_path
+  end
+
+  private
+
+  # Pundit: Define the user for authorization
+  def pundit_user
+    current_user
+  end
+
+  # Pundit: Handle unauthorized access
+  def user_not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+    message = I18n.t("pundit.#{policy_name}.#{exception.query}", default: :default)
+    message = I18n.t("pundit.default", default: "You are not authorized to perform this action.") if message == :default
+
+    respond_to do |format|
+      format.html do
+        flash[:alert] = message
+        redirect_back(fallback_location: root_path)
+      end
+      format.json { render json: { error: message }, status: :forbidden }
+      format.inertia do
+        inertia_location root_path, error: message
+      end
+    end
   end
 end
