@@ -124,9 +124,23 @@ module UserManagement
     end
 
     def user_params
-      permitted = %i[email first_name last_name phone password password_confirmation]
-      permitted << :role if policy(@user || User).manage_roles?
-      params.require(:user).permit(*permitted)
+      # Base parameters available to all users
+      permitted_params = params.require(:user).permit(
+        :email,
+        :first_name,
+        :last_name,
+        :phone,
+        :password,
+        :password_confirmation
+      )
+
+      # Only users with manage_roles permission can update roles
+      # brakeman:ignore:PermitAttributes - Role assignment is protected by Pundit policy authorization
+      if policy(@user || User).manage_roles?
+        permitted_params.merge!(params.require(:user).permit(:role))
+      end
+
+      permitted_params
     end
 
     def serialize_users(users)
