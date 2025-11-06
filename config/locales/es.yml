@@ -278,3 +278,58 @@ es:
       update?: "No estás autorizado para actualizar este usuario."
       destroy?: "No estás autorizado para eliminar este usuario."
       manage_roles?: "No estás autorizado para gestionar roles de usuario."
+
+  user_management:
+    users:
+      index:
+        title: "Gestión de Usuarios"
+        subtitle: "Administrar usuarios y sus roles"
+        create_user: "Crear Usuario"
+        search_placeholder: "Buscar usuarios..."
+      show:
+        title: "Detalles del Usuario"
+        edit_user: "Editar Usuario"
+        delete_user: "Eliminar Usuario"
+        account_info: "Información de la Cuenta"
+        profile_info: "Información del Perfil"
+        activity_info: "Información de Actividad"
+      new:
+        title: "Crear Nuevo Usuario"
+        subtitle: "Agregar un nuevo usuario al sistema"
+      edit:
+        title: "Editar Usuario"
+        subtitle: "Actualizar información del usuario"
+      create:
+        success: "Usuario creado exitosamente"
+        error: "Error al crear el usuario"
+      update:
+        success: "Usuario actualizado exitosamente"
+        error: "Error al actualizar el usuario"
+      destroy:
+        success: "Usuario eliminado exitosamente"
+        error: "Error al eliminar el usuario"
+      fields:
+        email: "Correo Electrónico"
+        first_name: "Nombre"
+        last_name: "Apellido"
+        full_name: "Nombre Completo"
+        phone: "Teléfono"
+        role: "Rol"
+        password: "Contraseña"
+        password_confirmation: "Confirmar Contraseña"
+        created_at: "Creado el"
+        updated_at: "Actualizado el"
+        confirmed_at: "Confirmado el"
+        locked_at: "Bloqueado el"
+        sign_in_count: "Cantidad de Inicios de Sesión"
+        current_sign_in_at: "Último Inicio de Sesión"
+        last_sign_in_at: "Inicio de Sesión Anterior"
+      roles:
+        player: "Jugador"
+        parent: "Padre/Madre"
+        staff: "Personal"
+        coach: "Entrenador"
+        academy_admin: "Administrador de Academia"
+        academy_owner: "Propietario de Academia"
+        super_admin: "Super Administrador"
+

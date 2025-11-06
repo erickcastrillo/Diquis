@@ -13,6 +13,11 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
   end
 
+  # User Management routes
+  namespace :user_management, path: "admin" do
+    resources :users
+  end
+
   # Example Inertia page
   get "inertia-example", to: "inertia_example#index"
 

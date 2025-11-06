@@ -305,3 +305,58 @@ en:
       update?: "You are not authorized to update this user."
       destroy?: "You are not authorized to delete this user."
       manage_roles?: "You are not authorized to manage user roles."
+
+  user_management:
+    users:
+      index:
+        title: "User Management"
+        subtitle: "Manage users and their roles"
+        create_user: "Create User"
+        search_placeholder: "Search users..."
+      show:
+        title: "User Details"
+        edit_user: "Edit User"
+        delete_user: "Delete User"
+        account_info: "Account Information"
+        profile_info: "Profile Information"
+        activity_info: "Activity Information"
+      new:
+        title: "Create New User"
+        subtitle: "Add a new user to the system"
+      edit:
+        title: "Edit User"
+        subtitle: "Update user information"
+      create:
+        success: "User created successfully"
+        error: "Failed to create user"
+      update:
+        success: "User updated successfully"
+        error: "Failed to update user"
+      destroy:
+        success: "User deleted successfully"
+        error: "Failed to delete user"
+      fields:
+        email: "Email"
+        first_name: "First Name"
+        last_name: "Last Name"
+        full_name: "Full Name"
+        phone: "Phone"
+        role: "Role"
+        password: "Password"
+        password_confirmation: "Confirm Password"
+        created_at: "Created At"
+        updated_at: "Updated At"
+        confirmed_at: "Confirmed At"
+        locked_at: "Locked At"
+        sign_in_count: "Sign In Count"
+        current_sign_in_at: "Current Sign In At"
+        last_sign_in_at: "Last Sign In At"
+      roles:
+        player: "Player"
+        parent: "Parent"
+        staff: "Staff"
+        coach: "Coach"
+        academy_admin: "Academy Admin"
+        academy_owner: "Academy Owner"
+        super_admin: "Super Admin"
+
