@@ -64,16 +64,22 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
   const getStatusBadge = (user: User) => {
     if (user.locked_at) {
       return (
-        <span className="badge badge-soft badge-error badge-sm">{t("common.status.locked")}</span>
+        <span className="badge badge-soft badge-error badge-sm">
+          {t("common.status.locked")}
+        </span>
       );
     }
     if (!user.confirmed_at) {
       return (
-        <span className="badge badge-soft badge-warning badge-sm">{t("common.status.pending")}</span>
+        <span className="badge badge-soft badge-warning badge-sm">
+          {t("common.status.pending")}
+        </span>
       );
     }
     return (
-      <span className="badge badge-soft badge-success badge-sm">{t("common.status.active")}</span>
+      <span className="badge badge-soft badge-success badge-sm">
+        {t("common.status.active")}
+      </span>
     );
   };
 
@@ -241,7 +247,9 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                                 htmlFor={`table-search-${user.id}`}
                                 className="sr-only"
                               >
-                                {t("common.select_item", { item: user.full_name })}
+                                {t("common.select_item", {
+                                  item: user.full_name,
+                                })}
                               </label>
                             </div>
                           </td>
@@ -302,14 +310,18 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                             <Link
                               href={`/admin/users/${user.id}`}
                               className="btn btn-circle btn-text btn-sm"
-                              aria-label={t("common.view_item", { item: "user" })}
+                              aria-label={t("common.view_item", {
+                                item: "user",
+                              })}
                             >
                               <span className="icon-[tabler--eye] size-5"></span>
                             </Link>
                             <Link
                               href={`/admin/users/${user.id}/edit`}
                               className="btn btn-circle btn-text btn-sm"
-                              aria-label={t("common.edit_item", { item: "user" })}
+                              aria-label={t("common.edit_item", {
+                                item: "user",
+                              })}
                             >
                               <span className="icon-[tabler--pencil] size-5"></span>
                             </Link>
@@ -318,10 +330,14 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                               method="delete"
                               as="button"
                               className="btn btn-circle btn-text btn-sm"
-                              aria-label={t("common.delete_item", { item: "user" })}
+                              aria-label={t("common.delete_item", {
+                                item: "user",
+                              })}
                               onBefore={() =>
                                 confirm(
-                                  t("common.confirm_delete", { item: user.full_name })
+                                  t("common.confirm_delete", {
+                                    item: user.full_name,
+                                  })
                                 )
                               }
                             >

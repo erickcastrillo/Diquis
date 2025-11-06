@@ -1,6 +1,7 @@
 import { Head, Link, router } from "@inertiajs/react";
 import React from "react";
 import FlyonUILayout from "../../../components/layout/FlyonUILayout";
+import { useTranslations } from "../../../lib/i18n";
 
 interface User {
   id: string;
@@ -28,18 +29,16 @@ interface Props {
 }
 
 const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
+  const { t } = useTranslations();
+  
   const handleDelete = () => {
-    if (
-      confirm(
-        "Are you sure you want to delete this user? This action cannot be undone."
-      )
-    ) {
+    if (confirm(t("user_management.users.show.delete_confirm"))) {
       router.delete(`/admin/users/${user.id}`);
     }
   };
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return "Never";
+    if (!dateString) return t("common.never");
     return new Date(dateString).toLocaleString("en-US", {
       year: "numeric",
       month: "short",
@@ -65,7 +64,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
   const getStatusInfo = () => {
     if (user.locked_at) {
       return {
-        label: "Locked",
+        label: t("user_management.users.show.status.locked"),
         color: "badge-error",
         icon: (
           <svg
@@ -86,7 +85,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
     }
     if (!user.confirmed_at) {
       return {
-        label: "Unconfirmed",
+        label: t("user_management.users.show.status.unconfirmed"),
         color: "badge-warning",
         icon: (
           <svg
@@ -106,7 +105,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
       };
     }
     return {
-      label: "Active",
+      label: t("user_management.users.show.status.active"),
       color: "badge-success",
       icon: (
         <svg
@@ -130,7 +129,11 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
 
   return (
     <FlyonUILayout>
-      <Head title={`${user.full_name} | User Management | Diquis`} />
+      <Head
+        title={`${user.full_name} | ${t(
+          "user_management.users.index.title"
+        )} | Diquis`}
+      />
 
       <div className="container mx-auto p-6">
         {/* Breadcrumb Navigation */}
@@ -139,7 +142,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
             <li>
               <Link href="/app/dashboard" className="flex items-center gap-2">
                 <span className="icon-[tabler--home] size-5"></span>
-                Dashboard
+                {t("user_management.users.show.breadcrumb.dashboard")}
               </Link>
             </li>
             <li className="breadcrumbs-separator rtl:rotate-180">
@@ -148,7 +151,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
             <li>
               <Link href="/admin/users" className="flex items-center gap-2">
                 <span className="icon-[tabler--users] size-5"></span>
-                Users
+                {t("user_management.users.show.breadcrumb.users")}
               </Link>
             </li>
             <li className="breadcrumbs-separator rtl:rotate-180">
@@ -164,9 +167,11 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">User Details</h1>
+            <h1 className="text-3xl font-bold">
+              {t("user_management.users.show.title")}
+            </h1>
             <p className="text-base-content/70 mt-1">
-              View and manage user information
+              {t("user_management.users.show.subtitle")}
             </p>
           </div>
           <div className="flex gap-2">
@@ -188,7 +193,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                   />
                 </svg>
-                Edit User
+                {t("user_management.users.show.edit_user")}
               </Link>
             )}
             {can_delete && (
@@ -209,7 +214,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
-                Delete
+                {t("user_management.users.show.delete_user")}
               </button>
             )}
           </div>
@@ -251,11 +256,13 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
             {/* Stats */}
             <div className="card mt-6">
               <div className="card-body">
-                <h3 className="card-title text-lg">Activity Stats</h3>
+                <h3 className="card-title text-lg">
+                  {t("user_management.users.show.activity_stats")}
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <div className="text-base-content/70 text-sm">
-                      Total Sign Ins
+                      {t("user_management.users.show.total_sign_ins")}
                     </div>
                     <div className="text-2xl font-bold">
                       {user.sign_in_count}
@@ -264,7 +271,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   <div className="divider my-2"></div>
                   <div>
                     <div className="text-base-content/70 text-sm">
-                      Member Since
+                      {t("user_management.users.show.member_since")}
                     </div>
                     <div className="font-semibold">
                       {formatDate(user.created_at)}
@@ -280,41 +287,43 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
             {/* Account Information */}
             <div className="card mb-6">
               <div className="card-body">
-                <h3 className="card-title mb-4">Account Information</h3>
+                <h3 className="card-title mb-4">
+                  {t("user_management.users.show.account_info")}
+                </h3>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Email
+                      {t("user_management.users.fields.email")}
                     </div>
                     <div className="font-medium">{user.email}</div>
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Phone
+                      {t("user_management.users.fields.phone")}
                     </div>
                     <div className="font-medium">
-                      {user.phone || "Not provided"}
+                      {user.phone || t("user_management.users.show.not_provided")}
                     </div>
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      First Name
+                      {t("user_management.users.fields.first_name")}
                     </div>
                     <div className="font-medium">
-                      {user.first_name || "Not provided"}
+                      {user.first_name || t("user_management.users.show.not_provided")}
                     </div>
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Last Name
+                      {t("user_management.users.fields.last_name")}
                     </div>
                     <div className="font-medium">
-                      {user.last_name || "Not provided"}
+                      {user.last_name || t("user_management.users.show.not_provided")}
                     </div>
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Role
+                      {t("user_management.users.fields.role")}
                     </div>
                     <div>
                       <span className={`badge ${getRoleBadgeColor(user.role)}`}>
@@ -324,7 +333,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Status
+                      {t("common.status.label")}
                     </div>
                     <div>
                       <span
@@ -342,11 +351,13 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
             {/* Activity Information */}
             <div className="card">
               <div className="card-body">
-                <h3 className="card-title mb-4">Activity Information</h3>
+                <h3 className="card-title mb-4">
+                  {t("user_management.users.show.activity_info")}
+                </h3>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Created At
+                      {t("user_management.users.fields.created_at")}
                     </div>
                     <div className="font-medium">
                       {formatDate(user.created_at)}
@@ -354,7 +365,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Updated At
+                      {t("user_management.users.fields.updated_at")}
                     </div>
                     <div className="font-medium">
                       {formatDate(user.updated_at)}
@@ -362,7 +373,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Confirmed At
+                      {t("user_management.users.fields.confirmed_at")}
                     </div>
                     <div className="font-medium">
                       {formatDate(user.confirmed_at)}
@@ -370,7 +381,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Locked At
+                      {t("user_management.users.fields.locked_at")}
                     </div>
                     <div className="font-medium">
                       {formatDate(user.locked_at)}
@@ -378,7 +389,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Current Sign In
+                      {t("user_management.users.fields.current_sign_in")}
                     </div>
                     <div className="font-medium">
                       {formatDate(user.current_sign_in_at)}
@@ -386,7 +397,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Last Sign In
+                      {t("user_management.users.fields.last_sign_in")}
                     </div>
                     <div className="font-medium">
                       {formatDate(user.last_sign_in_at)}
@@ -394,7 +405,7 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                   </div>
                   <div>
                     <div className="text-base-content/70 text-sm mb-1">
-                      Sign In Count
+                      {t("user_management.users.fields.sign_in_count")}
                     </div>
                     <div className="font-medium">{user.sign_in_count}</div>
                   </div>

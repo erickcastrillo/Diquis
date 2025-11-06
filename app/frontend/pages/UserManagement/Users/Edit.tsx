@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from "@inertiajs/react";
 import React from "react";
 import FlyonUILayout from "../../../components/layout/FlyonUILayout";
+import { useTranslations } from "../../../lib/i18n";
 
 interface User {
   id: string;
@@ -24,6 +25,7 @@ const UsersEditPage: React.FC<Props> = ({
   can_manage_roles,
   errors: serverErrors,
 }) => {
+  const { t } = useTranslations();
   const {
     data,
     setData,
@@ -48,24 +50,16 @@ const UsersEditPage: React.FC<Props> = ({
   };
 
   const getRoleDisplay = (role: string) => {
-    const displays: { [key: string]: string } = {
-      player: "Player",
-      parent: "Parent",
-      staff: "Staff",
-      coach: "Coach",
-      academy_admin: "Academy Admin",
-      academy_owner: "Academy Owner",
-      super_admin: "Super Admin",
-    };
-    return displays[role] || role;
+    const key = `user_management.users.roles.${role}`;
+    return t(key) || role;
   };
 
   return (
     <FlyonUILayout>
       <Head
-        title={`Edit ${
+        title={`${t("user_management.users.edit.title")} ${
           user.first_name || user.email
-        } | User Management | Diquis`}
+        } | ${t("user_management.users.index.title")} | Diquis`}
       />
 
       <div className="container mx-auto p-6">
@@ -89,12 +83,14 @@ const UsersEditPage: React.FC<Props> = ({
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Back
+              {t("common.back")}
             </Link>
             <div>
-              <h1 className="text-3xl font-bold">Edit User</h1>
+              <h1 className="text-3xl font-bold">
+                {t("user_management.users.edit.title")}
+              </h1>
               <p className="text-base-content/70 mt-1">
-                Update user information
+                {t("user_management.users.edit.subtitle")}
               </p>
             </div>
           </div>
@@ -107,14 +103,15 @@ const UsersEditPage: React.FC<Props> = ({
               {/* Account Information Section */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-4">
-                  Account Information
+                  {t("user_management.users.form.sections.account_info")}
                 </h3>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {/* Email */}
                   <div className="form-control md:col-span-2">
                     <label className="label">
                       <span className="label-text">
-                        Email <span className="text-error">*</span>
+                        {t("user_management.users.fields.email")}{" "}
+                        <span className="text-error">*</span>
                       </span>
                     </label>
                     <input
@@ -139,7 +136,8 @@ const UsersEditPage: React.FC<Props> = ({
                   <div className="form-control md:col-span-2">
                     <label className="label">
                       <span className="label-text">
-                        Role <span className="text-error">*</span>
+                        {t("user_management.users.fields.role")}{" "}
+                        <span className="text-error">*</span>
                       </span>
                     </label>
                     {can_manage_roles ? (
@@ -175,7 +173,7 @@ const UsersEditPage: React.FC<Props> = ({
                     {!can_manage_roles && (
                       <label className="label">
                         <span className="label-text-alt text-base-content/70">
-                          You don't have permission to change this user's role
+                          {t("user_management.users.edit.role_permission_note")}
                         </span>
                       </label>
                     )}
@@ -188,14 +186,14 @@ const UsersEditPage: React.FC<Props> = ({
               {/* Profile Information Section */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-4">
-                  Profile Information
+                  {t("user_management.users.form.sections.profile_info")}
                 </h3>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {/* First Name */}
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text">
-                        First Name
+                        {t("user_management.users.fields.first_name")}
                         {(data.role === "player" || data.role === "parent") && (
                           <span className="text-error">*</span>
                         )}
@@ -225,7 +223,7 @@ const UsersEditPage: React.FC<Props> = ({
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text">
-                        Last Name
+                        {t("user_management.users.fields.last_name")}
                         {(data.role === "player" || data.role === "parent") && (
                           <span className="text-error">*</span>
                         )}
@@ -254,7 +252,9 @@ const UsersEditPage: React.FC<Props> = ({
                   {/* Phone */}
                   <div className="form-control md:col-span-2">
                     <label className="label">
-                      <span className="label-text">Phone</span>
+                      <span className="label-text">
+                        {t("user_management.users.fields.phone")}
+                      </span>
                     </label>
                     <input
                       type="tel"
@@ -263,7 +263,9 @@ const UsersEditPage: React.FC<Props> = ({
                       }`}
                       value={data.phone}
                       onChange={(e) => setData("phone", e.target.value)}
-                      placeholder="+1234567890"
+                      placeholder={t(
+                        "user_management.users.form.phone_placeholder"
+                      )}
                     />
                     {errors.phone && (
                       <label className="label">
@@ -281,16 +283,18 @@ const UsersEditPage: React.FC<Props> = ({
               {/* Password Section */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-4">
-                  Change Password (Optional)
+                  {t("user_management.users.edit.password_section")}
                 </h3>
                 <p className="text-base-content/70 text-sm mb-4">
-                  Leave blank to keep the current password
+                  {t("user_management.users.edit.password_note")}
                 </p>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {/* Password */}
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text">New Password</span>
+                      <span className="label-text">
+                        {t("user_management.users.edit.new_password")}
+                      </span>
                     </label>
                     <input
                       type="password"
@@ -310,7 +314,9 @@ const UsersEditPage: React.FC<Props> = ({
                     )}
                     <label className="label">
                       <span className="label-text-alt text-base-content/70">
-                        Minimum 6 characters
+                        {t("user_management.users.form.minimum_chars", {
+                          count: 6,
+                        })}
                       </span>
                     </label>
                   </div>
@@ -318,7 +324,9 @@ const UsersEditPage: React.FC<Props> = ({
                   {/* Password Confirmation */}
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text">Confirm New Password</span>
+                      <span className="label-text">
+                        {t("user_management.users.edit.confirm_new_password")}
+                      </span>
                     </label>
                     <input
                       type="password"
@@ -348,7 +356,7 @@ const UsersEditPage: React.FC<Props> = ({
                   href={`/admin/users/${user.id}`}
                   className="btn btn-ghost"
                 >
-                  Cancel
+                  {t("common.cancel")}
                 </Link>
                 <button
                   type="submit"
@@ -358,7 +366,7 @@ const UsersEditPage: React.FC<Props> = ({
                   {processing ? (
                     <>
                       <span className="loading loading-spinner loading-sm"></span>
-                      Updating...
+                      {t("user_management.users.edit.updating")}
                     </>
                   ) : (
                     <>
@@ -375,7 +383,7 @@ const UsersEditPage: React.FC<Props> = ({
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      Update User
+                      {t("user_management.users.edit.update_button")}
                     </>
                   )}
                 </button>
@@ -401,17 +409,13 @@ const UsersEditPage: React.FC<Props> = ({
               />
             </svg>
             <div className="text-sm">
-              <p className="font-semibold mb-1">Important Notes:</p>
+              <p className="font-semibold mb-1">
+                {t("user_management.users.edit.help_title")}
+              </p>
               <ul className="list-disc list-inside space-y-1">
-                <li>Players and Parents require first and last names</li>
-                <li>
-                  Changing email will require the user to reconfirm their
-                  account
-                </li>
-                <li>
-                  Only fill in password fields if you want to change the
-                  password
-                </li>
+                <li>{t("user_management.users.edit.help_note_1")}</li>
+                <li>{t("user_management.users.edit.help_note_2")}</li>
+                <li>{t("user_management.users.edit.help_note_3")}</li>
               </ul>
             </div>
           </div>
