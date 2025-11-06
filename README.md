@@ -130,13 +130,17 @@ Each slice contains:
 git clone https://github.com/yourusername/diquis.git
 cd diquis
 
-# 2. Install dependencies
+# 2. Configure environment (optional - has sensible defaults)
+cp .env.example .env
+# Edit .env if you need custom configuration
+
+# 3. Install dependencies
 bundle install
 
-# 3. Setup database
+# 4. Setup database
 rails db:create db:migrate db:seed
 
-# 4. Start development servers
+# 5. Start development servers
 ./bin/dev
 ```text
 
@@ -156,6 +160,35 @@ For full debugging support in VS Code:
 4. Set breakpoints and debug your code
 
 See [🐛 VS Code Debug Setup](./.vscode/DEBUG_SETUP.md) for complete setup guide.
+
+### Environment Configuration
+
+The application uses a **single `.env` file** for Docker development:
+
+```bash
+# Copy the example file
+cp .env.example .env
+```
+
+**How it works:**
+
+- Docker Compose automatically loads `.env` file
+- All services (web, sidekiq) share the same environment
+- For local (non-Docker) development, set variables in your shell
+
+**What you can configure:**
+
+- `SEED_DEFAULT_PASSWORD` - Default password for development seed data
+- OpenTelemetry/Honeycomb.io observability (optional)
+- External services (SMTP, etc.)
+- Database/Redis settings (usually not needed, Docker defaults work)
+
+**Files:**
+
+- `.env` - Your settings (gitignored, **never commit**)
+- `.env.example` - Template with all options (committed)
+
+See [📝 Seed Data Guide](./docs/SEED_DATA.md) for details.
 
 ### Quick API Test
 

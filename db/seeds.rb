@@ -3,11 +3,22 @@
 # Diquis Application Seeds
 # This file creates sample data for development and demonstration purposes.
 # The data is idempotent - running seeds multiple times won't create duplicates.
+#
+# 🔒 SECURITY NOTE:
+# Passwords are loaded from environment variables or Rails credentials.
+# A fallback default is provided for local development only.
+# Production accounts should ALWAYS be created manually with secure,
+# unique passwords through the admin interface.
 
 # Only seed in development environment to prevent accidental data creation in production
 unless Rails.env.production?
   puts "\n🌱 Seeding Diquis application data..."
   puts "=" * 80
+
+  # Get default password from environment or credentials (fallback for dev)
+  DEFAULT_SEED_PASSWORD = ENV.fetch("SEED_DEFAULT_PASSWORD") do
+    Rails.application.credentials.dig(:seed, :default_password) || "Dev3l0pment!2025" # ggignore
+  end
 
   # Helper method to create or find user
   def create_user(email:, password:, role:, first_name:, last_name:, phone: nil)
@@ -37,9 +48,9 @@ unless Rails.env.production?
   puts "-" * 80
 
   # Super Admin - Full system access
-  super_admin = create_user(
+  _super_admin = create_user(
     email: "admin@diquis.com",
-    password: "Str0ngP@ssw0rd!",
+    password: DEFAULT_SEED_PASSWORD,
     role: :super_admin,
     first_name: "System",
     last_name: "Administrator",
@@ -47,9 +58,9 @@ unless Rails.env.production?
   )
 
   # Academy Owner - Owner of the football academy
-  academy_owner = create_user(
+  _academy_owner = create_user(
     email: "owner@diquis.com",
-    password: "0wn3rP@ssw0rd!",
+    password: DEFAULT_SEED_PASSWORD,
     role: :academy_owner,
     first_name: "Carlos",
     last_name: "Rodríguez",
@@ -57,9 +68,9 @@ unless Rails.env.production?
   )
 
   # Academy Admin - Administrative staff
-  academy_admin = create_user(
+  _academy_admin = create_user(
     email: "admin.academy@diquis.com",
-    password: "M@n@g3rP@ss!",
+    password: DEFAULT_SEED_PASSWORD,
     role: :academy_admin,
     first_name: "María",
     last_name: "González",
@@ -73,9 +84,9 @@ unless Rails.env.production?
   puts "-" * 80
 
   # Head Coach
-  coach1 = create_user(
+  _coach1 = create_user(
     email: "coach.main@diquis.com",
-    password: "He@dC0@ch123!",
+    password: DEFAULT_SEED_PASSWORD,
     role: :coach,
     first_name: "Diego",
     last_name: "Martínez",
@@ -83,9 +94,9 @@ unless Rails.env.production?
   )
 
   # Assistant Coach
-  coach2 = create_user(
+  _coach2 = create_user(
     email: "coach.assistant@diquis.com",
-    password: "@ssistC0@ch!23",
+    password: DEFAULT_SEED_PASSWORD,
     role: :coach,
     first_name: "Luis",
     last_name: "Hernández",
@@ -93,9 +104,9 @@ unless Rails.env.production?
   )
 
   # Youth Coach
-  coach3 = create_user(
+  _coach3 = create_user(
     email: "coach.youth@diquis.com",
-    password: "Y0uthC0@ch!456",
+    password: DEFAULT_SEED_PASSWORD,
     role: :coach,
     first_name: "Ana",
     last_name: "Ramírez",
@@ -109,9 +120,9 @@ unless Rails.env.production?
   puts "-" * 80
 
   # Fitness Trainer
-  staff1 = create_user(
+  _staff1 = create_user(
     email: "staff.fitness@diquis.com",
-    password: "Fitn3ssT3@m!789",
+    password: DEFAULT_SEED_PASSWORD,
     role: :staff,
     first_name: "Roberto",
     last_name: "Sánchez",
@@ -119,9 +130,9 @@ unless Rails.env.production?
   )
 
   # Medical Staff
-  staff2 = create_user(
+  _staff2 = create_user(
     email: "staff.medical@diquis.com",
-    password: "M3dic@lT3@m!012",
+    password: DEFAULT_SEED_PASSWORD,
     role: :staff,
     first_name: "Elena",
     last_name: "Morales",
@@ -129,9 +140,9 @@ unless Rails.env.production?
   )
 
   # Equipment Manager
-  staff3 = create_user(
+  _staff3 = create_user(
     email: "staff.equipment@diquis.com",
-    password: "Equipm3ntM@n!345",
+    password: DEFAULT_SEED_PASSWORD,
     role: :staff,
     first_name: "Pedro",
     last_name: "López",
@@ -149,7 +160,7 @@ unless Rails.env.production?
   # Parent 1 - Will have 2 children
   parents << create_user(
     email: "parent1@example.com",
-    password: "P@r3ntUn0!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :parent,
     first_name: "Juan",
     last_name: "Pérez",
@@ -159,7 +170,7 @@ unless Rails.env.production?
   # Parent 2 - Will have 1 child
   parents << create_user(
     email: "parent2@example.com",
-    password: "P@r3ntD0s!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :parent,
     first_name: "Laura",
     last_name: "Jiménez",
@@ -169,7 +180,7 @@ unless Rails.env.production?
   # Parent 3 - Will have 1 child
   parents << create_user(
     email: "parent3@example.com",
-    password: "P@r3ntTr3s!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :parent,
     first_name: "Miguel",
     last_name: "Castro",
@@ -179,7 +190,7 @@ unless Rails.env.production?
   # Parent 4 - Will have 2 children (shares with parent 1)
   parents << create_user(
     email: "parent4@example.com",
-    password: "P@r3ntCu@tr0!25",
+    password: DEFAULT_SEED_PASSWORD,
     role: :parent,
     first_name: "Carmen",
     last_name: "Pérez",
@@ -189,7 +200,7 @@ unless Rails.env.production?
   # Parent 5 - Will have 1 child
   parents << create_user(
     email: "parent5@example.com",
-    password: "P@r3ntCinc0!25",
+    password: DEFAULT_SEED_PASSWORD,
     role: :parent,
     first_name: "Fernando",
     last_name: "Vargas",
@@ -207,7 +218,7 @@ unless Rails.env.production?
   # Player 1 - Child of parents 1 and 4 (siblings)
   players << create_user(
     email: "player1@example.com",
-    password: "Pl@y3rUn0!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :player,
     first_name: "Carlos",
     last_name: "Pérez",
@@ -217,7 +228,7 @@ unless Rails.env.production?
   # Player 2 - Sibling of player 1
   players << create_user(
     email: "player2@example.com",
-    password: "Pl@y3rD0s!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :player,
     first_name: "Sofia",
     last_name: "Pérez",
@@ -227,7 +238,7 @@ unless Rails.env.production?
   # Player 3 - Child of parent 2
   players << create_user(
     email: "player3@example.com",
-    password: "Pl@y3rTr3s!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :player,
     first_name: "Diego",
     last_name: "Jiménez",
@@ -237,7 +248,7 @@ unless Rails.env.production?
   # Player 4 - Child of parent 3
   players << create_user(
     email: "player4@example.com",
-    password: "Pl@y3rCu@tr0!25",
+    password: DEFAULT_SEED_PASSWORD,
     role: :player,
     first_name: "Valentina",
     last_name: "Castro",
@@ -247,7 +258,7 @@ unless Rails.env.production?
   # Player 5 - Child of parent 5
   players << create_user(
     email: "player5@example.com",
-    password: "Pl@y3rCinc0!25",
+    password: DEFAULT_SEED_PASSWORD,
     role: :player,
     first_name: "Mateo",
     last_name: "Vargas",
@@ -257,7 +268,7 @@ unless Rails.env.production?
   # Player 6 - No parent assigned yet
   players << create_user(
     email: "player6@example.com",
-    password: "Pl@y3rS3is!2025",
+    password: DEFAULT_SEED_PASSWORD,
     role: :player,
     first_name: "Isabella",
     last_name: "Rojas",
@@ -326,18 +337,18 @@ unless Rails.env.production?
   puts "  • Player-Guardian Links: #{PlayerGuardian.count} (#{PlayerGuardian.accepted.count} accepted, #{PlayerGuardian.pending.count} pending)"
 
   puts "\n🔐 Test Credentials:"
-  puts "  Super Admin:    admin@diquis.com / Str0ngP@ssw0rd!"
-  puts "  Academy Owner:  owner@diquis.com / 0wn3rP@ssw0rd!"
-  puts "  Academy Admin:  admin.academy@diquis.com / M@n@g3rP@ss!"
-  puts "  Coach:          coach.main@diquis.com / He@dC0@ch123!"
-  puts "  Staff:          staff.fitness@diquis.com / Fitn3ssT3@m!789"
-  puts "  Parent:         parent1@example.com / P@r3ntUn0!2025"
-  puts "  Player:         player1@example.com / Pl@y3rUn0!2025"
+  puts "  All accounts use the same password: #{DEFAULT_SEED_PASSWORD}"
+  puts "  Sample logins:"
+  puts "  - Super Admin:    admin@diquis.com"
+  puts "  - Academy Owner:  owner@diquis.com"
+  puts "  - Coach:          coach.main@diquis.com"
+  puts "  - Parent:         parent1@example.com"
+  puts "  - Player:         player1@example.com"
 
-  puts "\n💡 All passwords follow strong password requirements:"
-  puts "   • 12+ characters"
-  puts "   • Uppercase, lowercase, digit, special character"
-  puts "   • Not a common password"
+  puts "\n💡 Password Configuration:"
+  puts "   • Set via SEED_DEFAULT_PASSWORD env var"
+  puts "   • Or in Rails credentials under seed.default_password"
+  puts "   • Current: #{DEFAULT_SEED_PASSWORD.chars.first(4).join}#{'*' * (DEFAULT_SEED_PASSWORD.length - 4)}"
 
   puts "\n🚀 Ready to test! Visit http://localhost:3000"
   puts "=" * 80

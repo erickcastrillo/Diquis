@@ -55,7 +55,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: diquis_web
     env_file:
-      - .env.local
+      - .env
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgresql://diquis_user:diquis_password@postgres:5432/diquis_development
@@ -96,7 +96,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: diquis_sidekiq
     env_file:
-      - .env.local
+      - .env
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgresql://diquis_user:diquis_password@postgres:5432/diquis_development
