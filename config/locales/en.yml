@@ -293,13 +293,20 @@ en:
     search: "Search"
     actions: "Actions"
     select_all: "Select All"
+    select_item: "Select %{item}"
     previous: "Previous"
     next: "Next"
     never: "Never"
+    view: "View"
+    view_item: "View %{item}"
+    edit_item: "Edit %{item}"
+    delete_item: "Delete %{item}"
+    confirm_delete: "Are you sure you want to delete %{item}?"
     status:
       active: "Active"
       pending: "Pending"
       locked: "Locked"
+      label: "Status"
     
   errors:
     not_found: "Not found"

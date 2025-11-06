@@ -266,13 +266,20 @@ es:
     search: "Buscar"
     actions: "Acciones"
     select_all: "Seleccionar Todos"
+    select_item: "Seleccionar %{item}"
     previous: "Anterior"
     next: "Siguiente"
     never: "Nunca"
+    view: "Ver"
+    view_item: "Ver %{item}"
+    edit_item: "Editar %{item}"
+    delete_item: "Eliminar %{item}"
+    confirm_delete: "¿Está seguro de que desea eliminar %{item}?"
     status:
       active: "Activo"
       pending: "Pendiente"
       locked: "Bloqueado"
+      label: "Estado"
     
   errors:
     not_found: "No encontrado"

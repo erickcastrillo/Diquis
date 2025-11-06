@@ -198,7 +198,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                       </th>
                       <th scope="col" className="group w-fit">
                         <div className="flex items-center justify-between">
-                          Status
+                          {t("common.status.label")}
                         </div>
                       </th>
                       <th scope="col" className="group w-fit">
@@ -241,7 +241,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                                 htmlFor={`table-search-${user.id}`}
                                 className="sr-only"
                               >
-                                Select {user.full_name}
+                                {t("common.select_item", { item: user.full_name })}
                               </label>
                             </div>
                           </td>
@@ -302,14 +302,14 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                             <Link
                               href={`/admin/users/${user.id}`}
                               className="btn btn-circle btn-text btn-sm"
-                              aria-label="View user"
+                              aria-label={t("common.view_item", { item: "user" })}
                             >
                               <span className="icon-[tabler--eye] size-5"></span>
                             </Link>
                             <Link
                               href={`/admin/users/${user.id}/edit`}
                               className="btn btn-circle btn-text btn-sm"
-                              aria-label="Edit user"
+                              aria-label={t("common.edit_item", { item: "user" })}
                             >
                               <span className="icon-[tabler--pencil] size-5"></span>
                             </Link>
@@ -318,10 +318,10 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                               method="delete"
                               as="button"
                               className="btn btn-circle btn-text btn-sm"
-                              aria-label="Delete user"
+                              aria-label={t("common.delete_item", { item: "user" })}
                               onBefore={() =>
                                 confirm(
-                                  `Are you sure you want to delete ${user.full_name}?`
+                                  t("common.confirm_delete", { item: user.full_name })
                                 )
                               }
                             >
