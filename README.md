@@ -212,7 +212,17 @@ curl http://localhost:3000/api/v1/academies \
 
 For a complete containerized development environment with PostgreSQL and Redis:
 
-### Quick Docker Commands
+### Quick Start
+
+```bash
+# Start all services
+./docker-dev
+
+# Reset everything (useful after installing new gems)
+./docker-dev reset
+```
+
+### All Docker Commands
 
 ```bash
 # Start all services (default)
@@ -224,6 +234,9 @@ For a complete containerized development environment with PostgreSQL and Redis:
 
 # Restart all services
 ./docker-dev restart
+
+# Reset environment (rebuild from scratch)
+./docker-dev reset
 
 # Check service status
 ./docker-dev status
@@ -239,20 +252,30 @@ For a complete containerized development environment with PostgreSQL and Redis:
 
 ```bash
 # 1. Copy environment configuration
-cp .env.docker .env.docker.local
+cp .env.example .env
 
 # 2. Start all services
-docker compose up -d
+./docker-dev
 
-# 3. Setup database
+# 3. Setup database (if needed after reset)
 docker compose exec web bundle exec rails db:migrate
 docker compose exec web bundle exec rails db:seed
 ```
 
+### When to Use Reset
+
+Use `./docker-dev reset` when:
+
+- You've installed new gems (Gemfile.lock changed)
+- Docker containers are in a broken state
+- You need a completely fresh environment
+- Database schema changes aren't applying
+
+**⚠️ Warning:** Reset will delete all database data and require confirmation!
+
 ### Docker Services
 
-- **Rails App:** http://localhost:3000
-- **Vite Dev Server:** http://localhost:5173
+- **Rails App:** http://localhost:3000 (includes Vite dev server via bin/dev)
 - **Sidekiq Web UI:** http://localhost:4567
 - **PostgreSQL:** localhost:5432
 - **Redis:** localhost:6379
