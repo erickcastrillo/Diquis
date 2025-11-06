@@ -1,6 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
 import React, { useState } from "react";
 import FlyonUILayout from "../../../components/layout/FlyonUILayout";
+import { useTranslations } from "../../../lib/i18n";
 
 interface User {
   id: string;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
+  const { t } = useTranslations();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,21 +114,21 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
 
   return (
     <FlyonUILayout>
-      <Head title="User Management | Diquis" />
+      <Head title={`${t("user_management.users.index.title")} | Diquis`} />
 
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">User Management</h1>
+            <h1 className="text-3xl font-bold">{t("user_management.users.index.title")}</h1>
             <p className="text-base-content/60 mt-1">
-              Manage users and their roles
+              {t("user_management.users.index.subtitle")}
             </p>
           </div>
           {can_create && (
             <Link href="/admin/users/new" className="btn btn-primary">
               <span className="icon-[tabler--plus] size-5"></span>
-              Create User
+              {t("user_management.users.index.create_user")}
             </Link>
           )}
         </div>
@@ -138,12 +140,12 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
             <div className="input input-sm max-w-60">
               <span className="icon-[tabler--search] text-base-content/80 my-auto me-3 size-4 shrink-0"></span>
               <label className="sr-only" htmlFor="table-input-search">
-                Search
+                {t("common.search")}
               </label>
               <input
                 type="search"
                 className="grow"
-                placeholder="Search for users"
+                placeholder={t("user_management.users.index.search_placeholder")}
                 id="table-input-search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -177,17 +179,17 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                       </th>
                       <th scope="col" className="group w-fit">
                         <div className="flex items-center justify-between">
-                          User Name
+                          {t("user_management.users.fields.full_name")}
                         </div>
                       </th>
                       <th scope="col" className="group w-fit">
                         <div className="flex items-center justify-between">
-                          Email
+                          {t("user_management.users.fields.email")}
                         </div>
                       </th>
                       <th scope="col" className="group w-fit">
                         <div className="flex items-center justify-between">
-                          Role
+                          {t("user_management.users.fields.role")}
                         </div>
                       </th>
                       <th scope="col" className="group w-fit">
@@ -197,10 +199,10 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                       </th>
                       <th scope="col" className="group w-fit">
                         <div className="flex items-center justify-between">
-                          Created
+                          {t("user_management.users.fields.created_at")}
                         </div>
                       </th>
-                      <th scope="col">Actions</th>
+                      <th scope="col">{t("common.actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -212,8 +214,8 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                             <div className="max-w-sm mx-auto">
                               <p className="mt-2 text-sm text-base-content/80">
                                 {searchTerm
-                                  ? "No search results"
-                                  : "No users found"}
+                                  ? t("user_management.users.index.no_results")
+                                  : t("user_management.users.index.no_users")}
                               </p>
                             </div>
                           </div>
@@ -334,16 +336,17 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
           {/* Pagination Footer */}
           <div className="border-base-content/25 flex items-center justify-between gap-3 border-t p-3 max-md:flex-wrap max-md:justify-center">
             <div className="text-base-content/80 text-sm">
-              Showing{" "}
+              {t("user_management.users.index.showing")}{" "}
               <span className="font-medium">
                 {filteredUsers.length === 0 ? 0 : startIndex + 1}
               </span>{" "}
-              to{" "}
+              {t("user_management.users.index.to")}{" "}
               <span className="font-medium">
                 {Math.min(endIndex, filteredUsers.length)}
               </span>{" "}
-              of <span className="font-medium">{filteredUsers.length}</span>{" "}
-              users
+              {t("user_management.users.index.of")}{" "}
+              <span className="font-medium">{filteredUsers.length}</span>{" "}
+              {t("user_management.users.index.users")}
             </div>
             <div className="flex items-center space-x-1">
               <button

@@ -16,13 +16,18 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
   end
 
-  # User Management routes (using slice architecture)
-  namespace :user_management, path: "admin", module: "user_management" do
-    resources :users
-  end
+  # Admin panel routes (using slice architecture)
+  scope "/admin" do
+    # User Management slice
+    namespace :user_management, path: nil do
+      resources :users
+    end
 
-  # Example Inertia page
-  get "inertia-example", to: "inertia_example#index"
+    # Future admin resources can be added here:
+    # namespace :academy, path: nil do
+    #   resources :academies
+    # end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

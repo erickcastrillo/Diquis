@@ -263,6 +263,8 @@ es:
     confirm: "¿Estás seguro?"
     success: "Éxito"
     error: "Error"
+    search: "Buscar"
+    actions: "Acciones"
     
   errors:
     not_found: "No encontrado"
@@ -286,6 +288,13 @@ es:
         subtitle: "Administrar usuarios y sus roles"
         create_user: "Crear Usuario"
         search_placeholder: "Buscar usuarios..."
+        no_results: "No se encontraron resultados"
+        no_users: "No se encontraron usuarios"
+        select_all: "Seleccionar Todos"
+        showing: "Mostrando"
+        to: "a"
+        of: "de"
+        users: "usuarios"
       show:
         title: "Detalles del Usuario"
         edit_user: "Editar Usuario"

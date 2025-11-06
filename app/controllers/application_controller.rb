@@ -27,7 +27,8 @@ class ApplicationController < ActionController::Base
       translations: {
         app: I18n.t("app").is_a?(Hash) ? I18n.t("app") : {},
         common: I18n.t("common").is_a?(Hash) ? I18n.t("common") : {},
-        errors: I18n.t("errors").is_a?(Hash) ? I18n.t("errors") : {}
+        errors: I18n.t("errors").is_a?(Hash) ? I18n.t("errors") : {},
+        user_management: I18n.t("user_management").is_a?(Hash) ? I18n.t("user_management") : {}
       }
     }
   end

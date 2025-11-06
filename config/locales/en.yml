@@ -290,6 +290,8 @@ en:
     confirm: "Are you sure?"
     success: "Success"
     error: "Error"
+    search: "Search"
+    actions: "Actions"
     
   errors:
     not_found: "Not found"
@@ -313,6 +315,13 @@ en:
         subtitle: "Manage users and their roles"
         create_user: "Create User"
         search_placeholder: "Search users..."
+        no_results: "No search results"
+        no_users: "No users found"
+        select_all: "Select All"
+        showing: "Showing"
+        to: "to"
+        of: "of"
+        users: "users"
       show:
         title: "User Details"
         edit_user: "Edit User"
