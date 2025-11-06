@@ -28,7 +28,7 @@ RSpec.describe Football::PlayerStatsJob, type: :job do
 
     context 'when an error occurs' do
       it 'handles errors gracefully' do
-        # Allow the job to raise an error
+        # Force the job to raise an error
         allow_any_instance_of(described_class).to receive(:perform).and_raise(StandardError.new('Test error'))
         allow(Rails.logger).to receive(:error)
 

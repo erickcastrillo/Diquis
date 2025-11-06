@@ -6,7 +6,15 @@
 class Rack::Attack
   ### Configure Cache ###
   # Use Rails cache for storing rate limit counters
-  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+  # IMPORTANT: MemoryStore only works for single-process/single-server deployments.
+  # For production with multiple servers/processes, use Redis or another shared cache.
+  Rack::Attack.cache.store = if Rails.env.production?
+                                # Production: Use Redis for shared cache across multiple servers/processes
+                                ActiveSupport::Cache::RedisCacheStore.new(url: ENV.fetch("REDIS_URL", "redis://localhost:6379/1"))
+  else
+                                # Development/Test: MemoryStore is sufficient
+                                ActiveSupport::Cache::MemoryStore.new
+  end
 
   ### Throttle Configuration ###
 

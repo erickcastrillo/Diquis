@@ -91,11 +91,12 @@ class GuardianInvitationService
       end
     else
       # Create new parent user with temporary password
+      temp_password = generate_temporary_password
       guardian = User.create!(
         email: @guardian_email,
         role: :parent,
-        password: generate_temporary_password,
-        password_confirmation: generate_temporary_password,
+        password: temp_password,
+        password_confirmation: temp_password,
         # Note: Devise will require email confirmation before they can log in
         # They'll also need to set a new password via the reset password flow
       )

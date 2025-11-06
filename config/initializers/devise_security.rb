@@ -14,27 +14,27 @@ end
 
 # Password strength validator
 class StrongPasswordValidator < ActiveModel::EachValidator
-  SPECIAL_CHARS = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.freeze
-  UPPERCASE = /[A-Z]/.freeze
-  LOWERCASE = /[a-z]/.freeze
-  DIGIT = /\d/.freeze
+  SPECIAL_CHARS_PATTERN = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.freeze
+  UPPERCASE_PATTERN = /[A-Z]/.freeze
+  LOWERCASE_PATTERN = /[a-z]/.freeze
+  DIGIT_PATTERN = /\d/.freeze
 
   def validate_each(record, attribute, value)
     return if value.blank?
 
-    unless value.match?(UPPERCASE)
+    unless value.match?(UPPERCASE_PATTERN)
       record.errors.add(attribute, :weak_password, message: "must contain at least one uppercase letter")
     end
 
-    unless value.match?(LOWERCASE)
+    unless value.match?(LOWERCASE_PATTERN)
       record.errors.add(attribute, :weak_password, message: "must contain at least one lowercase letter")
     end
 
-    unless value.match?(DIGIT)
+    unless value.match?(DIGIT_PATTERN)
       record.errors.add(attribute, :weak_password, message: "must contain at least one digit")
     end
 
-    unless value.match?(SPECIAL_CHARS)
+    unless value.match?(SPECIAL_CHARS_PATTERN)
       record.errors.add(attribute, :weak_password, message: "must contain at least one special character (!@#$%^&*...)")
     end
 

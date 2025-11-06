@@ -93,7 +93,7 @@ class UserPolicy < ApplicationPolicy
     def resolve
       if user.role_super_admin?
         # Super admin can see all users
-        scope.all
+        scope
       elsif user.role_academy_owner?
         # Academy owner can see all users up to academy_admin (excluding super_admin and other academy_owners)
         scope.where(role: %w[player parent staff coach academy_admin])
@@ -102,7 +102,7 @@ class UserPolicy < ApplicationPolicy
         scope.where(role: %w[player parent staff coach])
       elsif user.role_staff? || user.role_coach?
         # Staff and coaches can see all users (for coordination purposes)
-        scope.all
+        scope
       else
         # Players and parents can only see themselves
         scope.where(id: user.id)

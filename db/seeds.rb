@@ -17,7 +17,17 @@ unless Rails.env.production?
 
   # Get default password from environment or credentials (fallback for dev)
   DEFAULT_SEED_PASSWORD = ENV.fetch("SEED_DEFAULT_PASSWORD") do
-    Rails.application.credentials.dig(:seed, :default_password) || "Dev3l0pment!2025" # ggignore
+    credentials_password = Rails.application.credentials.dig(:seed, :default_password)
+
+    if credentials_password
+      credentials_password
+    else
+      # ⚠️ SECURITY WARNING: Using hardcoded fallback password
+      warn "⚠️  WARNING: Using hardcoded default seed password. This is insecure!"
+      warn "   Set SEED_DEFAULT_PASSWORD environment variable or configure in Rails credentials."
+      warn "   Run: rails credentials:edit and add seed.default_password"
+      "Dev3l0pment!2025" # ggignore
+    end
   end
 
   # Helper method to create or find user
