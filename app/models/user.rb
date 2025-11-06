@@ -16,6 +16,15 @@ class User < ApplicationRecord
     super_admin: 6
   }, prefix: true
 
+  # Associations - Player-Guardian relationships
+  # When user is a player, they can have many guardians (parents)
+  has_many :player_guardianships, class_name: "PlayerGuardian", foreign_key: "player_id", dependent: :destroy
+  has_many :guardians, through: :player_guardianships, source: :guardian
+
+  # When user is a guardian (parent), they can have many players (children)
+  has_many :guardian_relationships, class_name: "PlayerGuardian", foreign_key: "guardian_id", dependent: :destroy
+  has_many :players, through: :guardian_relationships, source: :player
+
   # Validations
   validates :role, presence: true
   validates :first_name, presence: true, if: -> { role_player? || role_parent? }
@@ -41,5 +50,30 @@ class User < ApplicationRecord
 
   def display_role
     role.humanize
+  end
+
+  # Guardian relationship helper methods
+  def active_guardians
+    guardians.joins(:player_guardianships).where(player_guardianships: { status: :accepted })
+  end
+
+  def active_players
+    players.joins(:guardian_relationships).where(player_guardians: { status: :accepted })
+  end
+
+  def has_guardian?(guardian_user)
+    player_guardianships.accepted.exists?(guardian_id: guardian_user.id)
+  end
+
+  def has_player?(player_user)
+    guardian_relationships.accepted.exists?(player_id: player_user.id)
+  end
+
+  def pending_guardian_invitations
+    player_guardianships.pending
+  end
+
+  def pending_player_invitations
+    guardian_relationships.pending
   end
 end
