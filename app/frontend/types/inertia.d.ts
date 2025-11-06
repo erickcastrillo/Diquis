@@ -1,6 +1,6 @@
-import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import "@inertiajs/core";
 
-declare module '@inertiajs/core' {
+declare module "@inertiajs/core" {
   interface PageProps {
     flash?: {
       notice?: string;

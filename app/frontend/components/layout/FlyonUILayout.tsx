@@ -1,10 +1,10 @@
 import React from "react";
+import FlashMessages from "../FlashMessages";
 import ActivityDrawer from "./FlyonUI/ActivityDrawer";
 import FlyonUIFooter from "./FlyonUI/FlyonUIFooter";
 import FlyonUIHeader from "./FlyonUI/FlyonUIHeader";
 import FlyonUISidebar from "./FlyonUI/FlyonUISidebar";
 import SearchModal from "./FlyonUI/SearchModal";
-import FlashMessages from "../FlashMessages";
 
 interface FlyonUILayoutProps {
   children: React.ReactNode;
