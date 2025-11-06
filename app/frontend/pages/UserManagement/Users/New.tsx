@@ -301,7 +301,9 @@ const UsersNewPage: React.FC<Props> = ({
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text">
-                        {t("user_management.users.fields.password_confirmation")}{" "}
+                        {t(
+                          "user_management.users.fields.password_confirmation"
+                        )}{" "}
                         <span className="text-error">*</span>
                       </span>
                     </label>

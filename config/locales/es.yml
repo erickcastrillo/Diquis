@@ -472,3 +472,32 @@ es:
         one: "1 error impidió que este %{resource} fuera guardado:"
         other: "%{count} errores impidieron que este %{resource} fuera guardado:"
 
+  # Validaciones de ActiveRecord
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "El correo electrónico no puede estar en blanco"
+              invalid: "El correo electrónico es inválido"
+              taken: "El correo electrónico ya está en uso"
+            password:
+              blank: "La contraseña no puede estar en blanco"
+              too_short: "La contraseña es demasiado corta (mínimo %{count} caracteres)"
+              too_weak: "La contraseña debe incluir mayúscula, minúscula, número y carácter especial"
+            password_confirmation:
+              confirmation: "La confirmación de contraseña no coincide"
+            role:
+              blank: "Debe seleccionar un rol"
+              inclusion: "El rol no es válido"
+            first_name:
+              blank: "El nombre no puede estar en blanco"
+            last_name:
+              blank: "El apellido no puede estar en blanco"
+            phone:
+              invalid: "El formato del número de teléfono es inválido"
+            current_password:
+              blank: "La contraseña actual no puede estar en blanco"
+              invalid: "La contraseña actual es incorrecta"
+

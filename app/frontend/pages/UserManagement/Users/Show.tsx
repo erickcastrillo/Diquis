@@ -30,7 +30,7 @@ interface Props {
 
 const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
   const { t } = useTranslations();
-  
+
   const handleDelete = () => {
     if (confirm(t("user_management.users.show.delete_confirm"))) {
       router.delete(`/admin/users/${user.id}`);
@@ -302,7 +302,8 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                       {t("user_management.users.fields.phone")}
                     </div>
                     <div className="font-medium">
-                      {user.phone || t("user_management.users.show.not_provided")}
+                      {user.phone ||
+                        t("user_management.users.show.not_provided")}
                     </div>
                   </div>
                   <div>
@@ -310,7 +311,8 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                       {t("user_management.users.fields.first_name")}
                     </div>
                     <div className="font-medium">
-                      {user.first_name || t("user_management.users.show.not_provided")}
+                      {user.first_name ||
+                        t("user_management.users.show.not_provided")}
                     </div>
                   </div>
                   <div>
@@ -318,7 +320,8 @@ const UsersShowPage: React.FC<Props> = ({ user, can_edit, can_delete }) => {
                       {t("user_management.users.fields.last_name")}
                     </div>
                     <div className="font-medium">
-                      {user.last_name || t("user_management.users.show.not_provided")}
+                      {user.last_name ||
+                        t("user_management.users.show.not_provided")}
                     </div>
                   </div>
                   <div>

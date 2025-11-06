@@ -499,3 +499,32 @@ en:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
 
+  # ActiveRecord validations
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "Email can't be blank"
+              invalid: "Email is invalid"
+              taken: "Email has already been taken"
+            password:
+              blank: "Password can't be blank"
+              too_short: "Password is too short (minimum is %{count} characters)"
+              too_weak: "Password must include uppercase, lowercase, number, and special character"
+            password_confirmation:
+              confirmation: "Password confirmation doesn't match password"
+            role:
+              blank: "Role must be selected"
+              inclusion: "Role is not valid"
+            first_name:
+              blank: "First name can't be blank"
+            last_name:
+              blank: "Last name can't be blank"
+            phone:
+              invalid: "Phone number format is invalid"
+            current_password:
+              blank: "Current password can't be blank"
+              invalid: "Current password is incorrect"
+
