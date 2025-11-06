@@ -33,6 +33,12 @@ module Diquis
     config.autoload_paths += Dir.glob("#{Rails.root}/app/slices/*/")
     config.eager_load_paths += Dir.glob("#{Rails.root}/app/slices/*/") if Rails.env.production?
 
+    # Add custom middleware for OpenTelemetry
+    if ENV["OTEL_ENABLED"] == "true"
+      require_relative "../app/middleware/open_telemetry_middleware"
+      config.middleware.use OpenTelemetryMiddleware
+    end
+
     # Configure generators for slice-based architecture
     config.generators do |g|
       # Generate specs in slice directories instead of central spec folder

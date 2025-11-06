@@ -80,3 +80,8 @@ gem "devise", "~> 4.9"
 gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron", "~> 2.3"
 gem "redis", "~> 5.0"
+
+# OpenTelemetry instrumentation
+gem "opentelemetry-sdk", "~> 1.5"
+gem "opentelemetry-exporter-otlp", "~> 0.29"
+gem "opentelemetry-instrumentation-all", "~> 0.71"
