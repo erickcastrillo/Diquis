@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { beforeAll, afterAll } from "vitest";
+import { afterAll, beforeAll } from "vitest";
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
