@@ -22,40 +22,83 @@ interface Props {
   can_create: boolean;
 }
 
-const UsersIndexPage: React.FC<Props> = ({
-  users,
-  can_create,
-}) => {
+const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
-  const filteredUsers = users.filter(
-    (user) =>
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.role_display.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      user.full_name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
 
-  const getRoleBadgeColor = (role: string) => {
-    const colors: { [key: string]: string } = {
-      player: "badge-primary",
-      parent: "badge-secondary",
-      staff: "badge-accent",
-      coach: "badge-info",
-      academy_admin: "badge-warning",
-      academy_owner: "badge-error",
-      super_admin: "badge-neutral",
-    };
-    return colors[role] || "badge-neutral";
+  // Pagination
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedUsers(new Set(paginatedUsers.map((u) => u.id)));
+    } else {
+      setSelectedUsers(new Set());
+    }
+  };
+
+  const handleSelectUser = (userId: string) => {
+    const newSelected = new Set(selectedUsers);
+    if (newSelected.has(userId)) {
+      newSelected.delete(userId);
+    } else {
+      newSelected.add(userId);
+    }
+    setSelectedUsers(newSelected);
   };
 
   const getStatusBadge = (user: User) => {
     if (user.locked_at) {
-      return <span className="badge badge-error badge-sm">Locked</span>;
+      return (
+        <span className="badge badge-soft badge-error badge-sm">Locked</span>
+      );
     }
     if (!user.confirmed_at) {
-      return <span className="badge badge-warning badge-sm">Unconfirmed</span>;
+      return (
+        <span className="badge badge-soft badge-warning badge-sm">Pending</span>
+      );
     }
-    return <span className="badge badge-success badge-sm">Active</span>;
+    return (
+      <span className="badge badge-soft badge-success badge-sm">Active</span>
+    );
+  };
+
+  const getRoleBadgeColor = (role: string) => {
+    const colors: { [key: string]: string } = {
+      player: "badge-soft badge-primary",
+      parent: "badge-soft badge-secondary",
+      staff: "badge-soft badge-accent",
+      coach: "badge-soft badge-info",
+      academy_admin: "badge-soft badge-warning",
+      academy_owner: "badge-soft badge-error",
+      super_admin: "badge-soft badge-neutral",
+    };
+    return colors[role] || "badge-soft badge-neutral";
+  };
+
+  const getRoleIcon = (role: string) => {
+    const icons: { [key: string]: string } = {
+      player: "icon-[tabler--ball-football]",
+      parent: "icon-[tabler--users]",
+      staff: "icon-[tabler--briefcase]",
+      coach: "icon-[tabler--whistle]",
+      academy_admin: "icon-[tabler--settings]",
+      academy_owner: "icon-[tabler--crown]",
+      super_admin: "icon-[tabler--shield-lock]",
+    };
+    return icons[role] || "icon-[tabler--user]";
   };
 
   const formatDate = (dateString: string | null) => {
@@ -71,216 +114,274 @@ const UsersIndexPage: React.FC<Props> = ({
     <FlyonUILayout>
       <Head title="User Management | Diquis" />
 
-      <div className="container mx-auto p-6">
+      <div className="space-y-6">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">User Management</h1>
-            <p className="text-base-content/70 mt-1">
+            <p className="text-base-content/60 mt-1">
               Manage users and their roles
             </p>
           </div>
           {can_create && (
-            <Link
-              href="/admin/users/new"
-              className="btn btn-primary"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
+            <Link href="/admin/users/new" className="btn btn-primary">
+              <span className="icon-[tabler--plus] size-5"></span>
               Create User
             </Link>
           )}
         </div>
 
-        {/* Search and Filters */}
-        <div className="card mb-6">
-          <div className="card-body">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="form-control flex-1">
-                <input
-                  type="text"
-                  placeholder="Search users..."
-                  className="input input-bordered w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <div className="text-base-content/70 text-sm">
-                Showing {filteredUsers.length} of {users.length} users
-              </div>
+        {/* FlyonUI Datatable */}
+        <div className="bg-base-100 flex flex-col rounded-md shadow-base-300/20 shadow-sm">
+          {/* Search Bar */}
+          <div className="py-3 ps-5 border-b border-base-content/25">
+            <div className="input input-sm max-w-60">
+              <span className="icon-[tabler--search] text-base-content/80 my-auto me-3 size-4 shrink-0"></span>
+              <label className="sr-only" htmlFor="table-input-search">
+                Search
+              </label>
+              <input
+                type="search"
+                className="grow"
+                placeholder="Search for users"
+                id="table-input-search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
-        </div>
 
-        {/* Users Table */}
-        <div className="card">
-          <div className="card-body p-0">
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Sign Ins</th>
-                    <th>Created</th>
-                    <th className="text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.length === 0 ? (
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <div className="inline-block min-w-full align-middle">
+              <div className="overflow-hidden">
+                <table className="table min-w-full">
+                  <thead>
                     <tr>
-                      <td colSpan={6} className="text-center py-8">
-                        <div className="text-base-content/50">
-                          {searchTerm
-                            ? "No users found matching your search"
-                            : "No users found"}
+                      <th scope="col" className="w-3.5 pe-0">
+                        <div className="flex h-5 items-center">
+                          <input
+                            id="table-search-all"
+                            type="checkbox"
+                            className="checkbox checkbox-sm"
+                            checked={
+                              paginatedUsers.length > 0 &&
+                              selectedUsers.size === paginatedUsers.length
+                            }
+                            onChange={handleSelectAll}
+                          />
+                          <label htmlFor="table-search-all" className="sr-only">
+                            Select All
+                          </label>
                         </div>
-                      </td>
+                      </th>
+                      <th scope="col" className="group w-fit">
+                        <div className="flex items-center justify-between">
+                          User Name
+                        </div>
+                      </th>
+                      <th scope="col" className="group w-fit">
+                        <div className="flex items-center justify-between">
+                          Email
+                        </div>
+                      </th>
+                      <th scope="col" className="group w-fit">
+                        <div className="flex items-center justify-between">
+                          Role
+                        </div>
+                      </th>
+                      <th scope="col" className="group w-fit">
+                        <div className="flex items-center justify-between">
+                          Status
+                        </div>
+                      </th>
+                      <th scope="col" className="group w-fit">
+                        <div className="flex items-center justify-between">
+                          Created
+                        </div>
+                      </th>
+                      <th scope="col">Actions</th>
                     </tr>
-                  ) : (
-                    filteredUsers.map((user) => (
-                      <tr key={user.id} className="hover">
-                        <td>
-                          <div className="flex items-center gap-3">
-                            <div className="avatar placeholder">
-                              <div className="bg-primary text-primary-content w-10 rounded-full">
-                                <span className="text-sm">
-                                  {user.full_name
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")
-                                    .toUpperCase()
-                                    .slice(0, 2)}
-                                </span>
-                              </div>
+                  </thead>
+                  <tbody>
+                    {paginatedUsers.length === 0 ? (
+                      <tr>
+                        <td colSpan={7}>
+                          <div className="py-10 px-5 flex flex-col justify-center items-center text-center">
+                            <span className="icon-[tabler--search] shrink-0 size-6 text-base-content"></span>
+                            <div className="max-w-sm mx-auto">
+                              <p className="mt-2 text-sm text-base-content/80">
+                                {searchTerm
+                                  ? "No search results"
+                                  : "No users found"}
+                              </p>
                             </div>
-                            <div>
-                              <div className="font-semibold">
-                                {user.full_name}
-                              </div>
-                              <div className="text-base-content/70 text-sm">
-                                {user.email}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span
-                            className={`badge ${getRoleBadgeColor(user.role)}`}
-                          >
-                            {user.role_display}
-                          </span>
-                        </td>
-                        <td>{getStatusBadge(user)}</td>
-                        <td>
-                          <span className="text-base-content/70">
-                            {user.sign_in_count}
-                          </span>
-                        </td>
-                        <td>
-                          <span className="text-base-content/70">
-                            {formatDate(user.created_at)}
-                          </span>
-                        </td>
-                        <td className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Link
-                              href={`/admin/users/${user.id}`}
-                              className="btn btn-ghost btn-sm"
-                            >
-                              <svg
-                                className="h-4 w-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                />
-                              </svg>
-                              View
-                            </Link>
-                            <Link
-                              href={`/admin/users/${user.id}/edit`}
-                              className="btn btn-ghost btn-sm"
-                            >
-                              <svg
-                                className="h-4 w-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                              Edit
-                            </Link>
                           </div>
                         </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    ) : (
+                      paginatedUsers.map((user) => (
+                        <tr key={user.id}>
+                          <td className="w-3.5 pe-0">
+                            <div className="flex h-5 items-center">
+                              <input
+                                id={`table-search-${user.id}`}
+                                type="checkbox"
+                                className="checkbox checkbox-sm"
+                                checked={selectedUsers.has(user.id)}
+                                onChange={() => handleSelectUser(user.id)}
+                              />
+                              <label
+                                htmlFor={`table-search-${user.id}`}
+                                className="sr-only"
+                              >
+                                Select {user.full_name}
+                              </label>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="flex items-center gap-3">
+                              <div className="avatar">
+                                <div className="size-10 rounded-full">
+                                  <img
+                                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                      user.full_name
+                                    )}&background=random`}
+                                    alt={user.full_name}
+                                  />
+                                </div>
+                              </div>
+                              <div className="font-medium">
+                                {user.full_name}
+                              </div>
+                            </div>
+                          </td>
+                          <td>{user.email}</td>
+                          <td>
+                            <div className="tooltip">
+                              <span
+                                className={`tooltip-toggle badge badge-sm ${getRoleBadgeColor(
+                                  user.role
+                                )} inline-flex items-center gap-1`}
+                              >
+                                <span
+                                  className={`${getRoleIcon(
+                                    user.role
+                                  )} size-3.5`}
+                                ></span>
+                                {user.role_display}
+                              </span>
+                              <span
+                                className="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible"
+                                role="tooltip"
+                              >
+                                <span className="tooltip-body">
+                                  {user.role
+                                    .split("_")
+                                    .map(
+                                      (word) =>
+                                        word.charAt(0).toUpperCase() +
+                                        word.slice(1)
+                                    )
+                                    .join(" ")}
+                                </span>
+                              </span>
+                            </div>
+                          </td>
+                          <td>{getStatusBadge(user)}</td>
+                          <td className="text-sm">
+                            {formatDate(user.created_at)}
+                          </td>
+                          <td>
+                            <Link
+                              href={`/admin/users/${user.id}`}
+                              className="btn btn-circle btn-text btn-sm"
+                              aria-label="View user"
+                            >
+                              <span className="icon-[tabler--eye] size-5"></span>
+                            </Link>
+                            <Link
+                              href={`/admin/users/${user.id}/edit`}
+                              className="btn btn-circle btn-text btn-sm"
+                              aria-label="Edit user"
+                            >
+                              <span className="icon-[tabler--pencil] size-5"></span>
+                            </Link>
+                            <Link
+                              href={`/admin/users/${user.id}`}
+                              method="delete"
+                              as="button"
+                              className="btn btn-circle btn-text btn-sm"
+                              aria-label="Delete user"
+                              onBefore={() =>
+                                confirm(
+                                  `Are you sure you want to delete ${user.full_name}?`
+                                )
+                              }
+                            >
+                              <span className="icon-[tabler--trash] size-5"></span>
+                            </Link>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Stats Summary */}
-        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
-          <div className="card bg-primary text-primary-content">
-            <div className="card-body">
-              <div className="text-sm opacity-80">Total Users</div>
-              <div className="text-3xl font-bold">{users.length}</div>
+          {/* Pagination Footer */}
+          <div className="border-base-content/25 flex items-center justify-between gap-3 border-t p-3 max-md:flex-wrap max-md:justify-center">
+            <div className="text-base-content/80 text-sm">
+              Showing{" "}
+              <span className="font-medium">
+                {filteredUsers.length === 0 ? 0 : startIndex + 1}
+              </span>{" "}
+              to{" "}
+              <span className="font-medium">
+                {Math.min(endIndex, filteredUsers.length)}
+              </span>{" "}
+              of <span className="font-medium">{filteredUsers.length}</span>{" "}
+              users
             </div>
-          </div>
-          <div className="card bg-success text-success-content">
-            <div className="card-body">
-              <div className="text-sm opacity-80">Active Users</div>
-              <div className="text-3xl font-bold">
-                {users.filter((u) => u.confirmed_at && !u.locked_at).length}
+            <div className="flex items-center space-x-1">
+              <button
+                type="button"
+                className="btn btn-text btn-circle btn-sm"
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+              >
+                <span className="icon-[tabler--chevrons-left] size-4.5 rtl:rotate-180"></span>
+                <span className="sr-only">Previous</span>
+              </button>
+              <div className="flex items-center space-x-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      type="button"
+                      className={`btn btn-sm ${
+                        page === currentPage ? "btn-primary" : "btn-text"
+                      }`}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
               </div>
-            </div>
-          </div>
-          <div className="card bg-warning text-warning-content">
-            <div className="card-body">
-              <div className="text-sm opacity-80">Unconfirmed</div>
-              <div className="text-3xl font-bold">
-                {users.filter((u) => !u.confirmed_at).length}
-              </div>
-            </div>
-          </div>
-          <div className="card bg-error text-error-content">
-            <div className="card-body">
-              <div className="text-sm opacity-80">Locked</div>
-              <div className="text-3xl font-bold">
-                {users.filter((u) => u.locked_at).length}
-              </div>
+              <button
+                type="button"
+                className="btn btn-text btn-circle btn-sm"
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                }
+                disabled={currentPage === totalPages}
+              >
+                <span className="sr-only">Next</span>
+                <span className="icon-[tabler--chevrons-right] size-4.5 rtl:rotate-180"></span>
+              </button>
             </div>
           </div>
         </div>

@@ -4,8 +4,10 @@
 FactoryBot.define do
   factory :user do
     email { Faker::Internet.unique.email }
-    password { "password123" }
-    password_confirmation { "password123" }
+    # Use a strong password that meets all requirements:
+    # 12+ chars, uppercase, lowercase, digit, special char, not common
+    password { "SecurePass123!" }
+    password_confirmation { "SecurePass123!" }
     role { :player } # Default role
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }

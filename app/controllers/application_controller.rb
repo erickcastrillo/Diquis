@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   before_action :set_locale
+  before_action :set_paper_trail_whodunnit
 
   # Pundit: Ensure authorization is performed on every action
   after_action :verify_authorized, unless: :devise_controller?
@@ -24,9 +25,9 @@ class ApplicationController < ActionController::Base
       ],
       # Share specific namespaces needed by frontend
       translations: {
-        app: I18n.t("app", default: {}),
-        common: I18n.t("common", default: {}),
-        errors: I18n.t("errors", default: {})
+        app: I18n.t("app").is_a?(Hash) ? I18n.t("app") : {},
+        common: I18n.t("common").is_a?(Hash) ? I18n.t("common") : {},
+        errors: I18n.t("errors").is_a?(Hash) ? I18n.t("errors") : {}
       }
     }
   end
@@ -72,6 +73,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # PaperTrail: Track who made the change
+  def user_for_paper_trail
+    current_user&.id
+  end
 
   # Pundit: Define the user for authorization
   def pundit_user

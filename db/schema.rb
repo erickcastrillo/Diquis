@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_06_032737) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_06_043552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -31,6 +31,22 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_032737) do
     t.string "slug"
     t.datetime "updated_at", null: false
     t.index [ "slug" ], name: "index_football_teams_on_slug", unique: true
+  end
+
+  create_table "player_guardians", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.uuid "guardian_id", null: false
+    t.datetime "invited_at"
+    t.text "notes"
+    t.uuid "player_id", null: false
+    t.string "relationship_type", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index [ "guardian_id" ], name: "index_player_guardians_on_guardian_id"
+    t.index [ "player_id", "guardian_id" ], name: "index_player_guardians_on_player_and_guardian", unique: true
+    t.index [ "player_id" ], name: "index_player_guardians_on_player_id"
+    t.index [ "status" ], name: "index_player_guardians_on_status"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -63,4 +79,18 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_032737) do
     t.index [ "role" ], name: "index_users_on_role"
     t.index [ "unlock_token" ], name: "index_users_on_unlock_token", unique: true
   end
+
+  create_table "versions", force: :cascade do |t|
+    t.datetime "created_at"
+    t.string "event", null: false
+    t.bigint "item_id", null: false
+    t.string "item_type", null: false
+    t.text "object"
+    t.text "object_changes"
+    t.string "whodunnit"
+    t.index [ "item_type", "item_id" ], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  add_foreign_key "player_guardians", "users", column: "guardian_id"
+  add_foreign_key "player_guardians", "users", column: "player_id"
 end

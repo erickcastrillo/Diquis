@@ -39,6 +39,9 @@ module Diquis
       config.middleware.use OpenTelemetryMiddleware
     end
 
+    # Enable Rack::Attack for rate limiting
+    config.middleware.use Rack::Attack
+
     # Configure generators for slice-based architecture
     config.generators do |g|
       # Generate specs in slice directories instead of central spec folder

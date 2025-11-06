@@ -1,9 +1,12 @@
 class User < ApplicationRecord
+  # Enable audit logging for all user changes
+  has_paper_trail on: %i[create update destroy], ignore: %i[updated_at last_sign_in_at current_sign_in_at]
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :trackable
+         :confirmable, :lockable, :trackable, :timeoutable
 
   # Role enum - hierarchical from lowest to highest
   enum :role, {
@@ -30,6 +33,7 @@ class User < ApplicationRecord
   validates :first_name, presence: true, if: -> { role_player? || role_parent? }
   validates :last_name, presence: true, if: -> { role_player? || role_parent? }
   validates :phone, format: { with: /\A[+]?[\d\s\-()]+\z/, allow_blank: true }
+  validates :password, strong_password: true, if: :password_required?
 
   # Role helper methods
   def admin?

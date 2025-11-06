@@ -2,19 +2,23 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, Fragment } from "react";
 
 interface Props {
+  reset_password_token: string;
   errors?: Record<string, string[]>;
 }
 
-export default function Login({ errors = {} }: Props) {
-  const { data, setData, post, processing } = useForm({
-    email: "",
+export default function ResetPassword({
+  reset_password_token,
+  errors = {},
+}: Props) {
+  const { data, setData, put, processing } = useForm({
+    reset_password_token: reset_password_token,
     password: "",
-    remember: false,
+    password_confirmation: "",
   });
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
-    post("/users/sign_in");
+    put("/users/password");
   };
 
   const hasError = (field: string) => errors[field] && errors[field].length > 0;
@@ -22,16 +26,16 @@ export default function Login({ errors = {} }: Props) {
 
   return (
     <Fragment>
-      <Head title="Sign In" />
+      <Head title="Reset Password" />
 
       <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
         <div className="w-full max-w-md">
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold">Sign In</h1>
+                <h1 className="text-3xl font-bold">Reset Password</h1>
                 <p className="text-base-content/60 mt-2">
-                  Welcome back to Diquis
+                  Enter your new password below
                 </p>
               </div>
 
@@ -60,35 +64,10 @@ export default function Login({ errors = {} }: Props) {
               )}
 
               <form onSubmit={submit} className="space-y-4">
-                {/* Email Field */}
-                <div className="form-control">
-                  <label htmlFor="email" className="label">
-                    <span className="label-text">Email Address</span>
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    value={data.email}
-                    onChange={(e) => setData("email", e.target.value)}
-                    className={`input input-bordered w-full ${
-                      hasError("email") ? "input-error" : ""
-                    }`}
-                    placeholder="Enter your email"
-                    required
-                  />
-                  {hasError("email") && (
-                    <label className="label">
-                      <span className="label-text-alt text-error">
-                        {getError("email")}
-                      </span>
-                    </label>
-                  )}
-                </div>
-
                 {/* Password Field */}
                 <div className="form-control">
                   <label htmlFor="password" className="label">
-                    <span className="label-text">Password</span>
+                    <span className="label-text">New Password</span>
                   </label>
                   <input
                     id="password"
@@ -98,8 +77,9 @@ export default function Login({ errors = {} }: Props) {
                     className={`input input-bordered w-full ${
                       hasError("password") ? "input-error" : ""
                     }`}
-                    placeholder="Enter your password"
+                    placeholder="Enter new password"
                     required
+                    autoFocus
                   />
                   {hasError("password") && (
                     <label className="label">
@@ -108,20 +88,38 @@ export default function Login({ errors = {} }: Props) {
                       </span>
                     </label>
                   )}
+                  <label className="label">
+                    <span className="label-text-alt text-base-content/60">
+                      Minimum 6 characters
+                    </span>
+                  </label>
                 </div>
 
-                {/* Remember Me Checkbox */}
+                {/* Password Confirmation Field */}
                 <div className="form-control">
-                  <label className="label cursor-pointer justify-start gap-3">
-                    <input
-                      id="remember"
-                      type="checkbox"
-                      checked={data.remember}
-                      onChange={(e) => setData("remember", e.target.checked)}
-                      className="checkbox checkbox-primary"
-                    />
-                    <span className="label-text">Remember me</span>
+                  <label htmlFor="password_confirmation" className="label">
+                    <span className="label-text">Confirm New Password</span>
                   </label>
+                  <input
+                    id="password_confirmation"
+                    type="password"
+                    value={data.password_confirmation}
+                    onChange={(e) =>
+                      setData("password_confirmation", e.target.value)
+                    }
+                    className={`input input-bordered w-full ${
+                      hasError("password_confirmation") ? "input-error" : ""
+                    }`}
+                    placeholder="Confirm new password"
+                    required
+                  />
+                  {hasError("password_confirmation") && (
+                    <label className="label">
+                      <span className="label-text-alt text-error">
+                        {getError("password_confirmation")}
+                      </span>
+                    </label>
+                  )}
                 </div>
 
                 {/* Submit Button */}
@@ -133,44 +131,17 @@ export default function Login({ errors = {} }: Props) {
                   {processing && (
                     <span className="loading loading-spinner"></span>
                   )}
-                  {processing ? "Signing in..." : "Sign In"}
+                  {processing ? "Resetting password..." : "Reset Password"}
                 </button>
               </form>
 
               {/* Helper Links */}
               <div className="divider">OR</div>
 
-              <div className="text-center space-y-2">
-                <div>
-                  <Link href="/users/sign_up" className="link link-primary">
-                    Don't have an account? Sign up
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    href="/users/password/new"
-                    className="link link-neutral text-sm"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-              </div>
-
-              {/* Additional Helper Links */}
-              <div className="text-center mt-4 space-y-1 text-xs text-base-content/60">
-                <div>
-                  <Link
-                    href="/users/confirmation/new"
-                    className="link link-neutral"
-                  >
-                    Didn't receive confirmation instructions?
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/users/unlock/new" className="link link-neutral">
-                    Didn't receive unlock instructions?
-                  </Link>
-                </div>
+              <div className="text-center">
+                <Link href="/users/sign_in" className="link link-primary">
+                  Back to Sign In
+                </Link>
               </div>
             </div>
           </div>

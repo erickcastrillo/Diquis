@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    sessions: "auth/sessions",
-    registrations: "auth/registrations"
+    sessions: "users/sessions",
+    registrations: "users/registrations",
+    passwords: "users/passwords",
+    confirmations: "users/confirmations",
+    unlocks: "users/unlocks"
   }
 
   # Sidekiq web UI (development and production)

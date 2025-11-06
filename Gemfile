@@ -76,6 +76,10 @@ gem "vite_rails", "~> 3.0"
 # Authentication & Authorization
 gem "devise", "~> 4.9"
 gem "pundit", "~> 2.4"
+gem "rack-attack", "~> 6.7"
+
+# Audit logging
+gem "paper_trail", "~> 16.0"
 
 # Background job processing
 gem "sidekiq", "~> 8.0"

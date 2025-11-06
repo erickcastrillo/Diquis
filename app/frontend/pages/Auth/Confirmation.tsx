@@ -5,16 +5,14 @@ interface Props {
   errors?: Record<string, string[]>;
 }
 
-export default function Login({ errors = {} }: Props) {
+export default function Confirmation({ errors = {} }: Props) {
   const { data, setData, post, processing } = useForm({
     email: "",
-    password: "",
-    remember: false,
   });
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
-    post("/users/sign_in");
+    post("/users/confirmation");
   };
 
   const hasError = (field: string) => errors[field] && errors[field].length > 0;
@@ -22,16 +20,17 @@ export default function Login({ errors = {} }: Props) {
 
   return (
     <Fragment>
-      <Head title="Sign In" />
+      <Head title="Resend Confirmation" />
 
       <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
         <div className="w-full max-w-md">
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold">Sign In</h1>
+                <h1 className="text-3xl font-bold">Resend Confirmation</h1>
                 <p className="text-base-content/60 mt-2">
-                  Welcome back to Diquis
+                  Didn't receive confirmation instructions? Enter your email
+                  below.
                 </p>
               </div>
 
@@ -75,6 +74,7 @@ export default function Login({ errors = {} }: Props) {
                     }`}
                     placeholder="Enter your email"
                     required
+                    autoFocus
                   />
                   {hasError("email") && (
                     <label className="label">
@@ -83,45 +83,6 @@ export default function Login({ errors = {} }: Props) {
                       </span>
                     </label>
                   )}
-                </div>
-
-                {/* Password Field */}
-                <div className="form-control">
-                  <label htmlFor="password" className="label">
-                    <span className="label-text">Password</span>
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    value={data.password}
-                    onChange={(e) => setData("password", e.target.value)}
-                    className={`input input-bordered w-full ${
-                      hasError("password") ? "input-error" : ""
-                    }`}
-                    placeholder="Enter your password"
-                    required
-                  />
-                  {hasError("password") && (
-                    <label className="label">
-                      <span className="label-text-alt text-error">
-                        {getError("password")}
-                      </span>
-                    </label>
-                  )}
-                </div>
-
-                {/* Remember Me Checkbox */}
-                <div className="form-control">
-                  <label className="label cursor-pointer justify-start gap-3">
-                    <input
-                      id="remember"
-                      type="checkbox"
-                      checked={data.remember}
-                      onChange={(e) => setData("remember", e.target.checked)}
-                      className="checkbox checkbox-primary"
-                    />
-                    <span className="label-text">Remember me</span>
-                  </label>
                 </div>
 
                 {/* Submit Button */}
@@ -133,7 +94,9 @@ export default function Login({ errors = {} }: Props) {
                   {processing && (
                     <span className="loading loading-spinner"></span>
                   )}
-                  {processing ? "Signing in..." : "Sign In"}
+                  {processing
+                    ? "Sending..."
+                    : "Resend Confirmation Instructions"}
                 </button>
               </form>
 
@@ -142,33 +105,16 @@ export default function Login({ errors = {} }: Props) {
 
               <div className="text-center space-y-2">
                 <div>
-                  <Link href="/users/sign_up" className="link link-primary">
-                    Don't have an account? Sign up
+                  <Link href="/users/sign_in" className="link link-primary">
+                    Back to Sign In
                   </Link>
                 </div>
                 <div>
                   <Link
-                    href="/users/password/new"
+                    href="/users/sign_up"
                     className="link link-neutral text-sm"
                   >
-                    Forgot your password?
-                  </Link>
-                </div>
-              </div>
-
-              {/* Additional Helper Links */}
-              <div className="text-center mt-4 space-y-1 text-xs text-base-content/60">
-                <div>
-                  <Link
-                    href="/users/confirmation/new"
-                    className="link link-neutral"
-                  >
-                    Didn't receive confirmation instructions?
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/users/unlock/new" className="link link-neutral">
-                    Didn't receive unlock instructions?
+                    Don't have an account? Sign up
                   </Link>
                 </div>
               </div>

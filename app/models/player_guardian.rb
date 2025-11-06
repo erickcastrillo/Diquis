@@ -43,6 +43,8 @@ class PlayerGuardian < ApplicationRecord
 
   # Scopes
   scope :active, -> { where(status: :accepted) }
+  scope :accepted, -> { where(status: :accepted) }  # Alias for active
+  scope :pending, -> { where(status: :pending) }
   scope :pending_invitations, -> { where(status: :pending) }
   scope :for_player, ->(player_id) { where(player_id: player_id) }
   scope :for_guardian, ->(guardian_id) { where(guardian_id: guardian_id) }

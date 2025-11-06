@@ -1,5 +1,11 @@
 class DashboardController < ApplicationController
+  # Require authentication for dashboard access
+  before_action :authenticate_user!
+
   def index
+    # Authorize dashboard access for current user
+    authorize :dashboard
+
     @stats = {
       total_users: 1240,
       total_revenue: 87540,
