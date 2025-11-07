@@ -88,6 +88,42 @@ unless Rails.env.production?
   )
 
   # =============================================================================
+  # E2E TEST USERS
+  # =============================================================================
+  puts "\n🧪 Creating E2E Test Users..."
+  puts "-" * 80
+
+  # Test Academy Admin
+  _test_academy_admin = create_user(
+    email: "academy@diquis.com",
+    password: DEFAULT_SEED_PASSWORD,
+    role: :academy_admin,
+    first_name: "Test",
+    last_name: "Academy Admin",
+    phone: "+50688887778"
+  )
+
+  # Test Coach
+  _test_coach = create_user(
+    email: "coach@diquis.com",
+    password: DEFAULT_SEED_PASSWORD,
+    role: :coach,
+    first_name: "Test",
+    last_name: "Coach",
+    phone: "+50688886667"
+  )
+
+  # Test Player
+  _test_player = create_user(
+    email: "player@diquis.com",
+    password: DEFAULT_SEED_PASSWORD,
+    role: :player,
+    first_name: "Test",
+    last_name: "Player",
+    phone: "+50688870007"
+  )
+
+  # =============================================================================
   # COACHING STAFF
   # =============================================================================
   puts "\n⚽ Creating Coaching Staff..."

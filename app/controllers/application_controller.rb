@@ -91,15 +91,8 @@ class ApplicationController < ActionController::Base
     message = I18n.t("pundit.#{policy_name}.#{exception.query}", default: :default)
     message = I18n.t("pundit.default", default: "You are not authorized to perform this action.") if message == :default
 
-    respond_to do |format|
-      format.html do
-        flash[:alert] = message
-        redirect_back(fallback_location: root_path)
-      end
-      format.json { render json: { error: message }, status: :forbidden }
-      format.inertia do
-        inertia_location root_path, error: message
-      end
-    end
+    # Inertia handles flash messages automatically, so just redirect for all formats
+    flash[:alert] = message
+    redirect_back(fallback_location: root_path)
   end
 end

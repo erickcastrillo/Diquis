@@ -45,9 +45,14 @@ createInertiaApp({
   // progress: false,
 
   resolve: (name) => {
-    const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", {
-      eager: true,
-    });
+    // Import all page components except test files
+    const pages = import.meta.glob<ResolvedComponent>(
+      "../pages/**/!(*.test).tsx",
+      {
+        eager: true,
+      }
+    );
+
     const page = pages[`../pages/${name}.tsx`];
     if (!page) {
       console.error(`Missing Inertia page component: '${name}.tsx'`);

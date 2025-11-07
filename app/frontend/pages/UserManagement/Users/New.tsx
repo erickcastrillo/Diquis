@@ -62,8 +62,11 @@ const UsersNewPage: React.FC<Props> = ({
 
       <div className="container mx-auto p-6">
         {/* Header */}
-        <div className="mb-6 flex items-center gap-4">
-          <Link href="/admin/users" className="btn btn-ghost btn-sm">
+        <div className="mb-6">
+          <Link
+            href="/admin/users"
+            className="inline-flex items-center gap-2 text-sm text-base-content/60 hover:text-base-content transition-colors mb-4"
+          >
             <svg
               className="h-4 w-4"
               fill="none"
@@ -279,19 +282,21 @@ const UsersNewPage: React.FC<Props> = ({
                       value={data.password}
                       onChange={(e) => setData("password", e.target.value)}
                       required
-                      minLength={6}
+                      minLength={12}
                     />
                     {errors.password && (
                       <label className="label">
                         <span className="label-text-alt text-error">
-                          {errors.password[0]}
+                          {Array.isArray(errors.password)
+                            ? errors.password.join(". ")
+                            : errors.password}
                         </span>
                       </label>
                     )}
                     <label className="label">
                       <span className="label-text-alt text-base-content/70">
                         {t("user_management.users.form.minimum_chars", {
-                          count: 6,
+                          count: 12,
                         })}
                       </span>
                     </label>
@@ -317,7 +322,7 @@ const UsersNewPage: React.FC<Props> = ({
                         setData("password_confirmation", e.target.value)
                       }
                       required
-                      minLength={6}
+                      minLength={12}
                     />
                     {errors.password_confirmation && (
                       <label className="label">
@@ -366,35 +371,6 @@ const UsersNewPage: React.FC<Props> = ({
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-
-        {/* Help Text */}
-        <div className="mt-6 max-w-3xl">
-          <div className="alert alert-info">
-            <svg
-              className="h-6 w-6 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <div className="text-sm">
-              <p className="font-semibold mb-1">
-                {t("user_management.users.new.help_title")}
-              </p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>{t("user_management.users.new.help_note_1")}</li>
-                <li>{t("user_management.users.new.help_note_2")}</li>
-                <li>{t("user_management.users.new.help_note_3")}</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>

@@ -125,7 +125,7 @@ module UserManagement
 
     def user_params
       # Base parameters available to all users
-      permitted_params = params.require(:user).permit(
+      permitted_params = params.permit(
         :email,
         :first_name,
         :last_name,
@@ -137,7 +137,7 @@ module UserManagement
       # Only users with manage_roles permission can update roles
       # brakeman:ignore:PermitAttributes - Role assignment is protected by Pundit policy authorization
       if policy(@user || User).manage_roles?
-        permitted_params.merge!(params.require(:user).permit(:role))
+        permitted_params.merge!(params.permit(:role))
       end
 
       permitted_params
@@ -157,8 +157,8 @@ module UserManagement
         phone: user.phone,
         role: user.role,
         role_display: user.display_role,
-        created_at: user.created_at.iso8601,
-        updated_at: user.updated_at.iso8601,
+        created_at: user.created_at&.iso8601,
+        updated_at: user.updated_at&.iso8601,
         confirmed_at: user.confirmed_at&.iso8601,
         locked_at: user.locked_at&.iso8601,
         sign_in_count: user.sign_in_count,

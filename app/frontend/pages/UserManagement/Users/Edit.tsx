@@ -64,35 +64,33 @@ const UsersEditPage: React.FC<Props> = ({
 
       <div className="container mx-auto p-6">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link
-              href={`/admin/users/${user.id}`}
-              className="btn btn-ghost btn-sm"
+        <div className="mb-6">
+          <Link
+            href={`/admin/users/${user.id}`}
+            className="inline-flex items-center gap-2 text-sm text-base-content/60 hover:text-base-content transition-colors mb-4"
+          >
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-              {t("common.back")}
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold">
-                {t("user_management.users.edit.title")}
-              </h1>
-              <p className="text-base-content/70 mt-1">
-                {t("user_management.users.edit.subtitle")}
-              </p>
-            </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            {t("common.back")}
+          </Link>
+          <div>
+            <h1 className="text-3xl font-bold">
+              {t("user_management.users.edit.title")}
+            </h1>
+            <p className="text-base-content/70 mt-1">
+              {t("user_management.users.edit.subtitle")}
+            </p>
           </div>
         </div>
 
@@ -303,19 +301,21 @@ const UsersEditPage: React.FC<Props> = ({
                       }`}
                       value={data.password}
                       onChange={(e) => setData("password", e.target.value)}
-                      minLength={6}
+                      minLength={12}
                     />
                     {errors.password && (
                       <label className="label">
                         <span className="label-text-alt text-error">
-                          {errors.password[0]}
+                          {Array.isArray(errors.password)
+                            ? errors.password.join(". ")
+                            : errors.password}
                         </span>
                       </label>
                     )}
                     <label className="label">
                       <span className="label-text-alt text-base-content/70">
                         {t("user_management.users.form.minimum_chars", {
-                          count: 6,
+                          count: 12,
                         })}
                       </span>
                     </label>
@@ -337,7 +337,7 @@ const UsersEditPage: React.FC<Props> = ({
                       onChange={(e) =>
                         setData("password_confirmation", e.target.value)
                       }
-                      minLength={6}
+                      minLength={12}
                     />
                     {errors.password_confirmation && (
                       <label className="label">
@@ -389,35 +389,6 @@ const UsersEditPage: React.FC<Props> = ({
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-
-        {/* Help Text */}
-        <div className="mt-6 max-w-3xl">
-          <div className="alert alert-info">
-            <svg
-              className="h-6 w-6 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <div className="text-sm">
-              <p className="font-semibold mb-1">
-                {t("user_management.users.edit.help_title")}
-              </p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>{t("user_management.users.edit.help_note_1")}</li>
-                <li>{t("user_management.users.edit.help_note_2")}</li>
-                <li>{t("user_management.users.edit.help_note_3")}</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>

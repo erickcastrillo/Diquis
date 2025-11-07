@@ -29,9 +29,8 @@ module Diquis
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
 
-    # Add slice directories to autoload paths
-    config.autoload_paths += Dir.glob("#{Rails.root}/app/slices/*/")
-    config.eager_load_paths += Dir.glob("#{Rails.root}/app/slices/*/") if Rails.env.production?
+    # Note: app/slices is automatically in autoload_paths by Rails
+    # No need to manually add slice directories - Zeitwerk handles them correctly
 
     # Add custom middleware for OpenTelemetry
     if ENV["OTEL_ENABLED"] == "true"
