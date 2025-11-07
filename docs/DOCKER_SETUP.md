@@ -7,21 +7,47 @@ This document explains how to run the Diquis Football Academy application using 
 1. **Copy environment configuration:**
 
    ```bash
-   cp .env.docker .env.docker.local
+   cp .env.example .env
    ```
+
+   Then customize `.env` with your settings (database passwords, etc.)
 
 2. **Start all services:**
 
    ```bash
-   bin/docker/start
+   ./docker-dev
    ```
 
 3. **Access the application:**
    - Rails App: http://localhost:3000
-   - Vite Dev Server: http://localhost:5173
    - Sidekiq Web UI: http://localhost:4567
    - PostgreSQL: localhost:5432
    - Redis: localhost:6379
+
+   **Note:** Vite dev server runs inside the web container via `bin/dev`
+
+## Reset Docker Environment
+
+When you install new gems or need to rebuild from scratch:
+
+```bash
+./docker-dev reset
+```
+
+This will:
+
+- Stop and remove all containers
+- Remove all volumes (⚠️ deletes database data!)
+- Prune Docker system
+- Rebuild images with `--no-cache`
+- Recreate all containers
+
+After reset, you'll need to:
+
+```bash
+docker compose exec web rails db:migrate
+docker compose exec web rails db:seed
+```
 
 ## Services
 

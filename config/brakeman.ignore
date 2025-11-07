@@ -1,0 +1,28 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "4d02f9da615dcb25461a49c859ecdaa29c0aff44f89680b023fb98a8dfc09707",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/slices/user_management/controllers/users_controller.rb",
+      "line": 140,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "UserManagement::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "Role assignment is protected by Pundit policy authorization (manage_roles? check). Only super_admins, academy_owners, and academy_admins can modify user roles."
+    }
+  ],
+  "brakeman_version": "7.1.1"
+}

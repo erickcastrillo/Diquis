@@ -1,4 +1,5 @@
 import React from "react";
+import FlashMessages from "../FlashMessages";
 import ActivityDrawer from "./FlyonUI/ActivityDrawer";
 import FlyonUIFooter from "./FlyonUI/FlyonUIFooter";
 import FlyonUIHeader from "./FlyonUI/FlyonUIHeader";
@@ -12,6 +13,9 @@ interface FlyonUILayoutProps {
 const FlyonUILayout: React.FC<FlyonUILayoutProps> = ({ children }) => {
   return (
     <div className="bg-base-200 flex min-h-screen flex-col">
+      {/* Flash Messages */}
+      <FlashMessages />
+
       {/* Search Modal */}
       <SearchModal />
 

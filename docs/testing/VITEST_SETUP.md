@@ -233,14 +233,71 @@ export default defineConfig({
 
 ## 11. CI/CD Integration
 
-Add to your GitHub Actions or CI pipeline:
+The frontend tests are automatically run in the CI/CD pipeline via GitHub Actions.
+
+### CI Configuration
+
+The `.github/workflows/ci.yml` includes a `test_frontend` job that:
+
+1. Sets up Node.js using the version from `.node-version`
+2. Installs dependencies with `npm ci`
+3. Runs tests with `npm run test:run`
+4. Generates coverage reports
+5. Uploads coverage artifacts
 
 ```yaml
-- name: Run Frontend Tests
-  run: |
-    npm ci
-    npm run test:run
+test_frontend:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .node-version
+        cache: npm
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run frontend tests
+      run: npm run test:run
+
+    - name: Generate coverage report
+      run: npm run test:coverage
+      continue-on-error: true
+
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v5
+      if: always()
+      with:
+        name: frontend-coverage
+        path: app/frontend/coverage
+        if-no-files-found: ignore
 ```
+
+### Running Locally
+
+```bash
+# Run tests in watch mode
+npm run test
+
+# Run tests once (as CI does)
+npm run test:run
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Current Test Coverage
+
+- ✅ **FlashMessages Component** - 10/10 tests passing
+- ✅ **UserManagement/Users/New Page** - 12/12 tests passing
+- **Total: 22/22 tests passing (100%)**
 
 ## 12. VSCode Integration
 

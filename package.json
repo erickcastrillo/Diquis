@@ -4,14 +4,21 @@
   "devDependencies": {
     "@iconify-json/tabler": "^1.2.23",
     "@iconify/tailwind4": "^1.1.0",
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.1.16",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.9.1",
+    "@vitest/ui": "^4.0.7",
     "autoprefixer": "^10.4.21",
     "flyonui": "^2.4.1",
+    "jsdom": "^27.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.16",
     "vite": "^7.1.12",
-    "vite-plugin-ruby": "^5.1.1"
+    "vite-plugin-ruby": "^5.1.1",
+    "vitest": "^4.0.7"
   },
   "dependencies": {
     "@inertiajs/react": "^2.2.12",
@@ -44,6 +51,10 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "check": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json"
+    "check": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   }
 }

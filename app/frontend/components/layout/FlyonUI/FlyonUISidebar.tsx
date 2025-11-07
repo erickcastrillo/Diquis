@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import React from "react";
 import { useTranslations } from "../../../lib/i18n";
 
@@ -116,13 +117,13 @@ const FlyonUISidebar: React.FC = () => {
           <div className="h-full overflow-y-auto p-4">
             <div className="space-y-1">
               {/* Dashboard - Active */}
-              <a
-                href="#"
+              <Link
+                href="/app/dashboard"
                 className="bg-primary/10 text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium"
               >
                 <span className="icon-[tabler--dashboard] size-5"></span>
                 {t("app.layout.sidebar.dashboard")}
-              </a>
+              </Link>
 
               {/* Core Management Section with Submenu */}
               <details className="group" open>
@@ -378,13 +379,13 @@ const FlyonUISidebar: React.FC = () => {
                 </summary>
                 <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
                   {/* Users & Roles */}
-                  <a
-                    href="#"
+                  <Link
+                    href="/admin/users"
                     className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
                   >
                     <span className="icon-[tabler--user-shield] size-5"></span>
                     {t("app.layout.sidebar.users_roles")}
-                  </a>
+                  </Link>
 
                   {/* Academy Settings */}
                   <a

@@ -13,6 +13,7 @@ show_usage() {
     echo "  up        Start all services (default)"
     echo "  down      Stop all services"
     echo "  restart   Restart all services"
+    echo "  reset     Reset Docker environment (rebuild from scratch)"
     echo "  status    Show service status"
     echo "  logs      Follow logs for all services"
     echo "  help      Show this help message"
@@ -35,10 +36,11 @@ check_docker() {
 
 # Function to ensure env file exists
 ensure_env_file() {
-    if [ ! -f .env.docker.local ]; then
-        echo "📋 Creating .env.docker.local from template..."
-        cp .env.docker .env.docker.local
+    if [ ! -f .env ]; then
+        echo "📋 Creating .env from template..."
+        cp .env.example .env
         echo "✅ Environment file created"
+        echo "⚠️  Please review and customize .env with your passwords"
         echo ""
     fi
 }
@@ -51,8 +53,12 @@ start_services() {
     check_docker
     ensure_env_file
 
+    echo "🏗️  Building Docker images (if needed)..."
+    docker compose build
+
+    echo ""
     echo "🏗️  Starting services with docker compose..."
-    docker compose --env-file .env.docker.local up -d
+    docker compose up -d
 
     echo ""
     echo "⏳ Waiting for services to initialize..."
@@ -63,20 +69,50 @@ start_services() {
     docker compose ps
 
     echo ""
+    echo "📦 Installing/checking gems..."
+    docker compose exec -T web bundle install
+    
+    echo ""
+    echo "🔄 Restarting services to pick up new gems..."
+    docker compose restart web sidekiq
+    
+    echo ""
+    echo "⏳ Waiting for services to restart..."
+    sleep 10
+
+    echo ""
+    echo "📦 Setting up database..."
+    
+    # Check if database exists and has migrations
+    if docker compose exec -T web bundle exec rails db:version >/dev/null 2>&1; then
+        echo "✅ Database already exists, running pending migrations..."
+        docker compose exec -T web bundle exec rails db:migrate
+    else
+        echo "🆕 Creating database and running migrations..."
+        docker compose exec -T web bundle exec rails db:create db:migrate
+        
+        echo ""
+        echo "🌱 Loading seed data..."
+        docker compose exec -T web bundle exec rails db:seed
+    fi
+
+    echo ""
     echo "✅ Services are running!"
     echo ""
     echo "🌐 Access Points:"
     echo "  Rails App:       http://localhost:3000"
-    echo "  Vite Dev:        http://localhost:5173"
     echo "  Sidekiq Web:     http://localhost:4567"
     echo "  PostgreSQL:      localhost:5432"
     echo "  Redis:           localhost:6379"
     echo ""
     echo "🔧 Quick Commands:"
     echo "  Stop services:   ./docker-dev down"
+    echo "  Reset all:       ./docker-dev reset"
     echo "  View logs:       ./docker-dev logs"
     echo "  Check status:    ./docker-dev status"
     echo "  Rails console:   docker compose exec web bundle exec rails console"
+    echo ""
+    echo "💡 Vite dev server runs inside the web container (started by Procfile)"
     echo ""
     echo "🎉 Happy coding!"
 }
@@ -145,6 +181,43 @@ show_logs() {
     docker compose logs -f
 }
 
+# Function to reset Docker environment
+reset_environment() {
+    echo "🔄 RESETTING Docker Environment"
+    echo ""
+    echo "⚠️  WARNING: This will delete all containers, volumes, and images!"
+    echo "⚠️  All database data will be lost!"
+    echo ""
+    read -p "Are you sure you want to continue? (yes/no): " confirm
+    
+    if [ "$confirm" != "yes" ]; then
+        echo "❌ Reset cancelled"
+        exit 0
+    fi
+    
+    echo ""
+    check_docker
+    
+    echo "🛑 Stopping and removing all containers and volumes..."
+    docker compose down -v
+    
+    echo ""
+    echo "🧹 Removing dangling images..."
+    docker compose rm -f
+    
+    echo ""
+    echo "🗑️  Pruning Docker system..."
+    docker system prune -f
+    
+    echo ""
+    echo "✅ Docker environment has been reset!"
+    echo ""
+    echo "💡 Next steps:"
+    echo "  1. Start services:  ./docker-dev up"
+    echo ""
+    echo "🎉 Ready for a fresh start!"
+}
+
 # Parse command line arguments
 case "${1:-up}" in
     up|start)
@@ -155,6 +228,9 @@ case "${1:-up}" in
         ;;
     restart)
         restart_services
+        ;;
+    reset)
+        reset_environment
         ;;
     status|ps)
         show_status

@@ -130,13 +130,17 @@ Each slice contains:
 git clone https://github.com/yourusername/diquis.git
 cd diquis
 
-# 2. Install dependencies
+# 2. Configure environment (optional - has sensible defaults)
+cp .env.example .env
+# Edit .env if you need custom configuration
+
+# 3. Install dependencies
 bundle install
 
-# 3. Setup database
+# 4. Setup database
 rails db:create db:migrate db:seed
 
-# 4. Start development servers
+# 5. Start development servers
 ./bin/dev
 ```text
 
@@ -156,6 +160,35 @@ For full debugging support in VS Code:
 4. Set breakpoints and debug your code
 
 See [🐛 VS Code Debug Setup](./.vscode/DEBUG_SETUP.md) for complete setup guide.
+
+### Environment Configuration
+
+The application uses a **single `.env` file** for Docker development:
+
+```bash
+# Copy the example file
+cp .env.example .env
+```
+
+**How it works:**
+
+- Docker Compose automatically loads `.env` file
+- All services (web, sidekiq) share the same environment
+- For local (non-Docker) development, set variables in your shell
+
+**What you can configure:**
+
+- `SEED_DEFAULT_PASSWORD` - Default password for development seed data
+- OpenTelemetry/Honeycomb.io observability (optional)
+- External services (SMTP, etc.)
+- Database/Redis settings (usually not needed, Docker defaults work)
+
+**Files:**
+
+- `.env` - Your settings (gitignored, **never commit**)
+- `.env.example` - Template with all options (committed)
+
+See [📝 Seed Data Guide](./docs/SEED_DATA.md) for details.
 
 ### Quick API Test
 
@@ -179,7 +212,17 @@ curl http://localhost:3000/api/v1/academies \
 
 For a complete containerized development environment with PostgreSQL and Redis:
 
-### Quick Docker Commands
+### Quick Start
+
+```bash
+# Start all services
+./docker-dev
+
+# Reset everything (useful after installing new gems)
+./docker-dev reset
+```
+
+### All Docker Commands
 
 ```bash
 # Start all services (default)
@@ -191,6 +234,9 @@ For a complete containerized development environment with PostgreSQL and Redis:
 
 # Restart all services
 ./docker-dev restart
+
+# Reset environment (rebuild from scratch)
+./docker-dev reset
 
 # Check service status
 ./docker-dev status
@@ -206,20 +252,30 @@ For a complete containerized development environment with PostgreSQL and Redis:
 
 ```bash
 # 1. Copy environment configuration
-cp .env.docker .env.docker.local
+cp .env.example .env
 
 # 2. Start all services
-docker compose up -d
+./docker-dev
 
-# 3. Setup database
+# 3. Setup database (if needed after reset)
 docker compose exec web bundle exec rails db:migrate
 docker compose exec web bundle exec rails db:seed
 ```
 
+### When to Use Reset
+
+Use `./docker-dev reset` when:
+
+- You've installed new gems (Gemfile.lock changed)
+- Docker containers are in a broken state
+- You need a completely fresh environment
+- Database schema changes aren't applying
+
+**⚠️ Warning:** Reset will delete all database data and require confirmation!
+
 ### Docker Services
 
-- **Rails App:** http://localhost:3000
-- **Vite Dev Server:** http://localhost:5173
+- **Rails App:** http://localhost:3000 (includes Vite dev server via bin/dev)
 - **Sidekiq Web UI:** http://localhost:4567
 - **PostgreSQL:** localhost:5432
 - **Redis:** localhost:6379

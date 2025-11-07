@@ -7,6 +7,7 @@ export type Translations = {
   app: any;
   common?: any;
   errors?: any;
+  user_management?: any;
 };
 
 export type LocaleInfo = {
