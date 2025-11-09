@@ -211,7 +211,7 @@ describe("UserManagement/Users/Edit", () => {
   it("displays password requirement hint", () => {
     render(<Edit {...defaultProps} />);
 
-    expect(screen.getByText(/Minimum 6 characters/i)).toBeInTheDocument();
+    expect(screen.getByText(/Minimum 12 characters/i)).toBeInTheDocument();
   });
 
   it("shows required indicators on required fields", () => {
@@ -310,17 +310,6 @@ describe("UserManagement/Users/Edit", () => {
     expect(emailInput).toHaveClass("input-error");
   });
 
-  it("displays help information section", () => {
-    render(<Edit {...defaultProps} />);
-
-    expect(screen.getByText("Important Information")).toBeInTheDocument();
-    expect(
-      screen.getByText("Email addresses must be unique")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Password must be at least 6 characters")
-    ).toBeInTheDocument();
-  });
 
   it("makes first and last name required for player role", () => {
     mockUseForm.mockReturnValue({

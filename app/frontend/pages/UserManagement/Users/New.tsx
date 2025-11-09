@@ -60,7 +60,7 @@ const UsersNewPage: React.FC<Props> = ({
         )} | Diquis`}
       />
 
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6" data-testid="user-new-page">
         {/* Header */}
         <div className="mb-6">
           <Link

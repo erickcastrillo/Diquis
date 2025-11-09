@@ -1,86 +1,87 @@
-import { Head, Link, usePage } from '@inertiajs/react'
-import { Fragment, ReactNode } from 'react'
+import { Head, Link, usePage } from "@inertiajs/react";
+import { Fragment, ReactNode } from "react";
+import { useTranslations } from "../lib/i18n";
 
 interface LayoutProps {
-  children: ReactNode
-  title?: string
+  children: ReactNode;
+  title?: string;
 }
 
 export default function Layout({ children, title }: LayoutProps) {
-  const { auth } = usePage().props as any
+  const { auth } = usePage().props as any;
+  const { t } = useTranslations();
+
   return (
     <Fragment>
       <Head title={title} />
-      <div className="min-vh-100 bg-light">
-        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-          <div className="container-fluid">
-            <a className="navbar-brand fw-bold" href="/">
-              Diquis
-            </a>
-            <button 
-              className="navbar-toggler" 
-              type="button" 
-              data-bs-toggle="collapse" 
-              data-bs-target="#navbarNav"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav ms-auto">
+      <div className="min-h-screen bg-base-200">
+        <nav className="bg-base-100 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              <div className="flex items-center">
+                <a className="text-xl font-bold text-base-content" href="/">
+                  Diquis
+                </a>
+              </div>
+              <div className="flex items-center gap-4">
                 {auth?.user ? (
-                  <li className="nav-item dropdown">
-                    <a 
-                      className="nav-link dropdown-toggle" 
-                      href="#" 
-                      role="button" 
-                      data-bs-toggle="dropdown"
+                  <div className="dropdown relative inline-flex">
+                    <button
+                      id="profile-menu-button"
+                      type="button"
+                      className="dropdown-toggle btn btn-ghost"
+                      aria-haspopup="menu"
+                      aria-expanded="false"
                     >
                       {auth.user.email}
-                    </a>
-                    <ul className="dropdown-menu">
+                    </button>
+                    <ul
+                      className="dropdown-menu dropdown-open:opacity-100 hidden w-48 space-y-0.5"
+                      role="menu"
+                    >
                       <li>
-                        <Link 
-                          href="/users/edit" 
-                          className="dropdown-item"
+                        <Link
+                          href="/users/edit"
+                          className="dropdown-item px-3 py-2"
                           method="get"
                         >
-                          Profile
+                          {t("app.layout.header.my_profile")}
                         </Link>
                       </li>
-                      <li><hr className="dropdown-divider" /></li>
                       <li>
-                        <Link 
-                          href="/users/sign_out" 
-                          className="dropdown-item"
+                        <hr className="border-base-content/20 my-1" />
+                      </li>
+                      <li>
+                        <Link
+                          id="sign-out-link"
+                          href="/users/sign_out"
+                          className="dropdown-item px-3 py-2 text-error"
                           method="delete"
+                          as="button"
                         >
-                          Sign Out
+                          {t("app.layout.header.logout")}
                         </Link>
                       </li>
                     </ul>
-                  </li>
+                  </div>
                 ) : (
                   <>
-                    <li className="nav-item">
-                      <Link href="/users/sign_in" className="nav-link">
-                        Sign In
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link href="/users/sign_up" className="nav-link">
-                        Sign Up
-                      </Link>
-                    </li>
+                    <Link href="/users/sign_in" className="btn btn-ghost">
+                      {t("common.sign_in")}
+                    </Link>
+                    <Link href="/users/sign_up" className="btn btn-primary">
+                      {t("common.sign_up")}
+                    </Link>
                   </>
                 )}
-              </ul>
+              </div>
             </div>
           </div>
         </nav>
-        <main className="container py-4">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </main>
       </div>
     </Fragment>
-  )
+  );
 }

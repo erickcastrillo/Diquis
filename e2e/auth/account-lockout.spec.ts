@@ -1,4 +1,5 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { generateTestEmail } from "../fixtures/users";
 import { cleanupUsers } from "../helpers/database";
 
@@ -38,8 +39,7 @@ test.describe("Account Lockout", () => {
     await cleanupUsers(request, testEmail);
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("existing user lockout behavior", async ({ page }) => {
+  test("existing user lockout behavior", async ({ page }) => {
     // Test with multiple failed attempts on a non-locked account
     const invalidPassword = "WrongPassword123!";
 

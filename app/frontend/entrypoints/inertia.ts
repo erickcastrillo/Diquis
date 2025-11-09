@@ -1,4 +1,4 @@
-import { createInertiaApp } from "@inertiajs/react";
+import { createInertiaApp, router } from "@inertiajs/react";
 import { createElement, ReactNode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -17,17 +17,28 @@ type ResolvedComponent = {
 // FlyonUI wrapper component to reinitialize on page changes
 function FlyonUIWrapper({ children }: { children: ReactNode }) {
   useEffect(() => {
-    // Reinitialize FlyonUI components after navigation
-    const timer = setTimeout(() => {
+    // Initialize FlyonUI on component mount and children change
+    const initializeFlyonUI = () => {
       if (
         window.HSStaticMethods &&
         typeof window.HSStaticMethods.autoInit === "function"
       ) {
         window.HSStaticMethods.autoInit();
       }
-    }, 100);
+    };
 
-    return () => clearTimeout(timer);
+    // Initial initialization with longer timeout for page load
+    const timer = setTimeout(initializeFlyonUI, 300);
+
+    // Listen to Inertia navigation events and reinitialize
+    const removeNavigateListener = router.on("navigate", () => {
+      setTimeout(initializeFlyonUI, 300);
+    });
+
+    return () => {
+      clearTimeout(timer);
+      removeNavigateListener();
+    };
   }, [children]);
 
   return createElement("div", { style: { display: "contents" } }, children);

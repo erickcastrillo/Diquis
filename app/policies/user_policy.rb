@@ -18,67 +18,75 @@ class UserPolicy < ApplicationPolicy
 
   # Show users - staff and coaches can view all, academy_admin can view manageable users
   def show?
-    return true if user.id == record.id # Users can view themselves
+    # Validate record presence
+    return false if record.nil?
 
-    # Staff and coaches can view any user
-    return true if user.role_staff? || user.role_coach?
-
-    # Academy admin can view users they can manage (player, parent, staff, coach)
-    return true if user.role_academy_admin? && can_manage_user?(record)
+    # Super admin can view anyone
+    return true if user.role_super_admin?
 
     # Academy owner can view users up to academy_admin
     return true if user.role_academy_owner? && can_manage_user?(record)
 
-    # Super admin can view anyone
-    return true if user.role_super_admin?
+    # Academy admin can view users they can manage (player, parent, staff, coach)
+    return true if user.role_academy_admin? && can_manage_user?(record)
+
+    # Staff and coaches can view any user
+    return true if user.role_staff? || user.role_coach?
+
+    # Users can update themselves (except role)
+    return true if user.id == record.id
 
     false
   end
 
   # Create users - admins can create users at or below their level
   def create?
-    # Academy admin can create player, parent, staff, coach
+    # If record is a class, allow only for roles that can create any user
+    return user.role_academy_admin? || user.role_academy_owner? || user.role_super_admin? if record.is_a?(Class)
+
+    # Otherwise, check if the user can create the specific target_user
     return true if user.role_academy_admin? && creatable_by_academy_admin?(record)
-
-    # Academy owner can create any role except super_admin
-    return true if user.role_academy_owner? && !record.role_super_admin?
-
-    # Super admin can create any role
+    return true if user.role_academy_owner? && creatable_by_academy_owner?(record)
     return true if user.role_super_admin?
-
     false
   end
 
   # Update users - admins can update users they can manage
   def update?
-    # Users can update themselves (except role)
-    return true if user.id == record.id
+    # Validate record presence
+    return false if record.nil?
 
-    # Academy admin can update users they can manage
-    return true if user.role_academy_admin? && can_manage_user?(record)
+    # Super admin can update anyone
+    return true if user.role_super_admin?
 
     # Academy owner can update users up to academy_admin
     return true if user.role_academy_owner? && can_manage_user?(record)
 
-    # Super admin can update anyone
-    return true if user.role_super_admin?
+    # Academy admin can update users they can manage
+    return true if user.role_academy_admin? && can_manage_user?(record)
+
+    # Users can update themselves (except role)
+    return true if user.id == record.id
 
     false
   end
 
   # Delete users - admins can delete users they can manage
   def destroy?
-    # Users cannot delete themselves
-    return false if user.id == record.id
+    # Validate record presence
+    return false if record.nil?
 
-    # Academy admin can delete users they can manage
-    return true if user.role_academy_admin? && can_manage_user?(record)
+    # Super admin can delete anyone (except themselves, checked above)
+    return true if user.role_super_admin?
 
     # Academy owner can delete users up to academy_admin
     return true if user.role_academy_owner? && can_manage_user?(record)
 
-    # Super admin can delete anyone (except themselves, checked above)
-    return true if user.role_super_admin?
+    # Academy admin can delete users they can manage
+    return true if user.role_academy_admin? && can_manage_user?(record)
+
+    # Users cannot delete themselves
+    return false if user.id == record.id
 
     false
   end
@@ -133,8 +141,8 @@ class UserPolicy < ApplicationPolicy
   end
 
   # Check if academy owner can create user with the given role
-  def creatable_by_academy_owner?(target_user)
-    target_user.player? || target_user.parent? || target_user.staff? ||
-      target_user.coach? || target_user.academy_admin?
+  def creatable_by_academy_admin?(target_user)
+    return false unless target_user.respond_to?(:role)
+    %w[player parent staff coach].include?(target_user.role)
   end
 end

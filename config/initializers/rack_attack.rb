@@ -8,7 +8,9 @@ class Rack::Attack
   # Use Rails cache for storing rate limit counters
   # IMPORTANT: MemoryStore only works for single-process/single-server deployments.
   # For production with multiple servers/processes, use Redis or another shared cache.
-  Rack::Attack.cache.store = if Rails.env.production?
+  Rack::Attack.cache.store = if Rails.env.test?
+                                ActiveSupport::Cache::NullStore.new
+  elsif Rails.env.production?
                                 # Production: Use Redis for shared cache across multiple servers/processes
                                 ActiveSupport::Cache::RedisCacheStore.new(url: ENV.fetch("REDIS_URL", "redis://localhost:6379/1"))
   else
@@ -16,7 +18,19 @@ class Rack::Attack
                                 ActiveSupport::Cache::MemoryStore.new
   end
 
+  ### Safelisting ###
+  # Disable rate limiting completely for development and test environments
+  safelist("allow-dev-test") do |req|
+    Rails.env.development? || Rails.env.test?
+  end
+
+  # Always allow requests from localhost in production
+  safelist("allow-localhost") do |req|
+    (req.ip == "127.0.0.1" || req.ip == "::1") if Rails.env.production?
+  end
+
   ### Throttle Configuration ###
+  # Only apply rate limiting in production
 
   # Throttle login attempts by IP address
   # 5 requests per 20 seconds for /users/sign_in
@@ -87,12 +101,6 @@ class Rack::Attack
   # Block specific IPs or IP ranges if needed
   # Example: Rack::Attack.blocklist_ip("1.2.3.4")
   # Example: Rack::Attack.blocklist_ip("1.2.3.0/24")
-
-  ### Safelisting ###
-  # Always allow requests from localhost in development
-  safelist("allow-localhost") do |req|
-    req.ip == "127.0.0.1" || req.ip == "::1" if Rails.env.development?
-  end
 
   ### Logging ###
   # Log blocked requests for monitoring

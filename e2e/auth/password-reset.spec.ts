@@ -1,5 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { TEST_USERS } from "../helpers/auth";
+import { test } from "@playwright/test";
 
 test.describe("Password Reset", () => {
   test("request password reset with valid email", async ({ page }) => {
@@ -43,14 +44,13 @@ test.describe("Password Reset", () => {
     await expect(page).toHaveURL(/\/users\/password\/new/);
   });
 
-  test.skip("can navigate back to login from password reset", async ({
-    page,
-  }) => {
-    // Skipping this test as the link text/selector varies by implementation
-    // This is a minor UX feature that doesn't affect core functionality
+  test("can navigate back to login from password reset", async ({ page }) => {
     await page.goto("/users/password/new");
 
-    // The link might be "Log in", "Sign in", "Back to login", etc.
-    // Better to test the password reset flow itself
+    // Click the "Back to login" link
+    await page.click('a:has-text("Sign in")');
+
+    // Should navigate to the login page
+    await expect(page).toHaveURL(/\/users\/sign_in/);
   });
 });

@@ -343,13 +343,13 @@ docker compose exec web bundle exec rails db:seed
 
 | Role | Email | Password |
 |------|-------|----------|
-| Super Admin | admin@diquis.com | Str0ngP@ssw0rd! |
-| Academy Owner | owner@diquis.com | 0wn3rP@ssw0rd! |
-| Academy Admin | admin.academy@diquis.com | M@n@g3rP@ss! |
-| Head Coach | coach.main@diquis.com | He@dC0@ch123! |
-| Fitness Staff | staff.fitness@diquis.com | Fitn3ssT3@m!789 |
-| Parent | parent1@example.com | P@r3ntUn0!2025 |
-| Player | player1@example.com | Pl@y3rUn0!2025 |
+| Super Admin | admin@diquis.com | Dev3l0pment!2025 |
+| Academy Owner | owner@diquis.com | Dev3l0pment!2025 |
+| Academy Admin | admin.academy@diquis.com | Dev3l0pment!2025 |
+| Head Coach | coach.main@diquis.com | Dev3l0pment!2025 |
+| Fitness Staff | staff.fitness@diquis.com | Dev3l0pment!2025 |
+| Parent | parent1@example.com | Dev3l0pment!2025 |
+| Player | player1@example.com | Dev3l0pment!2025 |
 
 ### Family Relationships
 

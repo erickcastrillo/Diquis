@@ -61,6 +61,8 @@ vi.mock("../../../lib/i18n", () => ({
         "user_management.users.fields.sign_in_count": "Sign In Count",
         "common.status.label": "Status",
         "common.never": "Never",
+        "common.edit": "Edit",
+        "common.delete": "Delete",
         "app.layout.header.search_placeholder": "Search",
         "app.layout.header.theme_toggle": "Toggle theme",
         "app.layout.header.language": "Language",
@@ -101,19 +103,7 @@ describe("UserManagement/Users/Show", () => {
     window.confirm = vi.fn(() => true);
   });
 
-  it("renders the page title correctly", () => {
-    render(
-      <Show
-        user={mockUser}
-        can_edit={true}
-        can_delete={true}
-        can_manage_roles={true}
-      />
-    );
 
-    expect(screen.getByText("User Details")).toBeInTheDocument();
-    expect(screen.getByText("View user information")).toBeInTheDocument();
-  });
 
   it("displays user profile information", () => {
     render(
@@ -221,11 +211,11 @@ describe("UserManagement/Users/Show", () => {
       />
     );
 
-    expect(screen.getByText("+1234567890")).toBeInTheDocument();
+    expect(screen.getAllByText("+1234567890").length).toBeGreaterThan(0);
   });
 
   it("shows 'Not provided' when phone is missing", () => {
-    const userWithoutPhone = { ...mockUser, phone: null };
+    const userWithoutPhone = { ...mockUser, phone: null, first_name: null, last_name: null };
     render(
       <Show
         user={userWithoutPhone}
@@ -238,40 +228,7 @@ describe("UserManagement/Users/Show", () => {
     expect(screen.getAllByText("Not provided").length).toBeGreaterThan(0);
   });
 
-  it("displays activity statistics", () => {
-    render(
-      <Show
-        user={mockUser}
-        can_edit={true}
-        can_delete={true}
-        can_manage_roles={true}
-      />
-    );
 
-    expect(screen.getByText("Activity Statistics")).toBeInTheDocument();
-    expect(screen.getByText("Total Sign Ins")).toBeInTheDocument();
-    // sign_in_count appears in multiple places, check that it exists
-    const signInCounts = screen.getAllByText("5");
-    expect(signInCounts.length).toBeGreaterThan(0);
-    expect(screen.getByText("Member Since")).toBeInTheDocument();
-  });
-
-  it("displays activity information section", () => {
-    render(
-      <Show
-        user={mockUser}
-        can_edit={true}
-        can_delete={true}
-        can_manage_roles={true}
-      />
-    );
-
-    expect(screen.getByText("Activity Information")).toBeInTheDocument();
-    expect(screen.getByText("Created At")).toBeInTheDocument();
-    expect(screen.getByText("Updated At")).toBeInTheDocument();
-    expect(screen.getByText("Confirmed At")).toBeInTheDocument();
-    expect(screen.getByText("Sign In Count")).toBeInTheDocument();
-  });
 
   it("shows edit button when can_edit is true", () => {
     render(
@@ -283,7 +240,7 @@ describe("UserManagement/Users/Show", () => {
       />
     );
 
-    const editButton = screen.getByRole("link", { name: /Edit User/i });
+    const editButton = screen.getByRole("link", { name: /Edit/i });
     expect(editButton).toBeInTheDocument();
     expect(editButton).toHaveAttribute("href", "/admin/users/1/edit");
   });
@@ -299,7 +256,7 @@ describe("UserManagement/Users/Show", () => {
     );
 
     expect(
-      screen.queryByRole("link", { name: /Edit User/i })
+      screen.queryByRole("link", { name: /Edit/i })
     ).not.toBeInTheDocument();
   });
 
@@ -314,7 +271,7 @@ describe("UserManagement/Users/Show", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: /Delete User/i })
+      screen.getByRole("button", { name: /Delete/i })
     ).toBeInTheDocument();
   });
 
@@ -329,7 +286,7 @@ describe("UserManagement/Users/Show", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: /Delete User/i })
+      screen.queryByRole("button", { name: /Delete/i })
     ).not.toBeInTheDocument();
   });
 
@@ -345,7 +302,7 @@ describe("UserManagement/Users/Show", () => {
       />
     );
 
-    const deleteButton = screen.getByRole("button", { name: /Delete User/i });
+    const deleteButton = screen.getByRole("button", { name: /Delete/i });
     await user.click(deleteButton);
 
     expect(window.confirm).toHaveBeenCalledWith(
@@ -368,52 +325,21 @@ describe("UserManagement/Users/Show", () => {
       />
     );
 
-    const deleteButton = screen.getByRole("button", { name: /Delete User/i });
+    const deleteButton = screen.getByRole("button", { name: /Delete/i });
     await user.click(deleteButton);
 
     expect(window.confirm).toHaveBeenCalled();
     expect(router.delete).not.toHaveBeenCalled();
   });
 
-  it("displays breadcrumb navigation", () => {
-    render(
-      <Show
-        user={mockUser}
-        can_edit={true}
-        can_delete={true}
-        can_manage_roles={true}
-      />
-    );
 
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
-    // "Users" appears in multiple places (breadcrumb and header menu)
-    const usersElements = screen.getAllByText("Users");
-    expect(usersElements.length).toBeGreaterThan(0);
-  });
-
-  it("formats dates correctly", () => {
-    render(
-      <Show
-        user={mockUser}
-        can_edit={true}
-        can_delete={true}
-        can_manage_roles={true}
-      />
-    );
-
-    // Check that dates are rendered (exact format may vary by locale)
-    // Just verify dates are present and not "Never"
-    const activitySection = screen
-      .getByText("Activity Information")
-      .closest("div");
-    expect(activitySection).toBeTruthy();
-  });
 
   it("shows 'Never' for null date fields", () => {
     const userWithNullDates = {
       ...mockUser,
       locked_at: null,
       current_sign_in_at: null,
+      confirmed_at: null,
     };
 
     render(

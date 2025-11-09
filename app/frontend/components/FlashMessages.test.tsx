@@ -140,7 +140,7 @@ describe("FlashMessages", () => {
     const { container } = render(<FlashMessages />);
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveClass("fixed");
-    expect(wrapper).toHaveClass("top-4");
+    expect(wrapper).toHaveClass("bottom-4");
     expect(wrapper).toHaveClass("right-4");
     expect(wrapper).toHaveClass("z-9999");
   });

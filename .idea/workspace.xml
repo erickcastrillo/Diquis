@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fa619ebe-c40d-43f6-9951-a3ee1091f2e9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" beforeDir="false" afterPath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/frontend/components/layout/FlyonUI/FlyonUIHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/frontend/components/layout/FlyonUI/FlyonUIHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/frontend/pages/UserManagement/Users/Index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/frontend/pages/UserManagement/Users/Index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/frontend/pages/UserManagement/Users/New.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/frontend/pages/UserManagement/Users/New.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/initializers/rack_attack.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/initializers/rack_attack.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/admin/user-create.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/admin/user-create.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/admin/user-delete.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/admin/user-delete.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/admin/user-edit.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/admin/user-edit.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/admin/user-list.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/admin/user-list.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/auth/account-lockout.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/auth/account-lockout.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/auth/login.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/auth/login.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/auth/logout.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/auth/logout.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/auth/password-reset.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/auth/password-reset.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/authorization/role-restrictions.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/authorization/role-restrictions.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/dashboard/access.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/dashboard/access.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e2e/helpers/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e2e/helpers/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playwright-report/data/1258dcef7a2caf2fdd272f8aedd8a99d13d603f1.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/playwright-report/data/31acb6fc87c5bc034b7fdf5d345678b96643b780.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/playwright-report/data/6e9b82ca96d3703fe1230e2a26fc0576d7f14279.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/playwright-report/data/8562fbd5493c6aeacdc6721167a66ff1cf311d47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/playwright-report/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/playwright-report/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playwright.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playwright.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-results/.last-run.json" beforeDir="false" afterPath="$PROJECT_DIR$/test-results/.last-run.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/authentication-authorization" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "erickcastrillo"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:erickcastrillo/Diquis.git",
+    "accountId": "8047b475-29ec-4e92-b180-5b6f49a2a762"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="359ggqO8mSv9n1P30f4IBYYyOdh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1762527879222",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-RM-252.27397.109" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpringUtil" SPRING_PRE_LOADER_OPTION="true" RAKE_SPRING_PRE_LOADER_OPTION="true" RAILS_SPRING_PRE_LOADER_OPTION="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fa619ebe-c40d-43f6-9951-a3ee1091f2e9" name="Changes" comment="" />
+      <created>1762527818050</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762527818050</updated>
+      <workItem from="1762527819413" duration="1353000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/app/frontend/utils/config.js" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

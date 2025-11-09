@@ -1,12 +1,9 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { login, TEST_USERS } from "../helpers/auth";
 
-// Run dashboard tests serially to avoid session conflicts
-test.describe.configure({ mode: "serial" });
-
 test.describe("Dashboard Access", () => {
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("authenticated user can access dashboard", async ({ page }) => {
+  test("authenticated user can access dashboard", async ({ page }) => {
     await login(page, "player");
 
     // Should be on dashboard after login
@@ -32,8 +29,7 @@ test.describe("Dashboard Access", () => {
     await expect(page.locator('input[type="password"]')).toBeVisible();
   });
 
-  // TODO: Fix timing/session issue - test times out during login in full suite
-  test.skip("super_admin sees appropriate dashboard content", async ({
+  test("super_admin sees appropriate dashboard content", async ({
     page,
   }) => {
     await login(page, "super_admin");
@@ -62,8 +58,7 @@ test.describe("Dashboard Access", () => {
     await expect(dashboardContent).toBeVisible();
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("coach sees appropriate dashboard content", async ({ page }) => {
+  test("coach sees appropriate dashboard content", async ({ page }) => {
     await login(page, "coach");
 
     await page.goto("/app/dashboard");
@@ -76,8 +71,7 @@ test.describe("Dashboard Access", () => {
     await expect(dashboardContent).toBeVisible();
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("player sees appropriate dashboard content", async ({ page }) => {
+  test("player sees appropriate dashboard content", async ({ page }) => {
     await login(page, "player");
 
     await page.goto("/app/dashboard");
@@ -103,8 +97,7 @@ test.describe("Dashboard Access", () => {
     }
   });
 
-  // TODO: Fix timing/session issue - test times out during login in full suite
-  test.skip("dashboard shows user profile information", async ({ page }) => {
+  test("dashboard shows user profile information", async ({ page }) => {
     await login(page, "super_admin");
 
     await page.goto("/app/dashboard");
@@ -123,8 +116,7 @@ test.describe("Dashboard Access", () => {
     expect(hasEmail + hasAdminText + hasSuperAdmin).toBeGreaterThan(0);
   });
 
-  // TODO: Fix timing/session issue - test times out during login in full suite
-  test.skip("dashboard navigation works after login", async ({ page }) => {
+  test("dashboard navigation works after login", async ({ page }) => {
     await login(page, "super_admin");
 
     // Start at dashboard
@@ -140,8 +132,7 @@ test.describe("Dashboard Access", () => {
     await expect(page).toHaveURL(/\/app\/dashboard/);
   });
 
-  // TODO: Fix timing/session issue - test times out during login in full suite
-  test.skip("session persists across page reloads", async ({ page }) => {
+  test("session persists across page reloads", async ({ page }) => {
     await login(page, "player");
 
     await page.goto("/app/dashboard");
@@ -157,8 +148,7 @@ test.describe("Dashboard Access", () => {
     await expect(page).not.toHaveURL(/\/users\/sign_in/);
   });
 
-  // TODO: Fix timing/session issue - test times out during login in full suite
-  test.skip("different roles can access their dashboard simultaneously", async ({
+  test("different roles can access their dashboard simultaneously", async ({
     page,
     context,
   }) => {
@@ -168,7 +158,12 @@ test.describe("Dashboard Access", () => {
     await expect(page).toHaveURL(/\/app\/dashboard/);
 
     // Open new page in different context for admin
-    const adminPage = await context.newPage();
+    const browser = page.context().browser();
+    if (!browser) {
+      throw new Error("Browser instance is null");
+    }
+    const adminContext = await browser.newContext();
+    const adminPage = await adminContext.newPage();
     await adminPage.goto("/users/sign_in");
     await adminPage.fill('input[type="email"]', TEST_USERS.super_admin.email);
     await adminPage.fill(
@@ -199,8 +194,7 @@ test.describe("Dashboard Access", () => {
     expect(isValidLanding).toBe(true);
   });
 
-  // TODO: Fix timing/session issue - test times out during login in full suite
-  test.skip("logged in user accessing root goes to dashboard", async ({
+  test("logged in user accessing root goes to dashboard", async ({
     page,
   }) => {
     await login(page, "player");
