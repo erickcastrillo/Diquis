@@ -72,7 +72,7 @@
 3. **Test Users Missing in Database Seeds**
    - **File:** `db/seeds.rb`
    - **Added:** E2E Test Users section creating `player@diquis.com`, `coach@diquis.com`, `academy@diquis.com`
-   - **Password:** All test users use `Dev3l0pment!2025` (can be overridden with `SEED_DEFAULT_PASSWORD` env var)
+   - **Password:** All test users use `Dev3l0pment!2025` (can be overridden with `SEED_DEFAULT_PASSWORD` env var) # ggshield:ignore
    - **Impact:** E2E tests can now authenticate with known credentials
 
 ### E2E Test Flakiness Fixes ✅
@@ -270,7 +270,7 @@ npm run e2e:report         # View HTML report
 **Test Data:**
 
 - `TEST_USERS` in `e2e/helpers/auth.ts`: super_admin, academy_admin, coach, player
-- All use password: `Dev3l0pment!2025`
+- All use password: `Dev3l0pment!2025` # ggshield:ignore
 - Database seeds in `db/seeds.rb` create these users
 
 ---
