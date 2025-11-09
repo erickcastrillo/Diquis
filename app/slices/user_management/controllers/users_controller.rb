@@ -135,10 +135,17 @@ module UserManagement
         :password_confirmation
       )
 
-      # Only users with manage_roles permission can update roles
-      # brakeman:ignore:PermitAttributes - Role assignment is protected by Pundit policy authorization
-      if policy(@user || User).manage_roles?
-        permitted_params.merge!(params.permit(:role))
+      # Securely handle role assignment based on user's policy
+      if params[:role].present? && policy(@user || User).manage_roles?
+        assignable_roles = if @user.nil? # Create action
+                             available_roles_for_creation
+                           else # Update action
+                             available_roles_for_update(@user)
+                           end
+
+        if assignable_roles.include?(params[:role])
+          permitted_params[:role] = params[:role]
+        end
       end
 
       permitted_params
