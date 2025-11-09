@@ -79,7 +79,7 @@ gem "pundit", "~> 2.4"
 gem "rack-attack", "~> 6.7"
 
 # Audit logging
-gem "paper_trail", "~> 16.0"
+gem "paper_trail", "~> 17.0"
 
 # Background job processing
 gem "sidekiq", "~> 8.0"
