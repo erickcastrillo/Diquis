@@ -138,10 +138,10 @@ module UserManagement
       # Securely handle role assignment based on user's policy
       if params[:role].present? && policy(@user || User).manage_roles?
         assignable_roles = if @user.nil? # Create action
-                             available_roles_for_creation
-                           else # Update action
-                             available_roles_for_update(@user)
-                           end
+          available_roles_for_creation
+        else # Update action
+          available_roles_for_update(@user)
+        end
 
         if assignable_roles.include?(params[:role])
           permitted_params[:role] = params[:role]
