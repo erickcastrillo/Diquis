@@ -104,6 +104,8 @@ describe("UserManagement/Users/Index", () => {
       confirmed_at: "2024-01-01T00:00:00Z",
       locked_at: null,
       sign_in_count: 5,
+      can_edit: true,
+      can_delete: true,
     },
     {
       id: "2",
@@ -118,6 +120,8 @@ describe("UserManagement/Users/Index", () => {
       confirmed_at: null,
       locked_at: null,
       sign_in_count: 0,
+      can_edit: true,
+      can_delete: true,
     },
     {
       id: "3",
@@ -132,6 +136,8 @@ describe("UserManagement/Users/Index", () => {
       confirmed_at: "2024-01-03T00:00:00Z",
       locked_at: "2024-01-04T00:00:00Z",
       sign_in_count: 10,
+      can_edit: true,
+      can_delete: true,
     },
   ];
 
@@ -276,7 +282,7 @@ describe("UserManagement/Users/Index", () => {
   });
 
   it("displays action buttons for each user", () => {
-    render(<Index users={mockUsers} can_create={true} />);
+    render(<Index users={mockUsers} can_create={true} can_view={true} />);
 
     // Should have view, edit, delete buttons for each user
     const viewButtons = screen.getAllByLabelText(/View user/i);
@@ -289,14 +295,14 @@ describe("UserManagement/Users/Index", () => {
   });
 
   it("navigates to user detail page when view button clicked", () => {
-    render(<Index users={mockUsers} can_create={true} />);
+    render(<Index users={mockUsers} can_create={true} can_view={true} />);
 
     const viewButtons = screen.getAllByLabelText(/View user/i);
     expect(viewButtons[0]).toHaveAttribute("href", "/admin/users/1");
   });
 
   it("navigates to edit page when edit button clicked", () => {
-    render(<Index users={mockUsers} can_create={true} />);
+    render(<Index users={mockUsers} can_create={true} can_view={true} />);
 
     const editButtons = screen.getAllByLabelText(/Edit user/i);
     expect(editButtons[0]).toHaveAttribute("href", "/admin/users/1/edit");

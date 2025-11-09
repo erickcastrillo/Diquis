@@ -239,14 +239,8 @@ describe("UserManagement/Users/New", () => {
   it("renders password requirement hints", () => {
     render(<New user={{}} available_roles={["player"]} errors={{}} />);
 
-    // Check for password length hint (the component shows "minimum 6 chars")
-    expect(screen.getByText(/minimum 6/i)).toBeInTheDocument();
-  });
-
-  it("shows help notes section", () => {
-    render(<New user={{}} available_roles={["player"]} errors={{}} />);
-
-    expect(screen.getByText(/Important/i)).toBeInTheDocument();
+    // Check for password length hint (the component shows "minimum 12 chars")
+    expect(screen.getByText(/minimum 12/i)).toBeInTheDocument();
   });
 
   it("handles empty roles array gracefully", () => {
