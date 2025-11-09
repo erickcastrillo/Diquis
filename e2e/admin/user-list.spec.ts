@@ -1,16 +1,10 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { login } from "../helpers/auth";
 
-// Run user-list tests serially to avoid session conflicts
-test.describe.configure({ mode: "serial" });
-
 test.describe("User List", () => {
-  test.beforeEach(async ({ page }) => {
+  test("admin can view user list", async ({ page }) => {
     await login(page, "super_admin");
-  });
-
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("admin can view user list", async ({ page }) => {
     await page.goto("/admin/users");
 
     // Should show page heading
@@ -26,8 +20,8 @@ test.describe("User List", () => {
     expect(count).toBeGreaterThan(0);
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("user list displays user information", async ({ page }) => {
+  test("user list displays user information", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
     // Should display multiple users (at least the test data)
@@ -43,8 +37,8 @@ test.describe("User List", () => {
     expect(emailCount).toBeGreaterThan(0);
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("admin can search users by email", async ({ page }) => {
+  test("admin can search users by email", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
     // Find the table search input specifically (by id or more specific selector)
@@ -73,8 +67,8 @@ test.describe("User List", () => {
     }
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("admin can search users by name", async ({ page }) => {
+  test("admin can search users by name", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
     const searchInput = page.locator("#table-input-search");
@@ -94,22 +88,20 @@ test.describe("User List", () => {
     }
   });
 
-  // TODO: This test has Inertia hydration issues - the View user link is visible
-  // in the DOM but not clickable/interactive. Needs investigation of React hydration timing.
-  test.skip("admin can navigate to user details", async ({ page }) => {
+  test("admin can navigate to user details", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
-    // Wait for page to be fully loaded
-    await page.waitForLoadState("networkidle");
+    // Wait for the table to be visible
+    await page.waitForSelector("table tbody tr");
 
-    // Get the href from the first View user link and navigate to it
+    // Click the first "View user" link
     const firstUserRow = page.locator("table tbody tr").first();
-    const viewLink = firstUserRow.locator('a:has-text("View user")');
-    const href = await viewLink.getAttribute("href");
+    const viewLink = firstUserRow.getByRole('link', { name: 'View user' });
+    
+    await expect(viewLink).toBeVisible();
 
-    if (href) {
-      await page.goto(href);
-    }
+    await viewLink.click();
 
     // Should be on user detail page (with optional query params)
     await expect(page).toHaveURL(/\/admin\/users\/[a-f0-9-]+(\?.*)?$/);
@@ -118,8 +110,8 @@ test.describe("User List", () => {
     const heading = page.locator("h1, h2");
     await expect(heading).toBeVisible();
   });
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("admin can access new user form from list", async ({ page }) => {
+  test("admin can access new user form from list", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
     // Click on "Create User" button/link
@@ -133,8 +125,8 @@ test.describe("User List", () => {
     await expect(page.locator('input[type="email"]')).toBeVisible();
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("user list shows role badges", async ({ page }) => {
+  test("user list shows role badges", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
     // Should show role indicators - look for "Player" badge/text in table
@@ -147,8 +139,8 @@ test.describe("User List", () => {
     expect(roleCount).toBeGreaterThan(0);
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("user list pagination works if present", async ({ page }) => {
+  test("user list pagination works if present", async ({ page }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users");
 
     // Check if pagination exists

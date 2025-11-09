@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import React from "react";
 import { useTranslations } from "../../../lib/i18n";
 
@@ -203,6 +203,7 @@ const FlyonUIHeader: React.FC = () => {
             {/* Profile Avatar */}
             <div className="dropdown relative inline-flex [--offset:8] ms-1">
               <button
+                id="profile-menu-button"
                 type="button"
                 className="dropdown-toggle"
                 aria-haspopup="menu"
@@ -241,9 +242,6 @@ const FlyonUIHeader: React.FC = () => {
                   </div>
                 </li>
                 <li>
-                  <hr className="border-base-content/20 my-1" />
-                </li>
-                <li>
                   <a className="dropdown-item px-3 py-2" href="#">
                     <span className="icon-[tabler--user] size-4.5"></span>
                     {t("app.layout.header.my_profile")}
@@ -265,10 +263,16 @@ const FlyonUIHeader: React.FC = () => {
                   <hr className="border-base-content/20 my-1" />
                 </li>
                 <li>
-                  <a className="dropdown-item px-3 py-2 text-error" href="#">
+                  <Link
+                    id="sign-out-link"
+                    href="/users/sign_out"
+                    method="delete"
+                    as="button"
+                    className="dropdown-item px-3 py-2 text-error"
+                  >
                     <span className="icon-[tabler--logout] size-4.5"></span>
                     {t("app.layout.header.logout")}
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

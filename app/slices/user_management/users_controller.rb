@@ -17,7 +17,8 @@ module UserManagement
              props: {
                users: serialize_users(@users),
                current_user_role: current_user.role,
-               can_create: policy(User).create?
+               can_create: policy(User).create?,
+               can_view: policy(User).index?
              }
     end
 
@@ -163,7 +164,9 @@ module UserManagement
         locked_at: user.locked_at&.iso8601,
         sign_in_count: user.sign_in_count,
         current_sign_in_at: user.current_sign_in_at&.iso8601,
-        last_sign_in_at: user.last_sign_in_at&.iso8601
+        last_sign_in_at: user.last_sign_in_at&.iso8601,
+        can_edit: policy(user).update?,
+        can_delete: policy(user).destroy?
       }
     end
 

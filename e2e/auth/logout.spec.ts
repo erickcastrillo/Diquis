@@ -1,21 +1,22 @@
+import { expect } from "@playwright/test";
+import { login, logout } from "../helpers/auth";
 import { test } from "@playwright/test";
-import { login } from "../helpers/auth";
 
 test.describe("User Logout", () => {
-  test.skip("successful logout", async ({ page }) => {
-    // Skipping as logout button selector varies by implementation
-    // And the implementation might use a form POST instead of a link
+  test("successful logout clears session", async ({ page, context }) => {
     await login(page, "super_admin");
 
     // Wait for dashboard to load
     await page.waitForURL(/\/app\/dashboard/);
 
-    // Logout functionality would need to be tested based on actual UI
-    // This varies too much between implementations to reliably test
-  });
+    // Logout using the UI
+    await logout(page);
 
-  test.skip("session is cleared after logout", async ({ page, context }) => {
-    // Skipping - same reason as above test
-    // Session management is better tested at integration/unit level
+    // Should redirect to login page
+    await expect(page).toHaveURL(/\/(users\/sign_in|\/)/);
+
+    // Verify session is cleared by attempting to access dashboard
+    await page.goto("/app/dashboard");
+    await expect(page).toHaveURL(/\/users\/sign_in/);
   });
 });

@@ -1,20 +1,14 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { generateUserData } from "../fixtures/users";
 import { login } from "../helpers/auth";
 
-// Run tests serially to avoid session conflicts
-test.describe.configure({ mode: "serial" });
-
 test.describe("User Editing", () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page, "super_admin");
-  });
-
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("admin can edit existing user details", async ({
+  test("admin can edit existing user details", async ({
     page,
     request,
   }) => {
+    await login(page, "super_admin");
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {
@@ -90,8 +84,8 @@ test.describe("User Editing", () => {
     // await cleanupUsers(request, userData.email);
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("admin can change user role", async ({ page, request }) => {
+  test("admin can change user role", async ({ page, request }) => {
+    await login(page, "super_admin");
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {
@@ -136,10 +130,10 @@ test.describe("User Editing", () => {
     // expect(user.role).toBe("coach");
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("validation errors when clearing required fields", async ({
+  test("validation errors when clearing required fields", async ({
     page,
   }) => {
+    await login(page, "super_admin");
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {

@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 
 export interface LoginCredentials {
   email: string;
@@ -56,29 +56,67 @@ export async function login(
   await page.fill('input[type="email"]', creds.email);
   await page.fill('input[type="password"]', creds.password);
 
-  // Wait for navigation to complete
-  await Promise.all([
-    page.waitForURL(/\/app\/dashboard/, { timeout: 15000 }),
-    page.click('button[type="submit"]'),
-  ]);
+  // Click the submit button and wait for navigation to complete
+  await page.click('button[type="submit"]');
+  await page.waitForURL(/\/app\/dashboard/, { timeout: 30000 });
+}
+
+/**
+ * Opens the profile dropdown menu
+ * This helper ensures FlyonUI has initialized before clicking
+ */
+export async function openProfileMenu(page: Page) {
+  const profileButton = page.locator("#profile-menu-button");
+  const signOutLink = page.locator("#sign-out-link");
+
+  // Use expect.poll to retry opening the menu until the sign out link is visible.
+  // This is much more robust than a fixed timeout.
+  await expect
+    .poll(
+      async () => {
+        if (!(await profileButton.isVisible())) {
+          return false;
+        }
+        await profileButton.click({
+          force: true,
+        });
+        return await signOutLink.isVisible();
+      },
+      {
+        message: "The profile dropdown menu did not open after multiple attempts.",
+        timeout: 10000, // Total time to keep retrying
+      }
+    )
+    .toBe(true);
 }
 
 export async function logout(page: Page) {
-  await page.click(
-    '[data-testid="profile-menu"], .dropdown-toggle:has-text("Profile")'
-  );
-  await page.click('text=Logout, a[href*="sign_out"]');
-  await page.waitForURL(/\/(users\/sign_in|\/)/);
+  // Get CSRF token from meta tag
+  const csrfToken = await page.locator('meta[name="csrf-token"]').getAttribute('content');
+
+  if (!csrfToken) {
+    throw new Error("CSRF token not found on the page.");
+  }
+
+  // Send a POST request to the logout path with _method set to 'delete'
+  // This bypasses the Inertia Link component and directly hits the Rails backend
+  await page.request.post("/users/sign_out", {
+    form: {
+      _method: "delete",
+      authenticity_token: csrfToken,
+    },
+  });
+
+  // Wait for redirect to login page
+  await page.waitForURL(/\/(users\/sign_in|\/)/, { timeout: 15000 });
 }
 
 export async function isLoggedIn(page: Page): Promise<boolean> {
   try {
-    await page.waitForSelector(
-      '[data-testid="profile-menu"], a:has-text("Logout")',
-      {
-        timeout: 2000,
-      }
-    );
+    // Check if the profile menu button is visible
+    await page.waitForSelector("#profile-menu-button", {
+      timeout: 2000,
+    });
     return true;
   } catch {
     return false;

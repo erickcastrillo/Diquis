@@ -302,6 +302,8 @@ en:
     edit_item: "Edit %{item}"
     delete_item: "Delete %{item}"
     confirm_delete: "Are you sure you want to delete %{item}?"
+    sign_in: "Sign In"
+    sign_up: "Sign Up"
     status:
       active: "Active"
       pending: "Pending"

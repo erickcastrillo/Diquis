@@ -318,6 +318,8 @@ Comprehensive documentation is available in the `/docs` directory:
 | [🤖 Copilot Configuration](./.copilot/README.md) | **NEW** - GitHub Copilot optimization for project-specific code suggestions |
 | [🐛 VS Code Debug Setup](./.vscode/DEBUG_SETUP.md) | **NEW** - Complete debugging configuration for Rails and React |
 | [🔄 Sidekiq Setup](./docs/SIDEKIQ_SETUP.md) | **NEW** - Background job processing with Sidekiq and cron jobs |
+| [🧪 E2E Testing Plan](./docs/E2E_TESTING_IMPLEMENTATION_PLAN.md) | **NEW** - Complete Playwright E2E testing guide and implementation |
+| [🤖 AI Assistant Context](./GEMINI.md) | **NEW** - Comprehensive context for AI assistants (Copilot, Claude, ChatGPT, Gemini) |
 
 ### Quick Links
 
@@ -362,6 +364,8 @@ Comprehensive documentation is available in the `/docs` directory:
 - [Sidekiq Setup](./docs/SIDEKIQ_SETUP.md) - Background job processing configuration and usage
 - [Slice Architecture](./docs/SLICE_ARCHITECTURE.md) - Complete guide to slice-based development
 - [Slice Generators](./docs/SLICE_GENERATORS.md) - Quick reference for generator commands
+- [E2E Testing Guide](./docs/E2E_TESTING_IMPLEMENTATION_PLAN.md) - Playwright testing setup and patterns
+- [AI Assistant Context](./GEMINI.md) - Context for AI assistants (Copilot, Claude, ChatGPT, Gemini)
 
 ## 🛠️ Technology Stack
 
@@ -389,7 +393,7 @@ Comprehensive documentation is available in the `/docs` directory:
 ### Development Tools
 
 - **Process Manager:** Overmind
-- **Testing:** RSpec + FactoryBot + Faker
+- **Testing:** RSpec + FactoryBot + Faker (Backend), Vitest (Frontend), Playwright (E2E)
 - **API Docs:** Rswag (Swagger/OpenAPI 3.0)
 - **Code Quality:** Rubocop, Brakeman, Bullet
 - **Container:** Docker + Kamal 2 (deployment)
@@ -455,6 +459,8 @@ diquis/
 
 ## 🧪 Testing
 
+### Backend Tests (RSpec)
+
 ```bash
 # Run all tests
 bundle exec rspec
@@ -467,7 +473,50 @@ COVERAGE=true bundle exec rspec
 
 # Run tests in parallel
 bundle exec parallel_rspec spec/
-```text
+```
+
+### Frontend Tests (Vitest)
+
+```bash
+# Run all frontend unit tests
+npm run test
+
+# Run tests in watch mode
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### E2E Tests (Playwright)
+
+```bash
+# Run all E2E tests
+npm run e2e
+
+# Run in interactive UI mode
+npm run e2e:ui
+
+# Run in debug mode (step through tests)
+npm run e2e:debug
+
+# Run with visible browser
+npm run e2e:headed
+
+# View HTML test report
+npm run e2e:report
+
+# Run specific test file
+npm run e2e e2e/auth/login.spec.ts
+```
+
+**E2E Test Status:**
+
+- ✅ 14 tests passing (critical user flows)
+- ⏭️ 39 tests skipped (session timing issues in Docker - requires architectural fix)
+- ❌ 0 tests failing
+
+See [E2E Testing Implementation Plan](./docs/E2E_TESTING_IMPLEMENTATION_PLAN.md) for complete documentation.text
 
 ## 🔒 Security
 
@@ -503,15 +552,21 @@ kamal app logs
 ✅ Multi-tenancy configuration (ActsAsTenant)
 ✅ UUID primary keys enabled
 ✅ API design and routing
-✅ Authentication setup
-✅ Testing framework
+✅ Authentication setup (Devise + JWT)
+✅ Authorization setup (Pundit)
+✅ Testing framework (RSpec + Vitest + Playwright)
+✅ Background jobs (Sidekiq + Sidekiq-Cron)
+✅ E2E testing with Playwright (14 passing tests)
+✅ User management slice
+✅ Docker development environment
+✅ CI/CD pipeline
 
 ### In Progress
 
-🔄 Core model implementations
-🔄 Service class implementations
-🔄 Controller implementations
-🔄 Serializer implementations
+🔄 Player management slice
+🔄 Team management slice
+🔄 Training management slice
+🔄 Session isolation for E2E tests (39 tests currently skipped)
 
 ### Planned
 

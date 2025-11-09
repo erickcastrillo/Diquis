@@ -275,6 +275,8 @@ es:
     edit_item: "Editar %{item}"
     delete_item: "Eliminar %{item}"
     confirm_delete: "¿Está seguro de que desea eliminar %{item}?"
+    sign_in: "Iniciar Sesión"
+    sign_up: "Registrarse"
     status:
       active: "Activo"
       pending: "Pendiente"

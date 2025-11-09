@@ -1,13 +1,11 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { generateUserData, INVALID_PASSWORDS } from "../fixtures/users";
 import { login } from "../helpers/auth";
 
 test.describe("User Creation", () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page, "super_admin");
-  });
-
   test("admin can create a new player", async ({ page, request }) => {
+    await login(page, "super_admin");
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {
@@ -58,10 +56,10 @@ test.describe("User Creation", () => {
     // await cleanupUsers(request, userData.email);
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("validation errors for missing required fields", async ({
+  test("validation errors for missing required fields", async ({
     page,
   }) => {
+    await login(page, "super_admin");
     await page.goto("/admin/users/new");
     await page.selectOption("select.select-bordered", "player");
     await page.click('button[type="submit"]');
@@ -70,6 +68,7 @@ test.describe("User Creation", () => {
   });
 
   test("validation errors for weak password", async ({ page }) => {
+    await login(page, "super_admin");
     const userData = generateUserData("player", {
       password: INVALID_PASSWORDS.too_short as any,
     }) as typeof import("../fixtures/users").VALID_USER_DATA.player & {
@@ -98,6 +97,7 @@ test.describe("User Creation", () => {
   });
 
   test("validation errors for duplicate email", async ({ page, request }) => {
+    await login(page, "super_admin");
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {

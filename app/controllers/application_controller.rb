@@ -29,7 +29,8 @@ class ApplicationController < ActionController::Base
         common: I18n.t("common").is_a?(Hash) ? I18n.t("common") : {},
         errors: I18n.t("errors").is_a?(Hash) ? I18n.t("errors") : {},
         user_management: I18n.t("user_management").is_a?(Hash) ? I18n.t("user_management") : {}
-      }
+      },
+      flash: flash.to_hash
     }
   end
 

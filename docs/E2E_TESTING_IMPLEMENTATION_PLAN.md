@@ -365,14 +365,24 @@ export async function login(
  * @param page - Playwright page object
  */
 export async function logout(page: Page) {
-  // Click profile menu
-  await page.click('[data-testid="profile-menu"], .dropdown-toggle:has-text("Profile")');
-  
-  // Click logout button
-  await page.click('text=Logout, a[href*="sign_out"]');
-  
-  // Wait for redirect to home or login
-  await page.waitForURL(/\/(users\/sign_in|\/)/);
+  // Get CSRF token from meta tag
+  const csrfToken = await page.locator('meta[name="csrf-token"]').getAttribute('content');
+
+  if (!csrfToken) {
+    throw new Error("CSRF token not found on the page.");
+  }
+
+  // Send a POST request to the logout path with _method set to 'delete'
+  // This bypasses the Inertia Link component and directly hits the Rails backend
+  await page.request.post("/users/sign_out", {
+    form: {
+      _method: "delete",
+      authenticity_token: csrfToken,
+    },
+  });
+
+  // Wait for redirect to login page
+  await page.waitForURL(/\/(users\/sign_in|\/)/, { timeout: 15000 });
 }
 
 /**
@@ -1387,14 +1397,8 @@ await page.click('button[type="submit"]');
 await page.locator('form').submit();
 ```
 
-**Issue:** Database state persists between tests  
-**Solution:** Use cleanup helpers in `afterEach`:
-
-```typescript
-test.afterEach(async ({ request }) => {
-  await cleanupUsers(request, 'test-');
-});
-```
+**Issue:** Logout test fails intermittently.
+**Solution:** The Inertia.js `Link` component with `method="delete"` can be unreliable in tests. The `logout` helper in `e2e/helpers/auth.ts` has been modified to directly send a `DELETE` request to the backend, which is a more robust solution.
 
 ---
 

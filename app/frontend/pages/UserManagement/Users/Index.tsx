@@ -16,14 +16,21 @@ interface User {
   confirmed_at: string | null;
   locked_at: string | null;
   sign_in_count: number;
+  can_edit: boolean;
+  can_delete: boolean;
 }
 
 interface Props {
   users: User[];
   can_create: boolean;
+  can_view: boolean;
 }
 
-const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
+const UsersIndexPage: React.FC<Props> = ({
+  users,
+  can_create,
+  can_view
+}) => {
   const { t } = useTranslations();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
@@ -122,7 +129,7 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
     <FlyonUILayout>
       <Head title={`${t("user_management.users.index.title")} | Diquis`} />
 
-      <div className="space-y-6">
+      <div className="space-y-6" data-testid="user-index-page">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -307,42 +314,48 @@ const UsersIndexPage: React.FC<Props> = ({ users, can_create }) => {
                             {formatDate(user.created_at)}
                           </td>
                           <td>
-                            <Link
-                              href={`/admin/users/${user.id}`}
-                              className="btn btn-circle btn-text btn-sm"
-                              aria-label={t("common.view_item", {
-                                item: "user",
-                              })}
-                            >
-                              <span className="icon-[tabler--eye] size-5"></span>
-                            </Link>
-                            <Link
-                              href={`/admin/users/${user.id}/edit`}
-                              className="btn btn-circle btn-text btn-sm"
-                              aria-label={t("common.edit_item", {
-                                item: "user",
-                              })}
-                            >
-                              <span className="icon-[tabler--pencil] size-5"></span>
-                            </Link>
-                            <Link
-                              href={`/admin/users/${user.id}`}
-                              method="delete"
-                              as="button"
-                              className="btn btn-circle btn-text btn-sm"
-                              aria-label={t("common.delete_item", {
-                                item: "user",
-                              })}
-                              onBefore={() =>
-                                confirm(
-                                  t("common.confirm_delete", {
-                                    item: user.full_name,
-                                  })
-                                )
-                              }
-                            >
-                              <span className="icon-[tabler--trash] size-5"></span>
-                            </Link>
+                            {can_view && (
+                              <Link
+                                href={`/admin/users/${user.id}`}
+                                className="btn btn-circle btn-text btn-sm"
+                                aria-label={t("common.view_item", {
+                                  item: "user",
+                                })}
+                              >
+                                <span className="icon-[tabler--eye] size-5"></span>
+                              </Link>
+                            )}
+                            {user.can_edit && (
+                              <Link
+                                href={`/admin/users/${user.id}/edit`}
+                                className="btn btn-circle btn-text btn-sm"
+                                aria-label={t("common.edit_item", {
+                                  item: "user",
+                                })}
+                              >
+                                <span className="icon-[tabler--pencil] size-5"></span>
+                              </Link>
+                            )}
+                            {user.can_delete && (
+                              <Link
+                                href={`/admin/users/${user.id}`}
+                                method="delete"
+                                as="button"
+                                className="btn btn-circle btn-text btn-sm"
+                                aria-label={t("common.delete_item", {
+                                  item: "user",
+                                })}
+                                onBefore={() =>
+                                  confirm(
+                                    t("common.confirm_delete", {
+                                      item: user.full_name,
+                                    })
+                                  )
+                                }
+                              >
+                                <span className="icon-[tabler--trash] size-5"></span>
+                              </Link>
+                            )}
                           </td>
                         </tr>
                       ))

@@ -1,16 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { generateUserData } from "../fixtures/users";
 import { login } from "../helpers/auth";
 
-// Run tests serially to avoid session conflicts
-test.describe.configure({ mode: "serial" });
-
 test.describe("User Deletion", () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page, "super_admin");
-  });
-
   test("admin can delete user with confirmation", async ({ page, request }) => {
+    await login(page, "super_admin");
+
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {
@@ -62,11 +58,11 @@ test.describe("User Deletion", () => {
     // }
   });
 
-  // TODO: Fix timing/session issue - test times out when run in full suite
-  test.skip("delete button shows confirmation dialog", async ({
+  test("delete button shows confirmation dialog", async ({
     page,
     request,
   }) => {
+    await login(page, "super_admin");
     // Create a test user to delete
     const userData = generateUserData(
       "player"
@@ -115,7 +111,8 @@ test.describe("User Deletion", () => {
     }
   });
 
-  test.skip("cannot delete own account", async ({ page }) => {
+  test("cannot delete own account", async ({ page }) => {
+    await login(page, "super_admin");
     // This test is skipped because we'd need to find the admin's own user ID
     // and the UI might not prevent deletion at the button level
 
