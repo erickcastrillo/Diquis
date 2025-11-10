@@ -30,7 +30,21 @@ module Diquis
     config.i18n.fallbacks = true
 
     # Note: app/slices is automatically in autoload_paths by Rails
-    # No need to manually add slice directories - Zeitwerk handles them correctly
+    # No need to manually add slice directories - Zeitwerk handles them correctly.
+    # However, we need to tell Zeitwerk to collapse conventional directories
+    # within each slice to avoid extra module nesting (e.g., UserManagement::Controllers::...).
+    config.after_initialize do
+      autoloader = Rails.autoloaders.main
+      slices_glob = Rails.root.join("app", "slices", "*")
+      slice_dirs = Dir.glob(slices_glob).select { |d| File.directory?(d) }
+
+      slice_dirs.each do |slice_dir|
+        %w[controllers jobs mailers services policies serializers].each do |dir|
+          path = File.join(slice_dir, dir)
+          autoloader.collapse(path) if File.directory?(path)
+        end
+      end
+    end
 
     # Add custom middleware for OpenTelemetry
     if ENV["OTEL_ENABLED"] == "true"
