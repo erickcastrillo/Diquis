@@ -20,7 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_043552) do
     t.string "name"
     t.string "slug"
     t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_football_categories_on_slug", unique: true
+    t.index [ "slug" ], name: "index_football_categories_on_slug", unique: true
   end
 
   create_table "football_teams", force: :cascade do |t|
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_043552) do
     t.string "name"
     t.string "slug"
     t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_football_teams_on_slug", unique: true
+    t.index [ "slug" ], name: "index_football_teams_on_slug", unique: true
   end
 
   create_table "player_guardians", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -43,10 +43,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_043552) do
     t.string "relationship_type", null: false
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.index ["guardian_id"], name: "index_player_guardians_on_guardian_id"
-    t.index ["player_id", "guardian_id"], name: "index_player_guardians_on_player_and_guardian", unique: true
-    t.index ["player_id"], name: "index_player_guardians_on_player_id"
-    t.index ["status"], name: "index_player_guardians_on_status"
+    t.index [ "guardian_id" ], name: "index_player_guardians_on_guardian_id"
+    t.index [ "player_id", "guardian_id" ], name: "index_player_guardians_on_player_and_guardian", unique: true
+    t.index [ "player_id" ], name: "index_player_guardians_on_player_id"
+    t.index [ "status" ], name: "index_player_guardians_on_status"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -73,11 +73,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_043552) do
     t.string "unconfirmed_email"
     t.string "unlock_token"
     t.datetime "updated_at", null: false
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["role"], name: "index_users_on_role"
-    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+    t.index [ "confirmation_token" ], name: "index_users_on_confirmation_token", unique: true
+    t.index [ "email" ], name: "index_users_on_email", unique: true
+    t.index [ "reset_password_token" ], name: "index_users_on_reset_password_token", unique: true
+    t.index [ "role" ], name: "index_users_on_role"
+    t.index [ "unlock_token" ], name: "index_users_on_unlock_token", unique: true
   end
 
   create_table "versions", force: :cascade do |t|
@@ -88,7 +88,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_06_043552) do
     t.text "object"
     t.text "object_changes"
     t.string "whodunnit"
-    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+    t.index [ "item_type", "item_id" ], name: "index_versions_on_item_type_and_item_id"
   end
 
   add_foreign_key "player_guardians", "users", column: "guardian_id"
