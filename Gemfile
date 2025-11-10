@@ -69,7 +69,7 @@ group :test do
   gem "timecop", "~> 0.9"
 end
 
-gem "inertia_rails", "~> 3.11"
+gem "inertia_rails", "~> 3.12"
 
 gem "vite_rails", "~> 3.0"
 
