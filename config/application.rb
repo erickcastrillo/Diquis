@@ -44,6 +44,9 @@ module Diquis
           autoloader.collapse(path) if File.directory?(path)
         end
       end
+
+      # Ignore example files in app/lib during autoloading
+      autoloader.ignore(Rails.root.join("app/lib/examples"))
     end
 
     # Add custom middleware for OpenTelemetry
