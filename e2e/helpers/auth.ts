@@ -77,9 +77,7 @@ export async function openProfileMenu(page: Page) {
         if (!(await profileButton.isVisible())) {
           return false;
         }
-        await profileButton.click({
-          force: true,
-        });
+        await profileButton.click();
         return await signOutLink.isVisible();
       },
       {
@@ -97,15 +95,20 @@ export async function logout(page: Page) {
     timeout: 15000,
   });
 
-  // Get CSRF token from meta tag
-  const csrfToken = await page.locator('meta[name="csrf-token"]').getAttribute('content');
+  // Use page.evaluate to get the CSRF token directly from the DOM.
+  // This can be more reliable than using a locator for elements in the <head>.
+  const csrfToken = await page.evaluate(() => {
+    const tokenElement = document.querySelector('meta[name="csrf-token"]');
+    return tokenElement ? tokenElement.getAttribute("content") : null;
+  });
 
   if (!csrfToken) {
-    throw new Error("CSRF token not found on the page.");
+    throw new Error(
+      "CSRF token not found on the page using page.evaluate."
+    );
   }
 
   // Send a POST request to the logout path with _method set to 'delete'
-  // This bypasses the Inertia Link component and directly hits the Rails backend
   await page.request.post("/users/sign_out", {
     form: {
       _method: "delete",
