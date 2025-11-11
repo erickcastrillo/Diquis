@@ -47,6 +47,10 @@ module Diquis
 
       # Ignore example files in app/lib during autoloading
       autoloader.ignore(Rails.root.join("app/lib/examples"))
+
+      # Ignore all spec directories within app/slices
+      slice_spec_dirs = Dir.glob(Rails.root.join("app/slices/*/spec"))
+      autoloader.ignore(slice_spec_dirs)
     end
 
     # Add custom middleware for OpenTelemetry
