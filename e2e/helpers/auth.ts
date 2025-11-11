@@ -95,8 +95,13 @@ export async function logout(page: Page) {
     timeout: 15000,
   });
 
-  // Use page.evaluate to get the CSRF token directly from the DOM.
-  // This can be more reliable than using a locator for elements in the <head>.
+  // Wait for the network to be idle, ensuring all scripts and assets are loaded
+  await page.waitForLoadState("networkidle");
+
+  // Wait for the CSRF token meta tag to be attached to the DOM
+  await page.waitForSelector('meta[name="csrf-token"]', { state: 'attached', timeout: 10000 });
+
+  // Use page.evaluate to get the CSRF token directly from the DOM
   const csrfToken = await page.evaluate(() => {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     return tokenElement ? tokenElement.getAttribute("content") : null;
