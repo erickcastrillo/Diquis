@@ -1,33 +1,31 @@
 module Football
-  module Jobs
-    class PlayerStatsJob < ApplicationJob
-      queue_as :reports
+  class PlayerStatsJob < ApplicationJob
+    queue_as :reports
 
-      # Retry configuration
-      retry_on StandardError, wait: :exponentially_longer, attempts: 3
-      discard_on ActiveJob::DeserializationError
+    # Retry configuration
+    retry_on StandardError, wait: :exponentially_longer, attempts: 3
+    discard_on ActiveJob::DeserializationError
 
-      def perform(*args)
-        Rails.logger.info "Starting Football::Jobs::PlayerStatsJob with args: #{args.inspect}"
+    def perform(*args)
+      Rails.logger.info "Starting Football::PlayerStatsJob with args: #{args.inspect}"
 
-        # TODO: Implement your job logic here
-        # Example:
-        # process_data(args.first) if args.any?
-
-        Rails.logger.info "Completed Football::Jobs::PlayerStatsJob successfully"
-      rescue => error
-        Rails.logger.error "Error in Football::Jobs::PlayerStatsJob: #{error.message}"
-        Rails.logger.error error.backtrace.join("\n")
-        raise # Re-raise to trigger retry mechanism
-      end
-
-      private
-
-      # TODO: Add your private methods here
+      # TODO: Implement your job logic here
       # Example:
-      # def process_data(data)
-      #   # Your processing logic
-      # end
+      # process_data(args.first) if args.any?
+
+      Rails.logger.info "Completed Football::PlayerStatsJob successfully"
+    rescue => error
+      Rails.logger.error "Error in Football::PlayerStatsJob: #{error.message}"
+      Rails.logger.error error.backtrace.join("\n")
+      raise # Re-raise to trigger retry mechanism
     end
+
+    private
+
+    # TODO: Add your private methods here
+    # Example:
+    # def process_data(data)
+    #   # Your processing logic
+    # end
   end
 end

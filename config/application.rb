@@ -33,25 +33,23 @@ module Diquis
     # No need to manually add slice directories - Zeitwerk handles them correctly.
     # However, we need to tell Zeitwerk to collapse conventional directories
     # within each slice to avoid extra module nesting (e.g., UserManagement::Controllers::...).
-    config.after_initialize do
-      autoloader = Rails.autoloaders.main
-      slices_glob = Rails.root.join("app", "slices", "*")
-      slice_dirs = Dir.glob(slices_glob).select { |d| File.directory?(d) }
+    # Configure Zeitwerk autoloader.
+    # This is the correct place to configure the autoloader, as it runs early
+    # in the initialization process.
 
-      slice_dirs.each do |slice_dir|
-        %w[controllers jobs mailers services policies serializers].each do |dir|
-          path = File.join(slice_dir, dir)
-          autoloader.collapse(path) if File.directory?(path)
-        end
-      end
+    # 1. Ignore directories that should not be autoloaded/eager-loaded.
+    # - `app/lib/examples`: Contains example code not used by the application.
+    # - `app/slices/*/spec`: Contains tests that are loaded by RSpec, not the application.
+    Rails.autoloaders.main.ignore(Rails.root.join("app/lib/examples"))
+    Rails.autoloaders.main.ignore(Dir.glob(Rails.root.join("app/slices/*/spec")))
 
-      # Ignore example files in app/lib during autoloading
-      autoloader.ignore(Rails.root.join("app/lib/examples"))
+    # 2. Collapse conventional directories within slices.
+    # This prevents Zeitwerk from creating unnecessary namespaces.
+    # For example, `app/slices/user_management/controllers/users_controller.rb`
+    # will be loaded as `UserManagement::UsersController` instead of
+    # `UserManagement::Controllers::UsersController`.
+    Rails.autoloaders.main.collapse(Dir.glob(Rails.root.join("app/slices/*/{controllers,jobs,mailers,services,policies,serializers}")))
 
-      # Ignore all spec directories within app/slices
-      slice_spec_dirs = Dir.glob(Rails.root.join("app/slices/*/spec"))
-      autoloader.ignore(slice_spec_dirs)
-    end
 
     # Add custom middleware for OpenTelemetry
     if ENV["OTEL_ENABLED"] == "true"

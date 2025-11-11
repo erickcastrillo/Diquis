@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   scope "/admin" do
     # User Management slice
     namespace :user_management, path: nil do
-      resources :users, module: :controllers
+      resources :users
     end
 
     # Future admin resources can be added here:
