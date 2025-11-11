@@ -91,6 +91,9 @@ export async function openProfileMenu(page: Page) {
 }
 
 export async function logout(page: Page) {
+  // Ensure we are on an authenticated page before trying to log out
+  await page.waitForURL(/\/app\//, { timeout: 15000 });
+
   // Get CSRF token from meta tag
   const csrfToken = await page.locator('meta[name="csrf-token"]').getAttribute('content');
 
