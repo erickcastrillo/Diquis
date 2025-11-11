@@ -76,7 +76,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'bin/rails server -e test -p 3000',
+    command: 'bin/rails db:seed RAILS_ENV=test && bin/rails server -e test -p 3000',
     port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
