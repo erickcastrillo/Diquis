@@ -164,7 +164,7 @@ const UsersNewPage: React.FC<Props> = ({
               <div className="divider"></div>
 
               {/* Profile Information Section */}
-              <div className="mb-6">
+              <div className="mb-6 mt-4">
                 <h3 className="text-lg font-semibold mb-4">
                   {t("user_management.users.form.sections.profile_info")}
                 </h3>
@@ -261,7 +261,7 @@ const UsersNewPage: React.FC<Props> = ({
               <div className="divider"></div>
 
               {/* Password Section */}
-              <div className="mb-6">
+              <div className="mb-6 mt-4">
                 <h3 className="text-lg font-semibold mb-4">
                   {t("user_management.users.form.sections.password")}
                 </h3>
@@ -293,13 +293,15 @@ const UsersNewPage: React.FC<Props> = ({
                         </span>
                       </label>
                     )}
-                    <label className="label">
-                      <span className="label-text-alt text-base-content/70">
-                        {t("user_management.users.form.minimum_chars", {
-                          count: 12,
-                        })}
-                      </span>
-                    </label>
+                    <div className="mt-1">
+                      <label className="label">
+                        <span className="label-text-alt text-base-content/70 pt-1">
+                          {t("user_management.users.form.minimum_chars", {
+                            count: 12,
+                          })}
+                        </span>
+                      </label>
+                    </div>
                   </div>
 
                   {/* Password Confirmation */}

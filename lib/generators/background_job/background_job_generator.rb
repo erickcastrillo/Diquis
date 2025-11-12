@@ -1,3 +1,5 @@
+require "rails/generators"
+
 class BackgroundJobGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 

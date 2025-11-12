@@ -1,3 +1,4 @@
+import Pagination from "../../../components/ui/Pagination";
 import { Head, Link } from "@inertiajs/react";
 import React, { useState } from "react";
 import FlyonUILayout from "../../../components/layout/FlyonUILayout";
@@ -381,44 +382,14 @@ const UsersIndexPage: React.FC<Props> = ({
               <span className="font-medium">{filteredUsers.length}</span>{" "}
               {t("user_management.users.index.users")}
             </div>
-            <div className="flex items-center space-x-1">
-              <button
-                type="button"
-                className="btn btn-text btn-circle btn-sm"
-                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
-              >
-                <span className="icon-[tabler--chevrons-left] size-4.5 rtl:rotate-180"></span>
-                <span className="sr-only">{t("common.previous")}</span>
-              </button>
-              <div className="flex items-center space-x-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      type="button"
-                      className={`btn btn-sm ${
-                        page === currentPage ? "btn-primary" : "btn-text"
-                      }`}
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
-              </div>
-              <button
-                type="button"
-                className="btn btn-text btn-circle btn-sm"
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                }
-                disabled={currentPage === totalPages}
-              >
-                <span className="sr-only">{t("common.next")}</span>
-                <span className="icon-[tabler--chevrons-right] size-4.5 rtl:rotate-180"></span>
-              </button>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              t={t}
+              totalCount={filteredUsers.length}
+              pageSize={itemsPerPage}
+            />
           </div>
         </div>
       </div>

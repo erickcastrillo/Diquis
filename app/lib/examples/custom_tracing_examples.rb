@@ -202,15 +202,21 @@ module Examples
   class ReportGenerator
     extend OpenTelemetryHelper::ClassMethods
 
-    # Simple auto-trace
-    trace_method :generate_monthly_report
     def generate_monthly_report(academy_id, month)
       # Automatically creates a span named "ReportGenerator#generate_monthly_report"
       academy = Academy.find(academy_id)
       # ... report generation logic ...
       "Report for #{academy.name} - #{month}"
     end
+    # Simple auto-trace
+    trace_method :generate_monthly_report
 
+    def generate_player_report(player_id, format)
+      # Automatically traced with custom attributes
+      player = Player.find(player_id)
+      # ... report generation logic ...
+      "Player report for #{player.name}"
+    end
     # Auto-trace with custom attributes
     trace_method :generate_player_report, attributes: ->(player_id, format) {
       {
@@ -219,12 +225,6 @@ module Examples
         "report.type" => "player_stats"
       }
     }
-    def generate_player_report(player_id, format)
-      # Automatically traced with custom attributes
-      player = Player.find(player_id)
-      # ... report generation logic ...
-      "Player report for #{player.name}"
-    end
   end
 
   # Example 6: Track API calls to external services
