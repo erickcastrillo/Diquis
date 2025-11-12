@@ -101,7 +101,7 @@ export async function logout(page: Page) {
   // Wait for the CSRF token meta tag to be attached to the DOM
   await page.waitForSelector('meta[name="csrf-token"]', { state: 'attached', timeout: 10000 });
 
-  // Use page.evaluate to get the CSRF token directly from the DOM
+  // Use page.evaluate to get the CSRF token directly from the DOM.
   const csrfToken = await page.evaluate(() => {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     return tokenElement ? tokenElement.getAttribute("content") : null;
