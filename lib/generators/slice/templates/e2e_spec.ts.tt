@@ -1,0 +1,40 @@
+import { expect, test } from "@playwright/test";
+import { login } from "../../helpers/auth";
+
+test.describe("<%= model_name.pluralize %> Slice", () => {
+  test.beforeEach(async ({ page }) => {
+    await login(page, "super_admin");
+  });
+
+  test("can view the index page", async ({ page }) => {
+    await page.goto("/admin/<%= plural_name %>");
+    await expect(page.locator("h1:has-text('<%= model_name.pluralize %>')")).toBeVisible();
+  });
+
+  test("can navigate to the new page", async ({ page }) => {
+    await page.goto("/admin/<%= plural_name %>");
+    await page.click("a:has-text('Create <%= model_name %>')");
+    await page.waitForURL(/\/admin\/<%= plural_name %>\/new/);
+    await expect(page.locator("h1:has-text('New <%= model_name %>')")).toBeVisible();
+  });
+
+  test("can create a new <%= singular_name %>", async ({ page }) => {
+    await page.goto("/admin/<%= plural_name %>/new");
+
+    // Fill out the form
+    <% attributes.each do |attr| -%>
+    await page.fill('input[name="<%= attr[:name] %>"]', "Test <%= attr[:name] %>");
+    <% end -%>
+
+    // Submit the form
+    await page.click('button[type="submit"]');
+
+    // Wait for redirect to the show page
+    await page.waitForURL(/\/admin\/<%= plural_name %>\/[a-f0-9-]+/);
+
+    // Check that the new data is displayed
+    <% attributes.each do |attr| -%>
+    await expect(page.locator("text=Test <%= attr[:name] %>")).toBeVisible();
+    <% end -%>
+  });
+});

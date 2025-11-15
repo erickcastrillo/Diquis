@@ -1,5 +1,6 @@
 import { Head, Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, Fragment } from "react";
+import { useTranslations } from "../../lib/i18n";
 
 interface Props {
   reset_password_token: string;
@@ -10,10 +11,13 @@ export default function ResetPassword({
   reset_password_token,
   errors = {},
 }: Props) {
+  const { t } = useTranslations();
   const { data, setData, put, processing } = useForm({
-    reset_password_token: reset_password_token,
-    password: "",
-    password_confirmation: "",
+    user: {
+      reset_password_token: reset_password_token,
+      password: "",
+      password_confirmation: "",
+    },
   });
 
   const submit: FormEventHandler = (e) => {
@@ -26,20 +30,19 @@ export default function ResetPassword({
 
   return (
     <Fragment>
-      <Head title="Reset Password" />
+      <Head title={t("auth.reset_password.title")} />
 
       <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
         <div className="w-full max-w-md">
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold">Reset Password</h1>
+                <h1 className="text-3xl font-bold">{t("auth.reset_password.title")}</h1>
                 <p className="text-base-content/60 mt-2">
-                  Enter your new password below
+                  {t("auth.reset_password.subtitle")}
                 </p>
               </div>
 
-              {/* Display global errors */}
               {errors.base && errors.base.length > 0 && (
                 <div className="alert alert-error mb-4">
                   <svg
@@ -64,20 +67,19 @@ export default function ResetPassword({
               )}
 
               <form onSubmit={submit} className="space-y-4">
-                {/* Password Field */}
                 <div className="form-control">
                   <label htmlFor="password" className="label">
-                    <span className="label-text">New Password</span>
+                    <span className="label-text">{t("auth.reset_password.password")}</span>
                   </label>
                   <input
                     id="password"
                     type="password"
-                    value={data.password}
-                    onChange={(e) => setData("password", e.target.value)}
+                    value={data.user.password}
+                    onChange={(e) => setData("user", { ...data.user, password: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("password") ? "input-error" : ""
                     }`}
-                    placeholder="Enter new password"
+                    placeholder={t("auth.placeholders.password")}
                     required
                     autoFocus
                   />
@@ -90,27 +92,24 @@ export default function ResetPassword({
                   )}
                   <label className="label">
                     <span className="label-text-alt text-base-content/60">
-                      Minimum 6 characters
+                      {t("auth.reset_password.password_hint")}
                     </span>
                   </label>
                 </div>
 
-                {/* Password Confirmation Field */}
                 <div className="form-control">
                   <label htmlFor="password_confirmation" className="label">
-                    <span className="label-text">Confirm New Password</span>
+                    <span className="label-text">{t("auth.reset_password.password_confirmation")}</span>
                   </label>
                   <input
                     id="password_confirmation"
                     type="password"
-                    value={data.password_confirmation}
-                    onChange={(e) =>
-                      setData("password_confirmation", e.target.value)
-                    }
+                    value={data.user.password_confirmation}
+                    onChange={(e) => setData("user", { ...data.user, password_confirmation: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("password_confirmation") ? "input-error" : ""
                     }`}
-                    placeholder="Confirm new password"
+                    placeholder={t("auth.reset_password.password_confirmation")}
                     required
                   />
                   {hasError("password_confirmation") && (
@@ -122,7 +121,6 @@ export default function ResetPassword({
                   )}
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={processing}
@@ -131,16 +129,15 @@ export default function ResetPassword({
                   {processing && (
                     <span className="loading loading-spinner"></span>
                   )}
-                  {processing ? "Resetting password..." : "Reset Password"}
+                  {processing ? t("auth.reset_password.submitting") : t("auth.reset_password.submit")}
                 </button>
               </form>
 
-              {/* Helper Links */}
-              <div className="divider">OR</div>
+              <div className="divider">{t("common.or")}</div>
 
               <div className="text-center">
                 <Link href="/users/sign_in" className="link link-primary">
-                  Back to Sign In
+                  {t("auth.reset_password.back_to_login")}
                 </Link>
               </div>
             </div>

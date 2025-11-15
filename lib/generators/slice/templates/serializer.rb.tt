@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+<% if module_name %>module <%= module_name %><% end %>
+  class <%= model_name %>Serializer
+    def initialize(<%= singular_name %>, policy: nil)
+      @<%= singular_name %> = <%= singular_name %>
+      @policy = policy
+    end
+
+    def as_json
+      return nil unless @<%= singular_name %>
+
+      data = {
+        id: @<%= singular_name %>.id,
+        <%- attributes.each do |attr| -%>
+        <%= attr[:name] %>: @<%= singular_name %>.<%= attr[:name] %>,
+        <%- end -%>
+        created_at: @<%= singular_name %>.created_at,
+        updated_at: @<%= singular_name %>.updated_at
+      }
+
+      if @policy
+        data[:can_edit] = @policy.update?
+        data[:can_delete] = @policy.destroy?
+      end
+
+      data
+    end
+  end
+<% if module_name %>end<% end %>

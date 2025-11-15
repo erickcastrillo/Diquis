@@ -1,0 +1,80 @@
+import { Head, Link, useForm } from "@inertiajs/react";
+import React from "react";
+import FlyonUILayout from "../../../components/layout/FlyonUILayout";
+import { useTranslations } from "../../../lib/i18n";
+import { <%= model_name %> } from "./types";
+
+interface Props {
+  <%= singular_name %>: <%= model_name %>;
+  errors: { [key: string]: string[] };
+}
+
+const <%= model_name.pluralize %>EditPage: React.FC<Props> = ({ <%= singular_name %>, errors: serverErrors }) => {
+  const { t } = useTranslations();
+  const { data, setData, patch, processing, errors: clientErrors } = useForm({
+    <% attributes.each do |attr| -%>
+    <%= attr[:name] %>: <%= singular_name %>.<%= attr[:name] %> || "",
+    <% end -%>
+  });
+
+  const errors = { ...serverErrors, ...clientErrors };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    patch(`/admin/<%= plural_name %>/${<%= singular_name %>.id}`);
+  };
+
+  return (
+    <FlyonUILayout>
+      <Head title={`${t(".title")} | Diquis`} />
+
+      <div className="container mx-auto p-6">
+        <div className="mb-6">
+          <Link href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}`} className="btn btn-ghost mb-4">
+            {t("common.back")}
+          </Link>
+          <h1 className="text-3xl font-bold">{t(".title")}</h1>
+          <p className="text-base-content/70 mt-1">{t(".subtitle")}</p>
+        </div>
+
+        <div className="card max-w-3xl">
+          <div className="card-body">
+            <form onSubmit={handleSubmit}>
+              <% attributes.each do |attr| -%>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">{t("fields.<%= attr[:name] %>")}</span>
+                </label>
+                <input
+                  type="text"
+                  className={`input input-bordered ${errors.<%= attr[:name] %> ? "input-error" : ""}`}
+                  value={data.<%= attr[:name] %>}
+                  onChange={(e) => setData("<%= attr[:name] %>", e.target.value)}
+                />
+                {errors.<%= attr[:name] %> && (
+                  <label className="label">
+                    <span className="label-text-alt text-error">
+                      {errors.<%= attr[:name] %>[0]}
+                    </span>
+                  </label>
+                )}
+              </div>
+              <% end -%>
+
+              <div className="flex justify-end gap-2 mt-6">
+                <Link href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}`} className="btn btn-ghost">
+                  {t("common.cancel")}
+                </Link>
+                <button type="submit" className="btn btn-primary" disabled={processing}>
+                  {processing ? t("common.saving") : t("common.save")}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </FlyonUILayout>
+  );
+};
+
+export default <%= model_name.pluralize %>EditPage;

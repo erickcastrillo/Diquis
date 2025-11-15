@@ -14,11 +14,12 @@ class Users::PasswordsController < Devise::PasswordsController
     yield resource if block_given?
 
     if successfully_sent?(resource)
-      redirect_to new_user_session_path,
-        inertia: { notice: "Password reset instructions sent to your email" }
+      set_flash_message!(:notice, :send_instructions)
+      redirect_to new_user_session_path
     else
-      redirect_to new_user_password_path,
-        inertia: { errors: resource.errors.messages }
+      render inertia: "Auth/ForgotPassword", props: {
+        errors: resource.errors.messages
+      }, status: :unprocessable_entity
     end
   end
 
@@ -47,8 +48,10 @@ class Users::PasswordsController < Devise::PasswordsController
       redirect_to after_resetting_password_path_for(resource)
     else
       set_minimum_password_length
-      redirect_to edit_user_password_path(reset_password_token: params[:user][:reset_password_token]),
-        inertia: { errors: resource.errors.messages }
+      render inertia: "Auth/ResetPassword", props: {
+        reset_password_token: params[:user][:reset_password_token],
+        errors: resource.errors.messages
+      }, status: :unprocessable_entity
     end
   end
 

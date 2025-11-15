@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  skip_before_action :verify_authenticity_token, only: :create
-
   # Render login page with Inertia
   def new
     render inertia: "Auth/Login", props: {
@@ -10,34 +8,18 @@ class Users::SessionsController < Devise::SessionsController
     }
   end
 
-  # Handle login submission
   def create
-    # Authenticate the user
-    self.resource = User.find_by(email: params[:email])
+    self.resource = warden.authenticate(auth_options)
 
-    if resource && resource.valid_password?(params[:password])
-      # Check if account is confirmed, active, and not locked
-      if resource.active_for_authentication?
-        sign_in(resource_name, resource)
-        set_flash_message!(:notice, :signed_in)
-        redirect_to after_sign_in_path_for(resource)
-      else
-        # Account is inactive
-        redirect_to new_user_session_path,
-          inertia: {
-            errors: {
-              base: [ resource.inactive_message.to_s.humanize ]
-            }
-          }
-      end
+    if resource
+      set_flash_message!(:notice, :signed_in)
+      sign_in(resource_name, resource)
+      yield resource if block_given?
+      redirect_to after_sign_in_path_for(resource)
     else
-      # Invalid credentials
-      redirect_to new_user_session_path,
-        inertia: {
-          errors: {
-            base: [ "Invalid email or password" ]
-          }
-        }
+      render inertia: "Auth/Login", props: {
+        errors: { base: [t('devise.failure.invalid', authentication_keys: 'Email')] }
+      }, status: :unprocessable_entity
     end
   end
 

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     # User Management slice
     namespace :user_management, path: nil do
       resources :users
+      resources :academies
     end
 
     # Future admin resources can be added here:
@@ -41,4 +42,17 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+
+  post "/tenants/switch/:academy_id", to: "tenants#switch", as: :switch_tenant
+
+  if Rails.env.test?
+    namespace :test_helpers do
+      resources :users, only: [ :show ] do
+        collection do
+          delete :cleanup
+        end
+      end
+      resources :academies, only: [ :create ]
+    end
+  end
 end

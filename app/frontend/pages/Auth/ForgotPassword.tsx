@@ -1,13 +1,17 @@
 import { Head, Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, Fragment } from "react";
+import { useTranslations } from "../../lib/i18n";
 
 interface Props {
   errors?: Record<string, string[]>;
 }
 
 export default function ForgotPassword({ errors = {} }: Props) {
+  const { t } = useTranslations();
   const { data, setData, post, processing } = useForm({
-    email: "",
+    user: {
+      email: "",
+    },
   });
 
   const submit: FormEventHandler = (e) => {
@@ -20,25 +24,23 @@ export default function ForgotPassword({ errors = {} }: Props) {
 
   return (
     <Fragment>
-      <Head title="Forgot Password" />
+      <Head title={t("auth.forgot_password.title")} />
 
       <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
         <div className="w-full max-w-md">
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold">Forgot Password?</h1>
+                <h1 className="text-3xl font-bold">{t("auth.forgot_password.title")}</h1>
                 <p className="text-base-content/60 mt-2">
-                  No worries! Enter your email and we'll send you reset
-                  instructions.
+                  {t("auth.forgot_password.subtitle")}
                 </p>
               </div>
 
-              {/* Display global errors */}
               {errors.base && errors.base.length > 0 && (
                 <div className="alert alert-error mb-4">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns="http://www.w3.org="http://www.w3.org/2000/svg"
                     className="stroke-current shrink-0 h-6 w-6"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -59,20 +61,19 @@ export default function ForgotPassword({ errors = {} }: Props) {
               )}
 
               <form onSubmit={submit} className="space-y-4">
-                {/* Email Field */}
                 <div className="form-control">
                   <label htmlFor="email" className="label">
-                    <span className="label-text">Email Address</span>
+                    <span className="label-text">{t("auth.fields.email")}</span>
                   </label>
                   <input
                     id="email"
                     type="email"
-                    value={data.email}
-                    onChange={(e) => setData("email", e.target.value)}
+                    value={data.user.email}
+                    onChange={(e) => setData("user", { ...data.user, email: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("email") ? "input-error" : ""
                     }`}
-                    placeholder="Enter your email"
+                    placeholder={t("auth.placeholders.email")}
                     required
                     autoFocus
                   />
@@ -85,7 +86,6 @@ export default function ForgotPassword({ errors = {} }: Props) {
                   )}
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={processing}
@@ -95,18 +95,17 @@ export default function ForgotPassword({ errors = {} }: Props) {
                     <span className="loading loading-spinner"></span>
                   )}
                   {processing
-                    ? "Sending instructions..."
-                    : "Send Reset Instructions"}
+                    ? t("auth.forgot_password.submitting")
+                    : t("auth.forgot_password.submit")}
                 </button>
               </form>
 
-              {/* Helper Links */}
-              <div className="divider">OR</div>
+              <div className="divider">{t("common.or")}</div>
 
               <div className="text-center space-y-2">
                 <div>
                   <Link href="/users/sign_in" className="link link-primary">
-                    Back to Sign In
+                    {t("auth.forgot_password.back_to_login")}
                   </Link>
                 </div>
                 <div>
@@ -114,7 +113,7 @@ export default function ForgotPassword({ errors = {} }: Props) {
                     href="/users/sign_up"
                     className="link link-neutral text-sm"
                   >
-                    Don't have an account? Sign up
+                    {t("auth.forgot_password.no_account")}
                   </Link>
                 </div>
               </div>

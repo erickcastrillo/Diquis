@@ -501,14 +501,18 @@ en:
 
   # Authentication translations
   auth:
-    login:
-      title: "Sign In"
-      subtitle: "Welcome back to Diquis"
+    fields:
       email: "Email Address"
       password: "Password"
       remember_me: "Remember me"
-      submit: "Sign In"
-      submitting: "Signing in..."
+    placeholders:
+      email: "Enter your email"
+      password: "Enter your password"
+    login:
+      title: "Sign In"
+      subtitle: "Welcome back to Diquis"
+      signing_in: "Signing in..."
+      sign_in_button: "Sign In"
       forgot_password: "Forgot your password?"
       no_account: "Don't have an account? Sign up"
       no_confirmation: "Didn't receive confirmation instructions?"
@@ -548,6 +552,13 @@ en:
       subtitle: "Didn't receive confirmation instructions? Enter your email below."
       email: "Email Address"
       submit: "Resend Confirmation Instructions"
+      submitting: "Sending..."
+      back_to_login: "Back to Sign In"
+      no_account: "Don't have an account? Sign up"
+    unlock:
+      title: "Resend Unlock Instructions"
+      subtitle: "Didn't receive unlock instructions? Enter your email below."
+      submit: "Resend Unlock Instructions"
       submitting: "Sending..."
       back_to_login: "Back to Sign In"
       no_account: "Don't have an account? Sign up"

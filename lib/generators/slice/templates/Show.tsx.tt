@@ -1,0 +1,79 @@
+import { Head, Link } from "@inertiajs/react";
+import React from "react";
+import FlyonUILayout from "../../../components/layout/FlyonUILayout";
+import { useTranslations } from "../../../lib/i18n";
+import { <%= model_name %> } from "./types";
+
+interface Props {
+  <%= singular_name %>: <%= model_name %>;
+  can_edit: boolean;
+  can_delete: boolean;
+}
+
+const <%= model_name.pluralize %>ShowPage: React.FC<Props> = ({ <%= singular_name %>, can_edit, can_delete }) => {
+  const { t } = useTranslations();
+
+  return (
+    <FlyonUILayout>
+      <Head title={`${<%= singular_name %>.<%= attributes.first ? attributes.first[:name] : 'id' %>} | Diquis`} />
+
+      <div className="container mx-auto p-6">
+        <div className="mb-6">
+          <Link href="/admin/<%= plural_name %>" className="btn btn-ghost mb-4">
+            {t("common.back")}
+          </Link>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold">{<%= singular_name %>.<%= attributes.first ? attributes.first[:name] : 'id' %>}</h1>
+              <p className="text-base-content/70 mt-1">
+                {t(".subtitle", { id: <%= singular_name %>.id.substring(0, 8) })}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              {can_edit && (
+                <Link href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}/edit`} className="btn btn-primary">
+                  {t("common.edit")}
+                </Link>
+              )}
+              {can_delete && (
+                <Link
+                  href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}`}
+                  method="delete"
+                  as="button"
+                  className="btn btn-error btn-outline"
+                  onBefore={() => confirm(t("common.confirm_delete", { item: "<%= singular_name %>" }))}
+                >
+                  {t("common.delete")}
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="card-body">
+            <h2 className="card-title">{t(".details")}</h2>
+            <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <% attributes.each do |attr| -%>
+              <div>
+                <dt className="font-medium text-base-content/70">{t("fields.<%= attr[:name] %>")}</dt>
+                <dd>{<%= singular_name %>.<%= attr[:name] %>}</dd>
+              </div>
+              <% end -%>
+              <div>
+                <dt className="font-medium text-base-content/70">{t("fields.created_at")}</dt>
+                <dd>{new Date(<%= singular_name %>.created_at).toLocaleString()}</dd>
+              </div>
+              <div>
+                <dt className="font-medium text-base-content/70">{t("fields.updated_at")}</dt>
+                <dd>{new Date(<%= singular_name %>.updated_at).toLocaleString()}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </FlyonUILayout>
+  );
+};
+
+export default <%= model_name.pluralize %>ShowPage;

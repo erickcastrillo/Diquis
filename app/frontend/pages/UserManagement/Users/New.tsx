@@ -15,12 +15,14 @@ interface User {
 
 interface Props {
   user: Partial<User>;
+  academies: { id: string; name: string }[];
   available_roles: string[];
   errors: { [key: string]: string[] };
 }
 
 const UsersNewPage: React.FC<Props> = ({
   available_roles,
+  academies,
   errors: serverErrors,
 }) => {
   const { t } = useTranslations();
@@ -36,6 +38,7 @@ const UsersNewPage: React.FC<Props> = ({
     last_name: "",
     phone: "",
     role: available_roles[0] || "player",
+    academy_id: "",
     password: "",
     password_confirmation: "",
   });
@@ -129,7 +132,7 @@ const UsersNewPage: React.FC<Props> = ({
                   </div>
 
                   {/* Role */}
-                  <div className="form-control md:col-span-2">
+                  <div className="form-control">
                     <label className="label">
                       <span className="label-text">
                         {t("user_management.users.fields.role")}{" "}
@@ -154,6 +157,37 @@ const UsersNewPage: React.FC<Props> = ({
                       <label className="label">
                         <span className="label-text-alt text-error">
                           {errors.role[0]}
+                        </span>
+                      </label>
+                    )}
+                  </div>
+
+                  {/* Academy */}
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">
+                        Academy <span className="text-error">*</span>
+                      </span>
+                    </label>
+                    <select
+                      className={`select select-bordered ${
+                        errors.academy_id ? "select-error" : ""
+                      }`}
+                      value={data.academy_id}
+                      onChange={(e) => setData("academy_id", e.target.value)}
+                      required
+                    >
+                      <option value="">Select an academy</option>
+                      {academies.map((academy) => (
+                        <option key={academy.id} value={academy.id}>
+                          {academy.name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.academy_id && (
+                      <label className="label">
+                        <span className="label-text-alt text-error">
+                          {errors.academy_id[0]}
                         </span>
                       </label>
                     )}

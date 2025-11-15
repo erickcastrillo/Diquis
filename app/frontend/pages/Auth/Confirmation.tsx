@@ -1,13 +1,17 @@
 import { Head, Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, Fragment } from "react";
+import { useTranslations } from "../../lib/i18n";
 
 interface Props {
   errors?: Record<string, string[]>;
 }
 
 export default function Confirmation({ errors = {} }: Props) {
+  const { t } = useTranslations();
   const { data, setData, post, processing } = useForm({
-    email: "",
+    user: {
+      email: "",
+    },
   });
 
   const submit: FormEventHandler = (e) => {
@@ -20,21 +24,19 @@ export default function Confirmation({ errors = {} }: Props) {
 
   return (
     <Fragment>
-      <Head title="Resend Confirmation" />
+      <Head title={t("auth.confirmation.title")} />
 
       <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
         <div className="w-full max-w-md">
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold">Resend Confirmation</h1>
+                <h1 className="text-3xl font-bold">{t("auth.confirmation.title")}</h1>
                 <p className="text-base-content/60 mt-2">
-                  Didn't receive confirmation instructions? Enter your email
-                  below.
+                  {t("auth.confirmation.subtitle")}
                 </p>
               </div>
 
-              {/* Display global errors */}
               {errors.base && errors.base.length > 0 && (
                 <div className="alert alert-error mb-4">
                   <svg
@@ -59,20 +61,19 @@ export default function Confirmation({ errors = {} }: Props) {
               )}
 
               <form onSubmit={submit} className="space-y-4">
-                {/* Email Field */}
                 <div className="form-control">
                   <label htmlFor="email" className="label">
-                    <span className="label-text">Email Address</span>
+                    <span className="label-text">{t("auth.fields.email")}</span>
                   </label>
                   <input
                     id="email"
                     type="email"
-                    value={data.email}
-                    onChange={(e) => setData("email", e.target.value)}
+                    value={data.user.email}
+                    onChange={(e) => setData("user", { ...data.user, email: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("email") ? "input-error" : ""
                     }`}
-                    placeholder="Enter your email"
+                    placeholder={t("auth.placeholders.email")}
                     required
                     autoFocus
                   />
@@ -85,7 +86,6 @@ export default function Confirmation({ errors = {} }: Props) {
                   )}
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={processing}
@@ -95,18 +95,17 @@ export default function Confirmation({ errors = {} }: Props) {
                     <span className="loading loading-spinner"></span>
                   )}
                   {processing
-                    ? "Sending..."
-                    : "Resend Confirmation Instructions"}
+                    ? t("auth.confirmation.submitting")
+                    : t("auth.confirmation.submit")}
                 </button>
               </form>
 
-              {/* Helper Links */}
-              <div className="divider">OR</div>
+              <div className="divider">{t("common.or")}</div>
 
               <div className="text-center space-y-2">
                 <div>
                   <Link href="/users/sign_in" className="link link-primary">
-                    Back to Sign In
+                    {t("auth.confirmation.back_to_login")}
                   </Link>
                 </div>
                 <div>
@@ -114,7 +113,7 @@ export default function Confirmation({ errors = {} }: Props) {
                     href="/users/sign_up"
                     className="link link-neutral text-sm"
                   >
-                    Don't have an account? Sign up
+                    {t("auth.confirmation.no_account")}
                   </Link>
                 </div>
               </div>

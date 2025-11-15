@@ -6,8 +6,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     build_resource
+    @academies = Academy.all # Pass academies to the frontend
     render inertia: "Auth/Register", props: {
-      errors: flash[:alert] ? { base: [ flash[:alert] ] } : {}
+      errors: flash[:alert] ? { base: [ flash[:alert] ] } : {},
+      academies: @academies.as_json(only: %i[id name])
     }
   end
 
@@ -15,9 +17,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    resource.save
-    yield resource if block_given?
-    if resource.persisted?
+    if resource.save
+      yield resource if block_given?
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)
@@ -30,8 +31,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      redirect_to new_user_registration_path,
-        inertia: { errors: resource.errors.messages }
+      @academies = Academy.all # Re-pass academies on error
+      render inertia: "Auth/Register", props: {
+        errors: resource.errors.messages,
+        academies: @academies.as_json(only: %i[id name])
+      }, status: :unprocessable_entity
     end
   end
 
@@ -46,7 +50,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :role ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :role, :academy_id ])
   end
 
   # The path used after sign up.

@@ -1,9 +1,18 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import React from "react";
 import { useTranslations } from "../../../lib/i18n";
 
 const FlyonUISidebar: React.FC = () => {
   const { t } = useTranslations();
+  const { props } = usePage();
+  const { auth, tenancy } = props as unknown as {
+    auth: { user_role: string, can_manage_users: boolean },
+    tenancy: {
+      current_academy: { id: string, name: string } | null,
+      user_academies: { id: string, name: string }[]
+    }
+  };
+
   return (
     <aside
       id="layout-toggle"
@@ -50,7 +59,7 @@ const FlyonUISidebar: React.FC = () => {
                   </div>
                   <div className="text-left">
                     <div className="text-base-content text-sm font-semibold">
-                      {t("app.name")}
+                      {tenancy.current_academy?.name || "No Academy"}
                     </div>
                     <div className="text-base-content/50 text-xs">
                       {t("app.layout.sidebar.workspace")}
@@ -63,52 +72,40 @@ const FlyonUISidebar: React.FC = () => {
                 className="dropdown-menu dropdown-open:opacity-100 hidden w-full space-y-0.5"
                 role="menu"
               >
-                {/* Active Workspace */}
-                <li>
-                  <a
-                    href="#"
-                    className="dropdown-item bg-primary/10 flex items-center gap-3 px-3 py-2"
-                  >
-                    <div className="bg-primary flex size-10 items-center justify-center rounded-lg">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 32 32"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="m22.258 20.467-5.55-6.839a1 1 0 0 0-1.568.02l-5.023 6.521a1 1 0 0 1-.793.39H7.17a1 1 0 0 1-.78-1.626l8.748-10.919a1 1 0 0 1 1.556-.006l9.125 11.198a1 1 0 0 1-.775 1.631h-2.01a1 1 0 0 1-.776-.37m-5.59-1.484 2.59 2.953c.567.646.108 1.659-.751 1.659h-4.922a1 1 0 0 1-.785-1.62l2.331-2.953a1 1 0 0 1 1.537-.04"
-                          fill="white"
-                        />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-base-content text-sm font-semibold">
-                        {t("app.name")}
+                {tenancy.user_academies.map(academy => (
+                  <li key={academy.id}>
+                    <Link
+                      href={`/tenants/switch/${academy.id}`}
+                      method="post"
+                      as="button"
+                      className={`dropdown-item flex items-center gap-3 px-3 py-2 w-full text-left ${tenancy.current_academy?.id === academy.id ? 'bg-primary/10' : ''}`}
+                    >
+                      <div className="flex-1">
+                        <div className="text-base-content text-sm font-semibold">
+                          {academy.name}
+                        </div>
                       </div>
-                      <div className="text-base-content/50 text-xs">
-                        {t("app.layout.sidebar.workspace")}
-                      </div>
-                    </div>
-                    <span className="icon-[tabler--check] text-primary size-5"></span>
-                  </a>
-                </li>
+                      {tenancy.current_academy?.id === academy.id && (
+                        <span className="icon-[tabler--check] text-primary size-5"></span>
+                      )}
+                    </Link>
+                  </li>
+                ))}
 
                 {/* Add New Workspace */}
-                <li className="border-base-content/20 border-t pt-1">
-                  <a
-                    href="#"
-                    className="dropdown-item text-primary flex items-center gap-2 px-3 py-2"
-                  >
-                    <span className="icon-[tabler--plus] size-5"></span>
-                    <span className="text-sm font-semibold">
-                      {t("app.layout.sidebar.add_workspace")}
-                    </span>
-                  </a>
-                </li>
+                {auth.user_role === 'super_admin' && (
+                  <li className="border-base-content/20 border-t pt-1">
+                    <Link
+                      href="/admin/academies/new"
+                      className="dropdown-item text-primary flex items-center gap-2 px-3 py-2"
+                    >
+                      <span className="icon-[tabler--plus] size-5"></span>
+                      <span className="text-sm font-semibold">
+                        Add New Academy
+                      </span>
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -369,61 +366,74 @@ const FlyonUISidebar: React.FC = () => {
               </details>
 
               {/* Administration Section with Submenu */}
-              <details className="group">
-                <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
-                  <div className="flex items-center gap-3">
-                    <span className="icon-[tabler--shield-lock] size-5"></span>
-                    {t("app.layout.sidebar.administration")}
+              {auth.can_manage_users && (
+                <details className="group">
+                  <summary className="text-base-content hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium">
+                    <div className="flex items-center gap-3">
+                      <span className="icon-[tabler--shield-lock] size-5"></span>
+                      {t("app.layout.sidebar.administration")}
+                    </div>
+                    <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
+                  </summary>
+                  <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
+                    {/* Users & Roles */}
+                    <Link
+                      href="/admin/users"
+                      className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                    >
+                      <span className="icon-[tabler--user-shield] size-5"></span>
+                      {t("app.layout.sidebar.users_roles")}
+                    </Link>
+
+                    {/* Academy Management */}
+                    {auth.user_role === 'super_admin' && (
+                      <Link
+                        href="/admin/academies"
+                        className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                      >
+                        <span className="icon-[tabler--building-community] size-5"></span>
+                        Academy Management
+                      </Link>
+                    )}
+
+                    {/* Academy Settings */}
+                    <a
+                      href="#"
+                      className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                    >
+                      <span className="icon-[tabler--building] size-5"></span>
+                      {t("app.layout.sidebar.academy_settings")}
+                    </a>
+
+                    {/* Shared Resources */}
+                    <a
+                      href="#"
+                      className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                    >
+                      <span className="icon-[tabler--database] size-5"></span>
+                      {t("app.layout.sidebar.shared_resources")}
+                    </a>
+
+                    {/* Integrations */}
+                    <a
+                      href="#"
+                      className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                    >
+                      <span className="icon-[tabler--plug] size-5"></span>
+                      {t("app.layout.sidebar.integrations")}
+                    </a>
+
+                    {/* Settings */}
+                    <a
+                      href="#"
+                      className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
+                    >
+                      <span className="icon-[tabler--settings] size-5"></span>
+                      {t("app.layout.sidebar.settings")}
+                    </a>
                   </div>
-                  <span className="icon-[tabler--chevron-down] size-4 transition-transform group-open:rotate-180"></span>
-                </summary>
-                <div className="ml-2 mt-1 space-y-1 border-l-2 border-base-content/10 pl-4">
-                  {/* Users & Roles */}
-                  <Link
-                    href="/admin/users"
-                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-                  >
-                    <span className="icon-[tabler--user-shield] size-5"></span>
-                    {t("app.layout.sidebar.users_roles")}
-                  </Link>
-
-                  {/* Academy Settings */}
-                  <a
-                    href="#"
-                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-                  >
-                    <span className="icon-[tabler--building] size-5"></span>
-                    {t("app.layout.sidebar.academy_settings")}
-                  </a>
-
-                  {/* Shared Resources */}
-                  <a
-                    href="#"
-                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-                  >
-                    <span className="icon-[tabler--database] size-5"></span>
-                    {t("app.layout.sidebar.shared_resources")}
-                  </a>
-
-                  {/* Integrations */}
-                  <a
-                    href="#"
-                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-                  >
-                    <span className="icon-[tabler--plug] size-5"></span>
-                    {t("app.layout.sidebar.integrations")}
-                  </a>
-
-                  {/* Settings */}
-                  <a
-                    href="#"
-                    className="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-                  >
-                    <span className="icon-[tabler--settings] size-5"></span>
-                    {t("app.layout.sidebar.settings")}
-                  </a>
-                </div>
-              </details>
+                </details>
+              )}
             </div>
           </div>
 

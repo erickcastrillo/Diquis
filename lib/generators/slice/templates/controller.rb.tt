@@ -1,0 +1,124 @@
+# frozen_string_literal: true
+
+<% if module_name %>module <%= module_name %><% end %>
+  # Controller for managing <%= model_name.pluralize %>
+  class <%= model_name.pluralize %>Controller < ApplicationController
+    before_action :authenticate_user!
+    before_action :set_<%= singular_name %>, only: %i[show edit update destroy]
+
+    # GET /admin/<%= plural_name %>
+    def index
+      authorize <%= model_name %>
+      @<%= plural_name %> = policy_scope(<%= model_name %>).order(created_at: :desc)
+
+      render inertia: "<%= frontend_path %>/Index",
+             props: {
+               <%= plural_name %>: serialize_<%= plural_name %>(@<%= plural_name %>),
+               can_create: policy(<%= model_name %>).create?
+             }
+    end
+
+    # GET /admin/<%= plural_name %>/:id
+    def show
+      authorize @<%= singular_name %>
+
+      render inertia: "<%= frontend_path %>/Show",
+             props: {
+               <%= singular_name %>: serialize_<%= singular_name %>(@<%= singular_name %>),
+               can_edit: policy(@<%= singular_name %>).update?,
+               can_delete: policy(@<%= singular_name %>).destroy?
+             }
+    end
+
+    # GET /admin/<%= plural_name %>/new
+    def new
+      @<%= singular_name %> = <%= model_name %>.new
+      authorize @<%= singular_name %>
+
+      render inertia: "<%= frontend_path %>/New",
+             props: {
+               <%= singular_name %>: serialize_<%= singular_name %>(@<%= singular_name %>),
+               errors: {}
+             }
+    end
+
+    # POST /admin/<%= plural_name %>
+    def create
+      authorize <%= model_name %>
+      result = <%= model_name %>Service.new(current_user).create_<%= singular_name %>(<%= singular_name %>_params)
+
+      if result[:success]
+        redirect_to <%= route_helper %>_path(result[:<%= singular_name %>]),
+                    notice: t(".success")
+      else
+        @<%= singular_name %> = result[:<%= singular_name %>] || <%= model_name %>.new(<%= singular_name %>_params)
+        render inertia: "<%= frontend_path %>/New",
+               props: {
+                 <%= singular_name %>: serialize_<%= singular_name %>(@<%= singular_name %>),
+                 errors: result[:errors].to_hash
+               },
+               status: :unprocessable_entity
+      end
+    end
+
+    # GET /admin/<%= plural_name %>/:id/edit
+    def edit
+      authorize @<%= singular_name %>
+
+      render inertia: "<%= frontend_path %>/Edit",
+             props: {
+               <%= singular_name %>: serialize_<%= singular_name %>(@<%= singular_name %>),
+               errors: {}
+             }
+    end
+
+    # PATCH/PUT /admin/<%= plural_name %>/:id
+    def update
+      authorize @<%= singular_name %>
+      result = <%= model_name %>Service.new(current_user).update_<%= singular_name %>(@<%= singular_name %>, <%= singular_name %>_params)
+
+      if result[:success]
+        redirect_to <%= route_helper %>_path(result[:<%= singular_name %>]),
+                    notice: t(".success")
+      else
+        render inertia: "<%= frontend_path %>/Edit",
+               props: {
+                 <%= singular_name %>: serialize_<%= singular_name %>(@<%= singular_name %>),
+                 errors: result[:errors].to_hash
+               },
+               status: :unprocessable_entity
+      end
+    end
+
+    # DELETE /admin/<%= plural_name %>/:id
+    def destroy
+      authorize @<%= singular_name %>
+
+      if @<%= singular_name %>.destroy
+        redirect_to <%= plural_name %>_path,
+                    notice: t(".success")
+      else
+        redirect_to <%= route_helper %>_path(@<%= singular_name %>),
+                    alert: t(".error")
+      end
+    end
+
+    private
+
+    def set_<%= singular_name %>
+      @<%= singular_name %> = <%= model_name %>.find(params[:id])
+    end
+
+    def <%= singular_name %>_params
+      params.require(:<%= singular_name %>).permit(<%= attributes.map { |attr| ":#{attr[:name]}" }.join(", ") %>)
+    end
+
+    def serialize_<%= plural_name %>(<%= plural_name %>)
+      <%= plural_name %>.map { |<%= singular_name %>| serialize_<%= singular_name %>(<%= singular_name %>) }
+    end
+
+    def serialize_<%= singular_name %>(<%= singular_name %>)
+      <%= model_name %>Serializer.new(<%= singular_name %>, policy: policy(<%= singular_name %>)).as_json
+    end
+  end
+<% if module_name %>end<% end %>

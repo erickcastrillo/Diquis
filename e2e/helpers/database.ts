@@ -69,3 +69,29 @@ export function validateAuditTrail(
     }
   });
 }
+
+export interface Academy {
+  id: string;
+  name: string;
+  subdomain: string;
+  status: 'active' | 'inactive' | 'suspended';
+  created_at: string;
+  updated_at: string;
+}
+
+export async function createAcademy(request: APIRequestContext, name?: string): Promise<Academy> {
+  const academyName = name || `Test Academy ${Date.now()}`;
+  const response = await request.post('http://localhost:3000/test_helpers/academies', {
+    data: {
+      name: academyName,
+      subdomain: academyName.toLowerCase().replace(/\s+/g, '-'),
+      email: `${academyName.toLowerCase().replace(/\s+/g, '-')}@test.com`,
+      status: 'active',
+    },
+  });
+
+  if (!response.ok()) {
+    throw new Error(`Failed to create academy: ${await response.text()}`);
+  }
+  return await response.json();
+}

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Explicitly require the Academies::Academy model to ensure it's loaded before use in seeds
+require_relative '../app/slices/academy/academies/models/academy'
+
 # Diquis Application Seeds
 # This file creates sample data for development and demonstration purposes.
 # The data is idempotent - running seeds multiple times won't create duplicates.
@@ -31,17 +34,19 @@ unless Rails.env.production?
   end
 
   # Helper method to create or find user
-  def create_user(email:, password:, role:, first_name:, last_name:, phone: nil)
+  def create_user(email:, password:, role:, first_name:, last_name:, phone: nil, academy: nil)
     user = User.find_or_initialize_by(email: email)
     if user.new_record?
+      user.role = role # Assign role first so enum is set before validation
       user.assign_attributes(
         password: password,
         password_confirmation: password,
-        role: role,
         first_name: first_name,
         last_name: last_name,
         phone: phone
       )
+      user.academy = academy if academy && role != :super_admin # Assign academy unless super_admin
+      puts "[DEBUG] Creating user: email=#{email}, role=#{role.inspect}, academy_id=#{academy&.id.inspect}, assigned_academy_id=#{user.academy_id.inspect}"
       user.skip_confirmation!
       user.save!
       puts "  ✅ Created #{role.to_s.humanize}: #{first_name} #{last_name} (#{email})"
@@ -50,6 +55,22 @@ unless Rails.env.production?
     end
     user
   end
+
+  # =============================================================================
+  # ACADEMIES
+  # =============================================================================
+  puts "\n🏫 Creating Academies..."
+  puts "-" * 80
+
+  default_academy = Academies::Academy.find_or_create_by!(
+    name: "Diquis Football Academy",
+    email: "info@diquis.com",
+    subdomain: "diquis",
+    status: :active,
+    address: "123 Main St, Anytown, USA",
+    phone: "+15551234567"
+  )
+  puts "  ✅ Created/Found Academy: #{default_academy.name} (#{default_academy.subdomain})"
 
   # =============================================================================
   # ADMINISTRATIVE USERS
@@ -74,7 +95,8 @@ unless Rails.env.production?
     role: :academy_owner,
     first_name: "Carlos",
     last_name: "Rodríguez",
-    phone: "+50688889999"
+    phone: "+50688889999",
+    academy: default_academy
   )
 
   # Academy Admin - Administrative staff
@@ -84,7 +106,8 @@ unless Rails.env.production?
     role: :academy_admin,
     first_name: "María",
     last_name: "González",
-    phone: "+50688887777"
+    phone: "+50688887777",
+    academy: default_academy
   )
 
   # =============================================================================
@@ -100,7 +123,8 @@ unless Rails.env.production?
     role: :academy_admin,
     first_name: "Test",
     last_name: "Academy Admin",
-    phone: "+50688887778"
+    phone: "+50688887778",
+    academy: default_academy
   )
 
   # Test Coach
@@ -110,7 +134,8 @@ unless Rails.env.production?
     role: :coach,
     first_name: "Test",
     last_name: "Coach",
-    phone: "+50688886667"
+    phone: "+50688886667",
+    academy: default_academy
   )
 
   # Test Player
@@ -120,7 +145,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Test",
     last_name: "Player",
-    phone: "+50688870007"
+    phone: "+50688870007",
+    academy: default_academy
   )
 
   # =============================================================================
@@ -136,7 +162,8 @@ unless Rails.env.production?
     role: :coach,
     first_name: "Diego",
     last_name: "Martínez",
-    phone: "+50688886666"
+    phone: "+50688886666",
+    academy: default_academy
   )
 
   # Assistant Coach
@@ -146,7 +173,8 @@ unless Rails.env.production?
     role: :coach,
     first_name: "Luis",
     last_name: "Hernández",
-    phone: "+50688885555"
+    phone: "+50688885555",
+    academy: default_academy
   )
 
   # Youth Coach
@@ -156,7 +184,8 @@ unless Rails.env.production?
     role: :coach,
     first_name: "Ana",
     last_name: "Ramírez",
-    phone: "+50688884444"
+    phone: "+50688884444",
+    academy: default_academy
   )
 
   # =============================================================================
@@ -172,7 +201,8 @@ unless Rails.env.production?
     role: :staff,
     first_name: "Roberto",
     last_name: "Sánchez",
-    phone: "+50688883333"
+    phone: "+50688883333",
+    academy: default_academy
   )
 
   # Medical Staff
@@ -182,7 +212,8 @@ unless Rails.env.production?
     role: :staff,
     first_name: "Elena",
     last_name: "Morales",
-    phone: "+50688882222"
+    phone: "+50688882222",
+    academy: default_academy
   )
 
   # Equipment Manager
@@ -192,7 +223,8 @@ unless Rails.env.production?
     role: :staff,
     first_name: "Pedro",
     last_name: "López",
-    phone: "+50688881111"
+    phone: "+50688881111",
+    academy: default_academy
   )
 
   # =============================================================================
@@ -210,7 +242,8 @@ unless Rails.env.production?
     role: :parent,
     first_name: "Juan",
     last_name: "Pérez",
-    phone: "+50688880001"
+    phone: "+50688880001",
+    academy: default_academy
   )
 
   # Parent 2 - Will have 1 child
@@ -220,7 +253,8 @@ unless Rails.env.production?
     role: :parent,
     first_name: "Laura",
     last_name: "Jiménez",
-    phone: "+50688880002"
+    phone: "+50688880002",
+    academy: default_academy
   )
 
   # Parent 3 - Will have 1 child
@@ -230,7 +264,8 @@ unless Rails.env.production?
     role: :parent,
     first_name: "Miguel",
     last_name: "Castro",
-    phone: "+50688880003"
+    phone: "+50688880003",
+    academy: default_academy
   )
 
   # Parent 4 - Will have 2 children (shares with parent 1)
@@ -240,7 +275,8 @@ unless Rails.env.production?
     role: :parent,
     first_name: "Carmen",
     last_name: "Pérez",
-    phone: "+50688880004"
+    phone: "+50688880004",
+    academy: default_academy
   )
 
   # Parent 5 - Will have 1 child
@@ -250,7 +286,8 @@ unless Rails.env.production?
     role: :parent,
     first_name: "Fernando",
     last_name: "Vargas",
-    phone: "+50688880005"
+    phone: "+50688880005",
+    academy: default_academy
   )
 
   # =============================================================================
@@ -268,7 +305,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Carlos",
     last_name: "Pérez",
-    phone: "+50688870001"
+    phone: "+50688870001",
+    academy: default_academy
   )
 
   # Player 2 - Sibling of player 1
@@ -278,7 +316,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Sofia",
     last_name: "Pérez",
-    phone: "+50688870002"
+    phone: "+50688870002",
+    academy: default_academy
   )
 
   # Player 3 - Child of parent 2
@@ -288,7 +327,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Diego",
     last_name: "Jiménez",
-    phone: "+50688870003"
+    phone: "+50688870003",
+    academy: default_academy
   )
 
   # Player 4 - Child of parent 3
@@ -298,7 +338,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Valentina",
     last_name: "Castro",
-    phone: "+50688870004"
+    phone: "+50688870004",
+    academy: default_academy
   )
 
   # Player 5 - Child of parent 5
@@ -308,7 +349,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Mateo",
     last_name: "Vargas",
-    phone: "+50688870005"
+    phone: "+50688870005",
+    academy: default_academy
   )
 
   # Player 6 - No parent assigned yet
@@ -318,7 +360,8 @@ unless Rails.env.production?
     role: :player,
     first_name: "Isabella",
     last_name: "Rojas",
-    phone: "+50688870006"
+    phone: "+50688870006",
+    academy: default_academy
   )
 
   # =============================================================================

@@ -1,0 +1,90 @@
+import { Head, Link, useForm } from "@inertiajs/react";
+import React from "react";
+import FlyonUILayout from "../../../components/layout/FlyonUILayout";
+import { useTranslations } from "../../../lib/i18n";
+import { <%= model_name %> } from "./types";
+
+interface Props {
+  <%= plural_name %>: <%= model_name %>[];
+  can_create: boolean;
+}
+
+const <%= model_name.pluralize %>IndexPage: React.FC<Props> = ({ <%= plural_name %>, can_create }) => {
+  const { t } = useTranslations();
+
+  return (
+    <FlyonUILayout>
+      <Head title={`${t(".title")} | Diquis`} />
+
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">{t(".title")}</h1>
+            <p className="text-base-content/60 mt-1">{t(".subtitle")}</p>
+          </div>
+          {can_create && (
+            <Link href={`/admin/<%= plural_name %>/new`} className="btn btn-primary">
+              <span className="icon-[tabler--plus] size-5"></span>
+              {t(".create_button")}
+            </Link>
+          )}
+        </div>
+
+        {/* Table */}
+        <div className="card">
+          <div className="card-body">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <% attributes.each do |attr| -%>
+                  <th>{t("fields.<%= attr[:name] %>")}</th>
+                  <% end -%>
+                  <th>{t("fields.created_at")}</th>
+                  <th>{t("common.actions")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {<%= plural_name %>.map((<%= singular_name %>) => (
+                  <tr key={<%= singular_name %>.id}>
+                    <td>{<%= singular_name %>.id.substring(0, 8)}...</td>
+                    <% attributes.each do |attr| -%>
+                    <td>{<%= singular_name %>.<%= attr[:name] %>}</td>
+                    <% end -%>
+                    <td>{new Date(<%= singular_name %>.created_at).toLocaleDateString()}</td>
+                    <td>
+                      <div className="flex gap-2">
+                        <Link href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}`} className="btn btn-sm btn-ghost">
+                          {t("common.view")}
+                        </Link>
+                        {<%= singular_name %>.can_edit && (
+                          <Link href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}/edit`} className="btn btn-sm btn-ghost">
+                            {t("common.edit")}
+                          </Link>
+                        )}
+                        {<%= singular_name %>.can_delete && (
+                          <Link
+                            href={`/admin/<%= plural_name %>/${<%= singular_name %>.id}`}
+                            method="delete"
+                            as="button"
+                            className="btn btn-sm btn-ghost text-error"
+                            onBefore={() => confirm(t("common.confirm_delete", { item: "<%= singular_name %>" }))}
+                          >
+                            {t("common.delete")}
+                          </Link>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </FlyonUILayout>
+  );
+};
+
+export default <%= model_name.pluralize %>IndexPage;

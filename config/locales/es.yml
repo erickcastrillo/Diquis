@@ -474,14 +474,18 @@ es:
 
   # Traducciones de autenticación
   auth:
-    login:
-      title: "Iniciar Sesión"
-      subtitle: "Bienvenido de nuevo a Diquis"
+    fields:
       email: "Correo Electrónico"
       password: "Contraseña"
       remember_me: "Recuérdame"
-      submit: "Iniciar Sesión"
-      submitting: "Iniciando sesión..."
+    placeholders:
+      email: "Ingresa tu correo electrónico"
+      password: "Ingresa tu contraseña"
+    login:
+      title: "Iniciar Sesión"
+      subtitle: "Bienvenido de nuevo a Diquis"
+      signing_in: "Iniciando sesión..."
+      sign_in_button: "Iniciar Sesión"
       forgot_password: "¿Olvidaste tu contraseña?"
       no_account: "¿No tienes cuenta? Regístrate"
       no_confirmation: "¿No recibiste instrucciones de confirmación?"
@@ -521,6 +525,13 @@ es:
       subtitle: "¿No recibiste instrucciones de confirmación? Ingresa tu correo abajo."
       email: "Correo Electrónico"
       submit: "Reenviar Instrucciones de Confirmación"
+      submitting: "Enviando..."
+      back_to_login: "Volver a Iniciar Sesión"
+      no_account: "¿No tienes cuenta? Regístrate"
+    unlock:
+      title: "Reenviar Instrucciones de Desbloqueo"
+      subtitle: "¿No recibiste instrucciones de desbloqueo? Ingresa tu correo abajo."
+      submit: "Reenviar Instrucciones de Desbloqueo"
       submitting: "Enviando..."
       back_to_login: "Volver a Iniciar Sesión"
       no_account: "¿No tienes cuenta? Regístrate"

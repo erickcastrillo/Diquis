@@ -41,10 +41,12 @@ module UserManagement
     def new
       @user = User.new
       authorize @user
+      @academies = Academy.all
 
       render inertia: "UserManagement/Users/New",
              props: {
                user: serialize_user(@user),
+               academies: @academies.as_json(only: %i[id name]),
                available_roles: available_roles_for_creation,
                errors: {}
              }
@@ -53,18 +55,21 @@ module UserManagement
     # POST /admin/users
     # Creates a new user
     def create
-      @user = User.new(user_params)
-      authorize @user
+      authorize User
+      result = UserService.new(current_user).create_user(user_params)
 
-      if @user.save
-        redirect_to user_management_user_path(@user),
+      if result[:success]
+        redirect_to user_management_user_path(result[:user]),
                     notice: t("user_management.users.create.success")
       else
+        @user = result[:user] || User.new(user_params)
+        @academies = Academy.all
         render inertia: "UserManagement/Users/New",
                props: {
                  user: serialize_user(@user),
+                 academies: @academies.as_json(only: %i[id name]),
                  available_roles: available_roles_for_creation,
-                 errors: @user.errors.to_hash
+                 errors: result[:errors].to_hash
                },
                status: :unprocessable_entity
       end
@@ -74,10 +79,12 @@ module UserManagement
     # Form for editing a user
     def edit
       authorize @user
+      @academies = Academy.all
 
       render inertia: "UserManagement/Users/Edit",
              props: {
                user: serialize_user(@user),
+               academies: @academies.as_json(only: %i[id name]),
                available_roles: available_roles_for_update(@user),
                can_manage_roles: policy(@user).manage_roles?,
                errors: {}
@@ -88,17 +95,20 @@ module UserManagement
     # Updates a user
     def update
       authorize @user
+      result = UserService.new(current_user).update_user(@user, user_params)
 
-      if @user.update(user_params)
-        redirect_to user_management_user_path(@user),
+      if result[:success]
+        redirect_to user_management_user_path(result[:user]),
                     notice: t("user_management.users.update.success")
       else
+        @academies = Academy.all
         render inertia: "UserManagement/Users/Edit",
                props: {
                  user: serialize_user(@user),
+                 academies: @academies.as_json(only: %i[id name]),
                  available_roles: available_roles_for_update(@user),
                  can_manage_roles: policy(@user).manage_roles?,
-                 errors: @user.errors.to_hash
+                 errors: result[:errors].to_hash
                },
                status: :unprocessable_entity
       end
@@ -126,25 +136,26 @@ module UserManagement
 
     def user_params
       # Base parameters available to all users
-      permitted_params = params.permit(
+      permitted_params = params.require(:user).permit(
         :email,
         :first_name,
         :last_name,
         :phone,
         :password,
-        :password_confirmation
+        :password_confirmation,
+        :academy_id
       )
 
       # Securely handle role assignment based on user's policy
-      if params[:role].present? && policy(@user || User).manage_roles?
+      if params[:user][:role].present? && policy(@user || User).manage_roles?
         assignable_roles = if @user.nil? # Create action
           available_roles_for_creation
         else # Update action
           available_roles_for_update(@user)
         end
 
-        if assignable_roles.include?(params[:role])
-          permitted_params[:role] = params[:role]
+        if assignable_roles.include?(params[:user][:role])
+          permitted_params[:role] = params[:user][:role]
         end
       end
 
@@ -152,29 +163,11 @@ module UserManagement
     end
 
     def serialize_users(users)
-      users.map { |user| serialize_user(user) }
+      users.map { |user| UserSerializer.new(user, policy: policy(user)).as_json }
     end
 
     def serialize_user(user)
-      {
-        id: user.id,
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        full_name: user.full_name,
-        phone: user.phone,
-        role: user.role,
-        role_display: user.display_role,
-        created_at: user.created_at&.iso8601,
-        updated_at: user.updated_at&.iso8601,
-        confirmed_at: user.confirmed_at&.iso8601,
-        locked_at: user.locked_at&.iso8601,
-        sign_in_count: user.sign_in_count,
-        current_sign_in_at: user.current_sign_in_at&.iso8601,
-        last_sign_in_at: user.last_sign_in_at&.iso8601,
-        can_edit: policy(user).update?,
-        can_delete: policy(user).destroy?
-      }
+      UserSerializer.new(user, policy: policy(user)).as_json
     end
 
     def available_roles_for_creation

@@ -26,11 +26,20 @@ class ApplicationController < ActionController::Base
       # Share specific namespaces needed by frontend
       translations: {
         app: I18n.t("app").is_a?(Hash) ? I18n.t("app") : {},
+        auth: I18n.t("auth").is_a?(Hash) ? I18n.t("auth") : {},
         common: I18n.t("common").is_a?(Hash) ? I18n.t("common") : {},
         errors: I18n.t("errors").is_a?(Hash) ? I18n.t("errors") : {},
         user_management: I18n.t("user_management").is_a?(Hash) ? I18n.t("user_management") : {}
       },
-      flash: flash.to_hash
+      flash: flash.to_hash,
+      auth: {
+        user_role: current_user&.role,
+        can_manage_users: current_user&.can_manage_users?
+      },
+      tenancy: {
+        current_academy: current_tenant ? { id: current_tenant.id, name: current_tenant.name } : nil,
+        user_academies: current_user ? (current_user.role_super_admin? ? Academy.all.map { |a| {id: a.id, name: a.name} } : [current_user.academy].compact.map { |a| {id: a.id, name: a.name} }) : []
+      }
     }
   end
 

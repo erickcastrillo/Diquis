@@ -48,7 +48,7 @@ module Diquis
     # For example, `app/slices/user_management/controllers/users_controller.rb`
     # will be loaded as `UserManagement::UsersController` instead of
     # `UserManagement::Controllers::UsersController`.
-    Rails.autoloaders.main.collapse(Dir.glob(Rails.root.join("app/slices/*/{controllers,jobs,mailers,services,policies,serializers}")))
+    Rails.autoloaders.main.collapse(Dir.glob(Rails.root.join("app/slices/*/{controllers,jobs,mailers,services,policies,serializers,models}")))
 
 
     # Add custom middleware for OpenTelemetry

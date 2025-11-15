@@ -10,10 +10,12 @@ interface User {
   last_name: string | null;
   phone: string | null;
   role: string;
+  academy_id: string;
 }
 
 interface Props {
   user: User;
+  academies: { id: string; name: string }[];
   available_roles: string[];
   can_manage_roles: boolean;
   errors: { [key: string]: string[] };
@@ -21,6 +23,7 @@ interface Props {
 
 const UsersEditPage: React.FC<Props> = ({
   user,
+  academies,
   available_roles,
   can_manage_roles,
   errors: serverErrors,
@@ -38,6 +41,7 @@ const UsersEditPage: React.FC<Props> = ({
     last_name: user.last_name || "",
     phone: user.phone || "",
     role: user.role || "player",
+    academy_id: user.academy_id || "",
     password: "",
     password_confirmation: "",
   });
@@ -131,7 +135,7 @@ const UsersEditPage: React.FC<Props> = ({
                   </div>
 
                   {/* Role */}
-                  <div className="form-control md:col-span-2">
+                  <div className="form-control">
                     <label className="label">
                       <span className="label-text">
                         {t("user_management.users.fields.role")}{" "}
@@ -175,6 +179,24 @@ const UsersEditPage: React.FC<Props> = ({
                         </span>
                       </label>
                     )}
+                  </div>
+
+                  {/* Academy */}
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Academy</span>
+                    </label>
+                    <select
+                      className="select select-bordered"
+                      value={data.academy_id}
+                      disabled
+                    >
+                      {academies.map((academy) => (
+                        <option key={academy.id} value={academy.id}>
+                          {academy.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>

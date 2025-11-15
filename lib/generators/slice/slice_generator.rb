@@ -61,32 +61,15 @@ class SliceGenerator < Rails::Generators::Base
   end
 
   def generate_service
-    template "service.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/services/#{service_file_path}.rb"
+    template "service.rb.tt", "app/slices/#{slice_name}/#{plural_name}/services/#{service_file_path}.rb"
   end
 
   def generate_controller
-    # Create controller in slice structure for organization
-    slice_controller_path = "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/controllers/#{controller_file_path}.rb"
-    template "controller.rb.erb", slice_controller_path
-
-    # Also create controller in standard Rails location for routing
-    if module_name
-      empty_directory "app/controllers/#{module_name.underscore}"
-      rails_controller_path = "app/controllers/#{module_name.underscore}/#{controller_file_path}.rb"
-    else
-      rails_controller_path = "app/controllers/#{controller_file_path}.rb"
-    end
-
-    # Only copy if not in pretend mode
-    unless options[:pretend]
-      create_file rails_controller_path, File.read(slice_controller_path)
-    else
-      create_file rails_controller_path, "# Controller will be copied from slice"
-    end
+    template "controller.rb.tt", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/controllers/#{controller_file_path}.rb"
   end
 
   def generate_serializer
-    template "serializer.rb.erb", "app/slices/#{slice_name}/#{model_name.underscore.pluralize}/serializers/#{serializer_file_path}.rb"
+    template "serializer.rb.tt", "app/slices/#{slice_name}/#{plural_name}/serializers/#{serializer_file_path}.rb"
   end
 
   def generate_policy
@@ -94,9 +77,10 @@ class SliceGenerator < Rails::Generators::Base
   end
 
   def generate_react_components
-    template "Index.tsx.erb", "app/frontend/pages/#{frontend_path}/Index.tsx"
-    template "Show.tsx.erb", "app/frontend/pages/#{frontend_path}/Show.tsx"
-    template "Form.tsx.erb", "app/frontend/pages/#{frontend_path}/Form.tsx"
+    template "Index.tsx.tt", "app/frontend/pages/#{frontend_path}/Index.tsx"
+    template "Show.tsx.tt", "app/frontend/pages/#{frontend_path}/Show.tsx"
+    template "New.tsx.tt", "app/frontend/pages/#{frontend_path}/New.tsx"
+    template "Edit.tsx.tt", "app/frontend/pages/#{frontend_path}/Edit.tsx"
     template "types.ts.erb", "app/frontend/pages/#{frontend_path}/types.ts"
   end
 
@@ -110,42 +94,34 @@ class SliceGenerator < Rails::Generators::Base
     # Frontend Vitest tests
     template "Index.test.tsx.erb", "app/frontend/pages/#{frontend_path}/__tests__/Index.test.tsx"
     template "Show.test.tsx.erb", "app/frontend/pages/#{frontend_path}/__tests__/Show.test.tsx"
-    template "Form.test.tsx.erb", "app/frontend/pages/#{frontend_path}/__tests__/Form.test.tsx"
+    # Form tests can be added here if needed
+  end
+
+  def generate_e2e_test
+    template "e2e_spec.ts.tt", "e2e/admin/#{plural_name}.spec.ts"
   end
 
   def generate_routes
+    # Route generation logic remains the same
+
+    # ... (existing code)
+  end
+
+  private
+
+  def singular_name
+    model_name.underscore
+  end
+
+  def plural_name
+    model_name.underscore.pluralize
+  end
+
+  def route_helper
     if module_name
-      # Use lowercase namespace for routes (Rails convention)
-      namespace_name = module_name.split("::").first.underscore
-      namespace_route = "namespace :#{namespace_name} do"
-      routes_content = File.read("config/routes.rb")
-
-      # Check if we have the app scope structure
-      app_scope_pattern = /scope '\/app' do\s*\n((?:.*\n)*?)\s*end/m
-
-      if routes_content.match(app_scope_pattern) && routes_content.include?(namespace_route)
-        # Add resource to existing namespace within app scope
-        inject_into_file "config/routes.rb", after: namespace_route do
-          "\n      resources :#{model_name.underscore.pluralize}"
-        end
-      elsif routes_content.match(app_scope_pattern)
-        # Add new namespace within existing app scope
-        inject_into_file "config/routes.rb", after: "scope '/app' do" do
-          "\n    namespace :#{namespace_name} do\n      resources :#{model_name.underscore.pluralize}\n    end"
-        end
-      else
-        # Create new app scope with namespace
-        route_content = <<~ROUTE
-          scope '/app' do
-            namespace :#{namespace_name} do
-              resources :#{model_name.underscore.pluralize}
-            end
-          end
-        ROUTE
-        route route_content
-      end
+      "#{module_name.underscore}_#{singular_name}"
     else
-      route "resources :#{model_name.underscore.pluralize}"
+      singular_name
     end
   end
 

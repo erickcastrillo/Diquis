@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react";
+import { router, Link } from "@inertiajs/react";
 import React from "react";
 import { useTranslations } from "../../lib/i18n";
 
@@ -143,9 +143,9 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
               )}
             </button>
             <div className="divider divider-horizontal mx-2"></div>
-            <a href="#" className="btn btn-primary btn-sm">
+            <Link href="/users/sign_in" className="btn btn-primary btn-sm">
               {t("app.landing.nav.login")}
-            </a>
+            </Link>
           </div>
         </div>
       </nav>

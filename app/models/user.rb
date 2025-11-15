@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # Enable multi-tenancy with acts_as_tenant
+  acts_as_tenant :academy
+
   # Enable audit logging for all user changes
   has_paper_trail on: %i[create update destroy], ignore: %i[updated_at last_sign_in_at current_sign_in_at]
 
@@ -19,8 +22,10 @@ class User < ApplicationRecord
     super_admin: 6
   }, prefix: true
 
-  # Associations - Player-Guardian relationships
-  # When user is a player, they can have many guardians (parents)
+  # Associations
+  belongs_to :academy, class_name: "Academies::Academy", optional: true
+
+  # Player-Guardian relationships
   has_many :player_guardianships, class_name: "PlayerGuardian", foreign_key: "player_id", dependent: :destroy
   has_many :guardians, through: :player_guardianships, source: :guardian
 
@@ -30,6 +35,18 @@ class User < ApplicationRecord
 
   # Validations
   validates :role, presence: true
+  # Custom validation for academy_id presence, allowing super_admins to be nil
+  validate :academy_required_unless_super_admin
+
+  def academy_required_unless_super_admin
+    puts "[DEBUG] Validating academy presence for user with role=#{role.inspect} and academy_id=#{academy_id.inspect}"
+    role_val = self.role_before_type_cast || self.role
+    return if role_val.blank? # Don't validate if role is not set yet
+    # Accept integer (6), string ("super_admin"), or symbol (:super_admin)
+    if (role_val != 6 && role_val.to_s != "super_admin" && role_val != :super_admin) && academy_id.blank?
+      errors.add(:academy_id, "must exist")
+    end
+  end
   validates :first_name, presence: true, if: -> { role_player? || role_parent? }
   validates :last_name, presence: true, if: -> { role_player? || role_parent? }
   validates :phone, format: { with: /\A[+]?[\d\s\-()]+\z/, allow_blank: true }
@@ -44,8 +61,14 @@ class User < ApplicationRecord
     role_academy_admin? || role_academy_owner? || role_super_admin?
   end
 
-  def can_manage_academy?
-    role_academy_owner? || role_super_admin?
+  def can_access_academy?(target_academy)
+    return true if role_super_admin?
+    self.academy == target_academy
+  end
+
+  def can_manage_academy?(target_academy)
+    return true if role_super_admin?
+    role_academy_owner? && self.academy == target_academy
   end
 
   def full_name

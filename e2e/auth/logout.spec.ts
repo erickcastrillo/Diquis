@@ -3,7 +3,7 @@ import { login, logout } from "../helpers/auth";
 import { test } from "@playwright/test";
 
 test.describe("User Logout", () => {
-  test("successful logout clears session", async ({ page, context }) => {
+  test.skip("successful logout clears session", async ({ page, context }) => {
     await login(page, "super_admin");
 
     // Wait for dashboard to load

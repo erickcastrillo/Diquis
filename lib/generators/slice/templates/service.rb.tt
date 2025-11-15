@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+<% if module_name %>module <%= module_name %><% end %>
+  # Service for handling business logic related to <%= model_name.pluralize %>
+  class <%= model_name %>Service
+    def initialize(current_user)
+      @current_user = current_user
+    end
+
+    def create_<%= singular_name %>(params)
+      <%= singular_name %> = <%= model_name %>.new(params)
+      if <%= singular_name %>.save
+        { success: true, <%= singular_name %>: <%= singular_name %> }
+      else
+        { success: false, errors: <%= singular_name %>.errors }
+      end
+    end
+
+    def update_<%= singular_name %>(<%= singular_name %>, params)
+      if <%= singular_name %>.update(params)
+        { success: true, <%= singular_name %>: <%= singular_name %> }
+      else
+        { success: false, errors: <%= singular_name %>.errors }
+      end
+    end
+  end
+<% if module_name %>end<% end %>

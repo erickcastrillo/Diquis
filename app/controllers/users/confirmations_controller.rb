@@ -14,11 +14,12 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     yield resource if block_given?
 
     if successfully_sent?(resource)
-      redirect_to new_user_session_path,
-        inertia: { notice: "Confirmation instructions sent to your email" }
+      set_flash_message!(:notice, :send_instructions)
+      redirect_to new_user_session_path
     else
-      redirect_to new_user_confirmation_path,
-        inertia: { errors: resource.errors.messages }
+      render inertia: "Auth/Confirmation", props: {
+        errors: resource.errors.messages
+      }, status: :unprocessable_entity
     end
   end
 

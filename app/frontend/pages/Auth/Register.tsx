@@ -1,18 +1,24 @@
 import { Head, Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, Fragment } from "react";
+import { useTranslations } from "../../lib/i18n";
 
 interface Props {
   errors?: Record<string, string[]>;
+  academies: { id: string; name: string }[];
 }
 
-export default function Register({ errors = {} }: Props) {
+export default function Register({ errors = {}, academies }: Props) {
+  const { t } = useTranslations();
   const { data, setData, post, processing } = useForm({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    role: "player", // Default role
+    user: {
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      role: "player", // Default role
+      academy_id: "",
+    },
   });
 
   const submit: FormEventHandler = (e) => {
@@ -25,18 +31,17 @@ export default function Register({ errors = {} }: Props) {
 
   return (
     <Fragment>
-      <Head title="Sign Up" />
+      <Head title={t("auth.register.title")} />
 
       <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-8">
         <div className="w-full max-w-md">
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold">Create Account</h1>
-                <p className="text-base-content/60 mt-2">Join Diquis Academy</p>
+                <h1 className="text-3xl font-bold">{t("auth.register.title")}</h1>
+                <p className="text-base-content/60 mt-2">{t("auth.register.subtitle")}</p>
               </div>
 
-              {/* Display global errors */}
               {errors.base && errors.base.length > 0 && (
                 <div className="alert alert-error mb-4">
                   <svg
@@ -64,17 +69,17 @@ export default function Register({ errors = {} }: Props) {
                 {/* First Name Field */}
                 <div className="form-control">
                   <label htmlFor="first_name" className="label">
-                    <span className="label-text">First Name</span>
+                    <span className="label-text">{t("auth.register.first_name")}</span>
                   </label>
                   <input
                     id="first_name"
                     type="text"
-                    value={data.first_name}
-                    onChange={(e) => setData("first_name", e.target.value)}
+                    value={data.user.first_name}
+                    onChange={(e) => setData("user", { ...data.user, first_name: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("first_name") ? "input-error" : ""
                     }`}
-                    placeholder="Enter your first name"
+                    placeholder={t("auth.register.first_name")}
                     required
                   />
                   {hasError("first_name") && (
@@ -89,17 +94,17 @@ export default function Register({ errors = {} }: Props) {
                 {/* Last Name Field */}
                 <div className="form-control">
                   <label htmlFor="last_name" className="label">
-                    <span className="label-text">Last Name</span>
+                    <span className="label-text">{t("auth.register.last_name")}</span>
                   </label>
                   <input
                     id="last_name"
                     type="text"
-                    value={data.last_name}
-                    onChange={(e) => setData("last_name", e.target.value)}
+                    value={data.user.last_name}
+                    onChange={(e) => setData("user", { ...data.user, last_name: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("last_name") ? "input-error" : ""
                     }`}
-                    placeholder="Enter your last name"
+                    placeholder={t("auth.register.last_name")}
                     required
                   />
                   {hasError("last_name") && (
@@ -114,17 +119,17 @@ export default function Register({ errors = {} }: Props) {
                 {/* Email Field */}
                 <div className="form-control">
                   <label htmlFor="email" className="label">
-                    <span className="label-text">Email Address</span>
+                    <span className="label-text">{t("auth.fields.email")}</span>
                   </label>
                   <input
                     id="email"
                     type="email"
-                    value={data.email}
-                    onChange={(e) => setData("email", e.target.value)}
+                    value={data.user.email}
+                    onChange={(e) => setData("user", { ...data.user, email: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("email") ? "input-error" : ""
                     }`}
-                    placeholder="Enter your email"
+                    placeholder={t("auth.placeholders.email")}
                     required
                   />
                   {hasError("email") && (
@@ -139,17 +144,17 @@ export default function Register({ errors = {} }: Props) {
                 {/* Password Field */}
                 <div className="form-control">
                   <label htmlFor="password" className="label">
-                    <span className="label-text">Password</span>
+                    <span className="label-text">{t("auth.fields.password")}</span>
                   </label>
                   <input
                     id="password"
                     type="password"
-                    value={data.password}
-                    onChange={(e) => setData("password", e.target.value)}
+                    value={data.user.password}
+                    onChange={(e) => setData("user", { ...data.user, password: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("password") ? "input-error" : ""
                     }`}
-                    placeholder="Create a password"
+                    placeholder={t("auth.placeholders.password")}
                     required
                   />
                   {hasError("password") && (
@@ -161,7 +166,7 @@ export default function Register({ errors = {} }: Props) {
                   )}
                   <label className="label">
                     <span className="label-text-alt text-base-content/60">
-                      Minimum 6 characters
+                      {t("auth.register.password_hint")}
                     </span>
                   </label>
                 </div>
@@ -169,19 +174,17 @@ export default function Register({ errors = {} }: Props) {
                 {/* Password Confirmation Field */}
                 <div className="form-control">
                   <label htmlFor="password_confirmation" className="label">
-                    <span className="label-text">Confirm Password</span>
+                    <span className="label-text">{t("auth.register.password_confirmation")}</span>
                   </label>
                   <input
                     id="password_confirmation"
                     type="password"
-                    value={data.password_confirmation}
-                    onChange={(e) =>
-                      setData("password_confirmation", e.target.value)
-                    }
+                    value={data.user.password_confirmation}
+                    onChange={(e) => setData("user", { ...data.user, password_confirmation: e.target.value })}
                     className={`input input-bordered w-full ${
                       hasError("password_confirmation") ? "input-error" : ""
                     }`}
-                    placeholder="Confirm your password"
+                    placeholder={t("auth.register.password_confirmation")}
                     required
                   />
                   {hasError("password_confirmation") && (
@@ -196,25 +199,55 @@ export default function Register({ errors = {} }: Props) {
                 {/* Role Field */}
                 <div className="form-control">
                   <label htmlFor="role" className="label">
-                    <span className="label-text">I am a...</span>
+                    <span className="label-text">{t("auth.register.role")}</span>
                   </label>
                   <select
                     id="role"
-                    value={data.role}
-                    onChange={(e) => setData("role", e.target.value)}
+                    value={data.user.role}
+                    onChange={(e) => setData("user", { ...data.user, role: e.target.value })}
                     className={`select select-bordered w-full ${
                       hasError("role") ? "select-error" : ""
                     }`}
                     required
                   >
-                    <option value="player">Player</option>
-                    <option value="parent">Parent/Guardian</option>
-                    <option value="coach">Coach</option>
+                    <option value="player">{t("user_management.users.fields.roles.player")}</option>
+                    <option value="parent">{t("user_management.users.fields.roles.parent")}</option>
+                    <option value="coach">{t("user_management.users.fields.roles.coach")}</option>
                   </select>
                   {hasError("role") && (
                     <label className="label">
                       <span className="label-text-alt text-error">
                         {getError("role")}
+                      </span>
+                    </label>
+                  )}
+                </div>
+
+                {/* Academy Field */}
+                <div className="form-control">
+                  <label htmlFor="academy_id" className="label">
+                    <span className="label-text">{t("user_management.users.fields.academy")}</span>
+                  </label>
+                  <select
+                    id="academy_id"
+                    value={data.user.academy_id}
+                    onChange={(e) => setData("user", { ...data.user, academy_id: e.target.value })}
+                    className={`select select-bordered w-full ${
+                      hasError("academy_id") ? "select-error" : ""
+                    }`}
+                    required
+                  >
+                    <option value="">{t("user_management.users.form.select_academy")}</option>
+                    {academies.map((academy) => (
+                      <option key={academy.id} value={academy.id}>
+                        {academy.name}
+                      </option>
+                    ))}
+                  </select>
+                  {hasError("academy_id") && (
+                    <label className="label">
+                      <span className="label-text-alt text-error">
+                        {getError("academy_id")}
                       </span>
                     </label>
                   )}
@@ -229,16 +262,16 @@ export default function Register({ errors = {} }: Props) {
                   {processing && (
                     <span className="loading loading-spinner"></span>
                   )}
-                  {processing ? "Creating account..." : "Create Account"}
+                  {processing ? t("auth.register.submitting") : t("auth.register.submit")}
                 </button>
               </form>
 
               {/* Helper Links */}
-              <div className="divider">OR</div>
+              <div className="divider">{t("common.or")}</div>
 
               <div className="text-center">
                 <Link href="/users/sign_in" className="link link-primary">
-                  Already have an account? Sign in
+                  {t("auth.register.have_account")}
                 </Link>
               </div>
             </div>

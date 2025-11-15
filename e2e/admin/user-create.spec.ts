@@ -6,6 +6,7 @@ import { login } from "../helpers/auth";
 test.describe("User Creation", () => {
   test("admin can create a new player", async ({ page, request }) => {
     await login(page, "super_admin");
+    const academy = await createAcademy(request);
     const userData = generateUserData(
       "player"
     ) as typeof import("../fixtures/users").VALID_USER_DATA.player & {
@@ -16,7 +17,8 @@ test.describe("User Creation", () => {
     // Fill form using visible state and nth selectors within the form card
     const form = page.locator("form");
     await form.locator('input[type="email"]').fill(userData.email);
-    await form.locator("select.select-bordered").selectOption(userData.role);
+    await form.locator('select[name="user[role]"]').selectOption(userData.role);
+    await form.locator('select[name="user[academy_id]"]').selectOption({ label: academy.name });
 
     // Get all text inputs that are visible and part of the form
     const textInputs = form.locator(
